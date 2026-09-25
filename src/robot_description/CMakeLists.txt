@@ -26,4 +26,8 @@ install(
   DIRECTORY config launch rviz urdf worlds
   DESTINATION share/${PROJECT_NAME}
 )
+install(
+  PROGRAMS scripts/imu_covariance_node.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 ament_package()

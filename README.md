@@ -21,6 +21,10 @@ The first simulation milestone is complete:
 - Simulated IMU publishing `/imu` at approximately 100 Hz
 - Dedicated Gazebo-to-ROS IMU bridge with `imu_link` frame override
 - Static gravity, commanded yaw-rate, braking recovery, and `base_link -> imu_link` TF validation
+- Wheel odometry and simulated IMU fused with `robot_localization`
+- `/odometry/filtered` published by `ekf_filter_node` at approximately 50 Hz
+- `odom -> base_footprint` TF now published by the EKF, with `diff_drive_controller` odom TF disabled to avoid duplicate TF publishers
+- IMU covariance relay node normalizes Gazebo IMU covariance from `/imu/raw` to `/imu`
 
 ## Development Environment
 
@@ -47,7 +51,7 @@ source install/setup.bash
 ros2 launch robot_description sim.launch.py
 ```
 
-This launch file starts the custom Gazebo world, RViz2, `robot_state_publisher`, the `/clock`, `/scan`, and `/imu` bridges, and both ros2_control controllers.
+This launch file starts the custom Gazebo world, RViz2, `robot_state_publisher`, the `/clock`, `/scan`, and `/imu/raw` bridges, the IMU covariance relay node, `robot_localization`, and both ros2_control controllers.
 
 ## Verify the Controllers
 
@@ -143,6 +147,26 @@ command publisher stopped, the angular velocity returned to
 approximately zero. This is an intentionally ideal, noise-free
 simulation baseline.
 
+## Verify EKF Localization
+
+```bash
+ros2 topic info /imu/raw
+ros2 topic info /imu
+ros2 topic echo /imu --once --field orientation_covariance
+ros2 topic echo /diagnostics --once --filter "any('ekf_filter_node' in s.name for s in m.status)" | grep -E 'level:|name:|message:'
+ros2 topic hz /odometry/filtered --window 200
+ros2 run tf2_ros tf2_echo odom base_footprint
+```
+Expected results:
+- `/imu/raw` has one publisher and one subscriber
+- `/imu` has one publisher and one subscriber
+- `/imu` covariance fields use non-zero diagonal fallback values in simulation
+- `ekf_filter_node` diagnostics report level 0
+- `/odometry/filtered` publishes at approximately 50 Hz
+- `odom -> base_footprint` is available from the EKF
+
+In the recorded validation run, `/odometry/filtered` published at approximately 50 Hz. A commanded yaw rate of `0.5 rad/s` produced a filtered angular Z velocity of `0.50000532 rad/s`. After stopping, the filtered angular velocity returned to approximately zero.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -156,7 +180,6 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 
 ## Roadmap
 
-- Fuse wheel odometry and simulated IMU with `robot_localization`
 - Add SLAM Toolbox and Nav2
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
