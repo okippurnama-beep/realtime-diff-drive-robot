@@ -24,6 +24,13 @@ def generate_launch_description():
             'controllers.yaml',
         ]
     )
+    ekf_config = PathJoinSubstitution(
+        [
+            FindPackageShare('robot_description'),
+            'config',
+            'ekf.yaml',
+        ]
+    )
     rviz_config = PathJoinSubstitution(
         [
             FindPackageShare('robot_description'),
@@ -125,7 +132,6 @@ def generate_launch_description():
         parameters=[{'override_frame_id': 'lidar_link'}],
         output='screen',
     )
-
     imu_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -133,6 +139,28 @@ def generate_launch_description():
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
         ],
         parameters=[{'override_frame_id': 'imu_link'}],
+        remappings=[('/imu', '/imu/raw')],
+        output='screen',
+    )
+    imu_covariance_node = Node(
+        package='robot_description',
+        executable='imu_covariance_node.py',
+        name='imu_covariance_node',
+        parameters=[
+            {
+                'use_sim_time': True,
+                'orientation_variance': 1.0e-4,
+                'angular_velocity_variance': 1.0e-4,
+                'linear_acceleration_variance': 1.0e-2,
+            }
+        ],
+        output='screen',
+    )
+    ekf_filter_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        parameters=[ekf_config],
         output='screen',
     )
     rviz = Node(
@@ -163,6 +191,8 @@ def generate_launch_description():
             clock_bridge,
             lidar_bridge,
             imu_bridge,
+            imu_covariance_node,
+            ekf_filter_node,
             rviz,
             spawn_robot,
             start_joint_state_broadcaster,
