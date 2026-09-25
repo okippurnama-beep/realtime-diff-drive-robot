@@ -1,0 +1,22 @@
+{
+    "files.exclude": {
+        "**/build": true,
+        "**/install": true,
+        "**/log": true
+    },
+    "search.exclude": {
+        "**/build": true,
+        "**/install": true,
+        "**/log": true
+    },
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/install/**": true,
+        "**/log/**": true
+    },
+    "files.associations": {
+        "*.xacro": "xml",
+        "*.urdf": "xml"
+    },
+    "python.defaultInterpreterPath": "/usr/bin/python3"
+}

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="intern_diffbot">
+
+  <material name="blue">
+    <color rgba="0.10 0.30 0.80 1.0"/>
+  </material>
+  <!-- Ground projection used by odometry and navigation -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.125"/>
+  </joint>
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.40 0.30 0.10"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.40 0.30 0.10"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="5.0"/>
+      <inertia
+        ixx="0.04167" ixy="0.0" ixz="0.0"
+        iyy="0.07083" iyz="0.0"
+        izz="0.10417"/>
+    </inertial>
+  </link>
+  <!-- Differential-drive wheels -->
+  <xacro:macro name="drive_wheel" params="side y_offset">
+    <link name="${side}_wheel_link">
+      <visual>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.075" length="0.04"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0.05 0.05 0.05 1.0"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.075" length="0.04"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="0.5"/>
+        <inertia
+          ixx="0.000754" ixy="0.0" ixz="0.0"
+          iyy="0.001406" iyz="0.0"
+          izz="0.000754"/>
+      </inertial>
+    </link>
+
+    <joint name="${side}_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${side}_wheel_link"/>
+      <origin xyz="0 ${y_offset} -0.05"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.1" friction="0.1"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:drive_wheel side="left"  y_offset="0.17"/>
+  <xacro:drive_wheel side="right" y_offset="-0.17"/>
+  <!-- Rear passive caster -->
+  <link name="caster_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.1"/>
+      <inertia
+        ixx="0.000025" ixy="0.0" ixz="0.0"
+        iyy="0.000025" iyz="0.0"
+        izz="0.000025"/>
+    </inertial>
+  </link>
+
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_link"/>
+    <origin xyz="-0.15 0 -0.10"/>
+  </joint>
+  <!-- Simulated hardware interface -->
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- Load ros2_control inside Gazebo -->
+  <gazebo>
+    <plugin
+      filename="gz_ros2_control-system"
+      name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(env HOME)/robot_ws/src/diffbot_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+</robot>
