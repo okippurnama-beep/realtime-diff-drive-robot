@@ -15,6 +15,9 @@ The first simulation milestone is complete:
 - Closed-loop odometry
 - `odom -> base_footprint -> base_link` TF chain
 - One-command Gazebo and RViz startup
+- Simulated 360-sample 2D LiDAR publishing `/scan` at approximately 10 Hz
+- Gazebo-to-ROS LaserScan bridge with `lidar_link` frame override
+- RViz2 LaserScan visualization verified against a test obstacle
 
 ## Development Environment
 
@@ -41,7 +44,7 @@ source install/setup.bash
 ros2 launch robot_description sim.launch.py
 ```
 
-This launch file starts Gazebo, RViz2, `robot_state_publisher`, the clock bridge, and both ros2_control controllers.
+This launch file starts the custom Gazebo world, RViz2, `robot_state_publisher`, the `/clock` and `/scan` bridges, and both ros2_control controllers.
 
 ## Verify the Controllers
 
@@ -81,6 +84,20 @@ ros2 topic echo --once \
 ros2 run tf2_ros tf2_echo odom base_footprint
 ```
 
+## Verify Simulated LiDAR
+
+```bash
+ros2 topic info /scan
+ros2 topic echo /scan --once --field header --qos-reliability best_effort
+ros2 topic hz /scan --window 50
+```
+
+Expected results:
+
+- `/scan` has one publisher
+- The message frame is `lidar_link`
+- The publishing rate is approximately 10 Hz
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -94,8 +111,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 
 ## Roadmap
 
-- Add simulated LiDAR and IMU sensors
-- Add sensor visualization and validation
+- Add and validate a simulated IMU sensor
 - Add `robot_localization`
 - Add SLAM Toolbox and Nav2
 - Implement the STM32 motor-control firmware
