@@ -107,14 +107,32 @@ def generate_launch_description():
         ],
         output='screen',
     )
-    gazebo_bridge = Node(
+    clock_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+        ],
+        output='screen',
+    )
+
+    lidar_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
         ],
         parameters=[{'override_frame_id': 'lidar_link'}],
+        output='screen',
+    )
+
+    imu_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
+        ],
+        parameters=[{'override_frame_id': 'imu_link'}],
         output='screen',
     )
     rviz = Node(
@@ -142,7 +160,9 @@ def generate_launch_description():
         [
             gazebo,
             robot_state_publisher,
-            gazebo_bridge,
+            clock_bridge,
+            lidar_bridge,
+            imu_bridge,
             rviz,
             spawn_robot,
             start_joint_state_broadcaster,

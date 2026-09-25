@@ -105,6 +105,46 @@
       </lidar>
     </sensor>
   </gazebo>
+  <!-- IMU mounted near the chassis center -->
+  <link name="imu_link">
+    <visual>
+      <geometry>
+        <box size="0.04 0.03 0.015"/>
+      </geometry>
+      <material name="orange">
+        <color rgba="1.0 0.4 0.0 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.04 0.03 0.015"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.02"/>
+      <inertia
+        ixx="0.000001875" ixy="0.0" ixz="0.0"
+        iyy="0.000003042" iyz="0.0"
+        izz="0.000004167"/>
+    </inertial>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.065"/>
+  </joint>
+  <!-- Gazebo IMU sensor -->
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <topic>/imu</topic>
+      <update_rate>100</update_rate>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
 
   <!-- Differential-drive wheels -->
   <xacro:macro name="drive_wheel" params="side y_offset">
