@@ -18,6 +18,9 @@ The first simulation milestone is complete:
 - Simulated 360-sample 2D LiDAR publishing `/scan` at approximately 10 Hz
 - Gazebo-to-ROS LaserScan bridge with `lidar_link` frame override
 - RViz2 LaserScan visualization verified against a test obstacle
+- Simulated IMU publishing `/imu` at approximately 100 Hz
+- Dedicated Gazebo-to-ROS IMU bridge with `imu_link` frame override
+- Static gravity, commanded yaw-rate, braking recovery, and `base_link -> imu_link` TF validation
 
 ## Development Environment
 
@@ -44,7 +47,7 @@ source install/setup.bash
 ros2 launch robot_description sim.launch.py
 ```
 
-This launch file starts the custom Gazebo world, RViz2, `robot_state_publisher`, the `/clock` and `/scan` bridges, and both ros2_control controllers.
+This launch file starts the custom Gazebo world, RViz2, `robot_state_publisher`, the `/clock`, `/scan`, and `/imu` bridges, and both ros2_control controllers.
 
 ## Verify the Controllers
 
@@ -98,6 +101,48 @@ Expected results:
 - The message frame is `lidar_link`
 - The publishing rate is approximately 10 Hz
 
+## Verify Simulated IMU
+
+```bash
+ros2 topic info /imu
+ros2 topic echo /imu --once --field header
+ros2 topic echo /imu --once --field linear_acceleration
+ros2 topic echo /imu --once --field angular_velocity
+ros2 topic hz /imu --window 200
+ros2 run tf2_ros tf2_echo base_link imu_link
+```
+
+Expected baseline results:
+
+- `/imu` has one publisher with type `sensor_msgs/msg/Imu`
+- The message frame is `imu_link`
+- The measured publishing rate is approximately 100 Hz
+- Stationary linear acceleration is approximately `[0, 0, 9.8] m/s^2`
+- Stationary angular velocity is approximately zero
+- `base_link -> imu_link` translation is `[0, 0, 0.065]`
+
+For a dynamic yaw-rate check, command an in-place rotation:
+
+```bash
+ros2 topic pub --rate 10 \
+  /diff_drive_base_controller/cmd_vel \
+  geometry_msgs/msg/TwistStamped \
+  "{twist: {linear: {x: 0.0}, angular: {z: 0.5}}}"
+```
+
+While the robot rotates, inspect the IMU from another terminal:
+
+```bash
+ros2 topic echo /imu --once --field angular_velocity
+```
+
+In the recorded validation run, the measured rate was
+`100.001-100.010 Hz`, and a commanded yaw rate of `0.5 rad/s`
+produced an IMU Z-axis reading of `0.50000015 rad/s`. After the
+command publisher stopped, the angular velocity returned to
+approximately zero. This is an intentionally ideal, noise-free
+simulation baseline.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -111,8 +156,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 
 ## Roadmap
 
-- Add and validate a simulated IMU sensor
-- Add `robot_localization`
+- Fuse wheel odometry and simulated IMU with `robot_localization`
 - Add SLAM Toolbox and Nav2
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
