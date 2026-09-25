@@ -8,42 +8,42 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
     model_path = PathJoinSubstitution(
         [
-            FindPackageShare("robot_description"),
-            "urdf",
-            "diffbot.urdf.xacro",
+            FindPackageShare('robot_description'),
+            'urdf',
+            'diffbot.urdf.xacro',
         ]
     )
     rviz_config = PathJoinSubstitution(
         [
-            FindPackageShare("robot_description"),
-            "rviz",
-            "diffbot.rviz",
+            FindPackageShare('robot_description'),
+            'rviz',
+            'diffbot.rviz',
         ]
     )
     robot_description = ParameterValue(
-        Command([FindExecutable(name="xacro"), " ", model_path]),
+        Command([FindExecutable(name='xacro'), ' ', model_path]),
         value_type=str,
     )
 
     return LaunchDescription(
         [
             Node(
-                package="robot_state_publisher",
-                executable="robot_state_publisher",
-                parameters=[{"robot_description": robot_description}],
-                output="screen",
+                package='robot_state_publisher',
+                executable='robot_state_publisher',
+                parameters=[{'robot_description': robot_description}],
+                output='screen',
             ),
             Node(
-                package="joint_state_publisher_gui",
-                executable="joint_state_publisher_gui",
-                parameters=[{"robot_description": robot_description}],
-                output="screen",
+                package='joint_state_publisher_gui',
+                executable='joint_state_publisher_gui',
+                parameters=[{'robot_description': robot_description}],
+                output='screen',
             ),
             Node(
-                package="rviz2",
-                executable="rviz2",
-                arguments=["-d", rviz_config],
-                output="screen",
+                package='rviz2',
+                executable='rviz2',
+                arguments=['-d', rviz_config],
+                output='screen',
             ),
         ]
     )

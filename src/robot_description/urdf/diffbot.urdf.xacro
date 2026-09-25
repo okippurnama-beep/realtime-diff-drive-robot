@@ -35,6 +35,77 @@
         izz="0.10417"/>
     </inertial>
   </link>
+  <!-- 2D LiDAR mounted on top of the chassis -->
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.04" length="0.04"/>
+      </geometry>
+      <material name="dark_gray">
+        <color rgba="0.15 0.15 0.15 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="0.04" length="0.04"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.1"/>
+      <inertia
+        ixx="0.0000533" ixy="0.0" ixz="0.0"
+        iyy="0.0000533" iyz="0.0"
+        izz="0.0000800"/>
+    </inertial>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0.10 0 0.10"/>
+  </joint>
+  <!-- Gazebo 2D LiDAR sensor -->
+  <gazebo reference="lidar_link">
+    <sensor name="gpu_lidar" type="gpu_lidar">
+      <topic>/scan</topic>
+      <update_rate>10</update_rate>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+
+          <vertical>
+            <samples>1</samples>
+            <resolution>1</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>0.0</max_angle>
+          </vertical>
+        </scan>
+
+        <range>
+          <min>0.12</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+    </sensor>
+  </gazebo>
+
   <!-- Differential-drive wheels -->
   <xacro:macro name="drive_wheel" params="side y_offset">
     <link name="${side}_wheel_link">
