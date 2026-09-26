@@ -167,6 +167,27 @@ Expected results:
 
 In the recorded validation run, `/odometry/filtered` published at approximately 50 Hz. A commanded yaw rate of `0.5 rad/s` produced a filtered angular Z velocity of `0.50000532 rad/s`. After stopping, the filtered angular velocity returned to approximately zero.
 
+## Verify SLAM Mapping
+
+```bash
+ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true
+ros2 topic info /map
+ros2 topic echo /map --once --field info
+ros2 run tf2_ros tf2_echo map odom
+ros2 topic hz /map --window 20
+mkdir -p ~/robot_ws/maps
+ros2 run nav2_map_server map_saver_cli -f ~/robot_ws/maps/diffbot_slam_test --ros-args -p save_map_timeout:=10.0
+```
+
+Expected results:
+
+- `/map` has one publisher with type `nav_msgs/msg/OccupancyGrid`
+- `map -> odom` TF is available
+- `/map` publishes at approximately `0.2 Hz` with the default SLAM Toolbox settings
+- The test map is saved as `maps/diffbot_slam_test.pgm` and `maps/diffbot_slam_test.yaml`
+
+In the recorded validation run, SLAM Toolbox saved a `33 x 10` occupancy grid at `0.05 m/pix`.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
