@@ -8,7 +8,7 @@ Panels:
         - /Status1
         - /RobotModel1
         - /LaserScan1
-        - /LaserScan1/Status1
+        - /Map1
       Splitter Ratio: 0.5
     Tree Height: 542
   - Class: rviz_common/Selection
@@ -82,6 +82,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         left_wheel_link:
           Alpha: 1
           Show Axes: false
@@ -138,6 +143,29 @@ Visualization Manager:
         Value: /scan
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Alpha: 0.699999988079071
+      Binary representation: false
+      Binary threshold: 100
+      Class: rviz_default_plugins/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: ""
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: ""
+      Use Timestamp: false
       Value: true
   Enabled: true
   Global Options:
@@ -200,10 +228,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7853981852531433
+      Pitch: 0.8103982210159302
       Target Frame: base_footprint
       Value: Orbit (rviz)
-      Yaw: 0.7853981852531433
+      Yaw: 0.7453982830047607
     Saved: ~
 Window Geometry:
   Displays:
@@ -221,5 +249,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 1273
-  Y: 619
+  X: 884
+  Y: 150

@@ -188,6 +188,25 @@ Expected results:
 
 In the recorded validation run, SLAM Toolbox saved a `33 x 10` occupancy grid at `0.05 m/pix`.
 
+## Verify Minimal Nav2 Control Path
+
+```bash
+ros2 launch robot_description sim.launch.py
+ros2 launch nav2_bringup localization_launch.py map:=/home/xiayuru/robot_ws/maps/diffbot_slam_test.yaml use_sim_time:=true
+ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "{header: {frame_id: 'map'}, pose: {pose: {position: {x: 0.3, y: 0.0, z: 0.0}, orientation: {w: 1.0}}, covariance: [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0685]}}"
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
+ros2 run robot_description twist_to_twist_stamped_node.py
+ros2 action send_goal /compute_path_to_pose nav2_msgs/action/ComputePathToPose "{goal: {header: {frame_id: 'map'}, pose: {position: {x: 0.55, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}"
+ros2 action send_goal /follow_path nav2_msgs/action/FollowPath "{path: {header: {frame_id: 'map'}, poses: [{header: {frame_id: 'map'}, pose: {position: {x: 0.30, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}, {header: {frame_id: 'map'}, pose: {position: {x: 0.70, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}]}, controller_id: 'FollowPath', goal_checker_id: 'general_goal_checker'}"
+```
+
+Expected results:
+
+- `/compute_path_to_pose` accepts the goal and returns `SUCCEEDED` with `error_code: 0`.
+- `/follow_path` accepts the path and returns `SUCCEEDED` with `error_code: 0`.
+- `twist_to_twist_stamped_node.py` converts Nav2 `geometry_msgs/msg/Twist` commands from `/cmd_vel_smoothed` to the `geometry_msgs/msg/TwistStamped` command topic required by `diff_drive_controller`.
+- `/navigate_to_pose` accepts goals, but the default Nav2 bringup still aborts during this minimal map test and requires follow-up Nav2 parameter or behavior-tree tuning.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
