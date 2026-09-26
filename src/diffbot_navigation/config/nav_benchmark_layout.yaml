@@ -1,0 +1,65 @@
+version: 1
+
+map:
+  resolution: 0.05
+  origin: [-4.10, -3.10, 0.0]
+  width: 164
+  height: 124
+
+robot:
+  start: [0.30, 0.00, 0.0]
+  validation_clearance: 0.30
+
+obstacles:
+  - name: outer_north
+    center: [0.00, 3.00]
+    size: [8.10, 0.10]
+    color: [0.20, 0.22, 0.25, 1.0]
+  - name: outer_south
+    center: [0.00, -3.00]
+    size: [8.10, 0.10]
+    color: [0.20, 0.22, 0.25, 1.0]
+  - name: outer_east
+    center: [4.00, 0.00]
+    size: [0.10, 6.10]
+    color: [0.20, 0.22, 0.25, 1.0]
+  - name: outer_west
+    center: [-4.00, 0.00]
+    size: [0.10, 6.10]
+    color: [0.20, 0.22, 0.25, 1.0]
+  - name: west_upper_wall
+    center: [-2.50, 1.00]
+    size: [3.00, 0.12]
+    color: [0.16, 0.38, 0.70, 1.0]
+  - name: east_upper_wall
+    center: [2.00, 1.00]
+    size: [2.00, 0.12]
+    color: [0.16, 0.38, 0.70, 1.0]
+  - name: east_lower_wall
+    center: [1.50, -1.50]
+    size: [0.12, 2.00]
+    color: [0.16, 0.38, 0.70, 1.0]
+  - name: west_lower_wall
+    center: [-2.00, -1.00]
+    size: [0.12, 2.00]
+    color: [0.16, 0.38, 0.70, 1.0]
+  - name: south_center_pillar
+    center: [0.00, -1.80]
+    size: [0.50, 0.50]
+    color: [0.82, 0.36, 0.08, 1.0]
+  - name: north_east_pillar
+    center: [2.40, 2.00]
+    size: [0.50, 0.50]
+    color: [0.82, 0.36, 0.08, 1.0]
+
+goals:
+  - name: straight_east
+    pose: [2.80, 0.00, 0.0]
+  - name: east_detour
+    pose: [2.80, -2.00, -1.5708]
+  - name: south_west_corridor
+    pose: [-3.00, -2.40, 3.1416]
+  - name: north_west_turn
+    pose: [-2.50, 2.00, 1.5708]
+  - name: north_east_corridor
+    pose: [3.40, 2.20, 0.0]

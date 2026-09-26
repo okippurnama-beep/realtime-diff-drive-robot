@@ -1,0 +1,1554 @@
+Script started on 2026-09-26 21:56:04+08:00 [COMMAND="bash -lc 'source /opt/ros/jazzy/setup.bash && source install/setup.bash && ros2 launch diffbot_navigation run_benchmark.launch.py goal_names:=straight_east,east_detour,south_west_corridor repetitions:=1 return_to_start:=true goal_timeout_sec:=180.0 output_csv:=/home/xiayuru/robot_ws/benchmark_results/nav_regression_amcl_20260926T135542Z.csv'" TERM="dumb" TTY="/dev/pts/12" COLUMNS="80" LINES="24"]
+[INFO] [launch]: All log files can be found below /home/xiayuru/.ros/log/2026-09-26-21-56-05-065331-xiayuru-Lenovo-ThinkBook-16p-Gen-2-807659
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [807688]
+[INFO] [robot_state_publisher-2]: process started with pid [807689]
+[INFO] [parameter_bridge-3]: process started with pid [807690]
+[INFO] [parameter_bridge-4]: process started with pid [807692]
+[INFO] [parameter_bridge-5]: process started with pid [807693]
+[INFO] [imu_covariance_node.py-6]: process started with pid [807694]
+[INFO] [ekf_node-7]: process started with pid [807695]
+[INFO] [create-8]: process started with pid [807696]
+[INFO] [nav_benchmark_runner.py-9]: process started with pid [807697]
+[robot_state_publisher-2] [INFO] [1790430965.589576063] [robot_state_publisher]: Robot initialized
+[create-8] [INFO] [1790430965.590684573] [ros_gz_sim]: Requesting list of world names.
+[ekf_node-7] [INFO] [1790430965.596168255] [ekf_filter_node]: Waiting for clock to start...
+[parameter_bridge-3] [INFO] [1790430965.605551275] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1790430965.609403826] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/imu (gz.msgs.IMU) -> /imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-4] [INFO] [1790430965.611931737] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/scan (gz.msgs.LaserScan) -> /scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[imu_covariance_node.py-6] [INFO] [1790430965.976952895] [imu_covariance_node]: Relaying /imu/raw to /imu with fallback covariance.
+[create-8] [INFO] [1790430966.094072372] [ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-8] [INFO] [1790430966.105708308] [ros_gz_sim]: Entity creation successful.
+[INFO] [create-8]: process has finished cleanly [pid 807696]
+[INFO] [spawner-10]: process started with pid [807844]
+[nav_benchmark_runner.py-9] [INFO] [1790430966.260572169] [nav_benchmark_runner]: Benchmark goals: straight_east, east_detour, south_west_corridor; repetitions: 1
+[spawner-10] [INFO] [1790430966.588926202] [spawner_joint_state_broadcaster]: waiting for service /controller_manager/list_controllers to become available...
+[gazebo-1] [INFO] [1790430967.855196583] [gz_ros_control]: Loading controller_manager
+[gazebo-1] [INFO] [1790430967.868669380] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[gazebo-1] [WARN] [1790430967.868703946] [controller_manager]: The resource manager is not yet initialized, will wait for the robot description to initialize it..
+[gazebo-1] [INFO] [1790430967.874986158] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[gazebo-1] [WARN] [1790430967.875071981] [gz_ros_control]: Waiting RM to load and initialize hardware...
+[gazebo-1] [INFO] [1790430968.371582800] [controller_manager]: Received robot description from topic.
+[gazebo-1] [INFO] [1790430968.371684964] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[gazebo-1] [INFO] [1790430968.376783179] [gz_ros_control]: The position_proportional_gain has been set to: 0.1
+[gazebo-1] [INFO] [1790430968.376867885] [gz_ros_control]: Loading joint: left_wheel_joint
+[gazebo-1] [INFO] [1790430968.376885622] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1790430968.376902242] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1790430968.376916558] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790430968.376937577] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1790430968.376950915] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790430968.376975216] [gz_ros_control]: Loading joint: right_wheel_joint
+[gazebo-1] [INFO] [1790430968.376988973] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1790430968.377001962] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1790430968.377015160] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790430968.377028149] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1790430968.377040579] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790430968.377101891] [gz_ros_control]: Loading sensor: imu_sensor
+[gazebo-1] [INFO] [1790430968.377120676] [gz_ros_control]: 	State:
+[gazebo-1] [WARN] [1790430968.377134154] [gz_ros_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[gazebo-1] [INFO] [1790430968.377237505] [controller_manager]: Initialize hardware 'GazeboSimSystem' 
+[gazebo-1] [WARN] [1790430968.377268510] [controller_manager.hardware_component.system.GazeboSimSystem]: Executor is not available during hardware component initialization for 'GazeboSimSystem'. Skipping node creation!
+[gazebo-1] [INFO] [1790430968.377345116] [controller_manager]: Successful initialization of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1790430968.377477028] [controller_manager]: Activating component 'GazeboSimSystem'.
+[gazebo-1] [INFO] [1790430968.377509011] [resource_manager]: 'configure' hardware 'GazeboSimSystem' 
+[gazebo-1] [INFO] [1790430968.377518089] [gz_ros_control]: System Successfully configured!
+[gazebo-1] [INFO] [1790430968.377533243] [resource_manager]: Successful 'configure' of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1790430968.377551469] [resource_manager]: 'activate' hardware 'GazeboSimSystem' 
+[gazebo-1] [INFO] [1790430968.377573396] [resource_manager]: Successful 'activate' of hardware 'GazeboSimSystem'
+[gazebo-1] [WARN] [1790430968.377676957] [controller_manager]: Component 'GazeboSimSystem' does not have read or write statistics initialized, skipping registration.
+[gazebo-1] [INFO] [1790430968.377701188] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[gazebo-1] [INFO] [1790430968.592652650] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[gazebo-1] [INFO] [1790430968.592701532] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1790430968.597072098] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /home/xiayuru/robot_ws/src/diffbot_controllers.yaml -p use_sim_time:=true --param use_sim_time:=true 
+[spawner-10] [INFO] [1790430968.610931697] [spawner_joint_state_broadcaster]: Loaded joint_state_broadcaster
+[gazebo-1] [INFO] [1790430968.612157805] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1790430968.612358990] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[gazebo-1] [INFO] [1790430968.622007937] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[gazebo-1] [WARN] [1790430969.901366535] [gz_ros_control]:  Desired controller update period (0.01 s) is slower than the gazebo simulation period (0.001 s).
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] pci id for fd 97: 10de:2520, driver (null)
+[gazebo-1] pci id for fd 98: 10de:2520, driver (null)
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] pci id for fd 97: 10de:2520, driver (null)
+[gazebo-1] pci id for fd 98: 10de:2520, driver (null)
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] [INFO] [1790430971.905896741] [controller_manager]: Successfully switched controllers!
+[spawner-10] [INFO] [1790430971.917001551] [spawner_joint_state_broadcaster]: Configured and activated joint_state_broadcaster
+[INFO] [spawner-10]: process has finished cleanly [pid 807844]
+[INFO] [spawner-11]: process started with pid [808013]
+[spawner-11] [INFO] [1790430972.476302348] [spawner_diff_drive_base_controller]: waiting for service /controller_manager/list_controllers to become available...
+[spawner-11] [INFO] [1790430972.985411886] [spawner_diff_drive_base_controller]: Setting controller param "params_file" to "['/home/xiayuru/robot_ws/install/robot_description/share/robot_description/config/controllers.yaml']" for diff_drive_base_controller
+[spawner-11] [INFO] [1790430972.992749686] [spawner_diff_drive_base_controller]: Setting controller param "type" to "diff_drive_controller/DiffDriveController" for diff_drive_base_controller
+[gazebo-1] [INFO] [1790430972.997270674] [controller_manager]: Loading controller : 'diff_drive_base_controller' of type 'diff_drive_controller/DiffDriveController'
+[gazebo-1] [INFO] [1790430972.997318998] [controller_manager]: Loading controller 'diff_drive_base_controller'
+[gazebo-1] [INFO] [1790430973.001645296] [controller_manager]: Controller 'diff_drive_base_controller' node arguments: --ros-args --params-file /home/xiayuru/robot_ws/src/diffbot_controllers.yaml -p use_sim_time:=true --params-file /home/xiayuru/robot_ws/install/robot_description/share/robot_description/config/controllers.yaml --param use_sim_time:=true 
+[spawner-11] [INFO] [1790430973.027529694] [spawner_diff_drive_base_controller]: Loaded diff_drive_base_controller
+[gazebo-1] [INFO] [1790430973.029163901] [controller_manager]: Configuring controller: 'diff_drive_base_controller'
+[gazebo-1] [INFO] [1790430973.047717063] [controller_manager]: Activating controllers: [ diff_drive_base_controller ]
+[gazebo-1] [INFO] [1790430973.055826228] [controller_manager]: Successfully switched controllers!
+[spawner-11] [INFO] [1790430973.066952622] [spawner_diff_drive_base_controller]: Configured and activated diff_drive_base_controller
+[INFO] [spawner-11]: process has finished cleanly [pid 808013]
+[gazebo-1] [WARN] [1790430973.535699007] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[INFO] [map_server-12]: process started with pid [808032]
+[INFO] [amcl-13]: process started with pid [808033]
+[INFO] [lifecycle_manager-14]: process started with pid [808034]
+[INFO] [controller_server-15]: process started with pid [808035]
+[INFO] [smoother_server-16]: process started with pid [808036]
+[INFO] [planner_server-17]: process started with pid [808037]
+[INFO] [route_server-18]: process started with pid [808038]
+[INFO] [behavior_server-19]: process started with pid [808039]
+[INFO] [bt_navigator-20]: process started with pid [808040]
+[INFO] [waypoint_follower-21]: process started with pid [808041]
+[INFO] [velocity_smoother-22]: process started with pid [808042]
+[INFO] [collision_monitor-23]: process started with pid [808043]
+[INFO] [opennav_docking-24]: process started with pid [808044]
+[INFO] [lifecycle_manager-25]: process started with pid [808045]
+[INFO] [twist_to_twist_stamped_node.py-26]: process started with pid [808046]
+[velocity_smoother-22] [INFO] [1790430973.888279041] [velocity_smoother]: 
+[velocity_smoother-22] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-22] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-22] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-14] [INFO] [1790430973.908254051] [lifecycle_manager_localization]: Creating
+[lifecycle_manager-14] [INFO] [1790430973.918818926] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[controller_server-15] [INFO] [1790430973.930114942] [controller_server]: 
+[controller_server-15] 	controller_server lifecycle node launched. 
+[controller_server-15] 	Waiting on external lifecycle transitions to activate
+[controller_server-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-15] [INFO] [1790430973.935590046] [controller_server]: Creating controller server
+[behavior_server-19] [INFO] [1790430973.944142294] [behavior_server]: 
+[behavior_server-19] 	behavior_server lifecycle node launched. 
+[behavior_server-19] 	Waiting on external lifecycle transitions to activate
+[behavior_server-19] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-12] [INFO] [1790430973.946204711] [map_server]: 
+[map_server-12] 	map_server lifecycle node launched. 
+[map_server-12] 	Waiting on external lifecycle transitions to activate
+[map_server-12] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-12] [INFO] [1790430973.946418048] [map_server]: Creating
+[lifecycle_manager-25] [INFO] [1790430973.992422776] [lifecycle_manager_navigation]: Creating
+[waypoint_follower-21] [INFO] [1790430974.325552950] [waypoint_follower]: 
+[waypoint_follower-21] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-21] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-21] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-21] [INFO] [1790430974.326188840] [waypoint_follower]: Creating
+[bt_navigator-20] [INFO] [1790430974.337797496] [bt_navigator]: 
+[bt_navigator-20] 	bt_navigator lifecycle node launched. 
+[bt_navigator-20] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-20] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-13] [INFO] [1790430974.343099628] [amcl]: 
+[amcl-13] 	amcl lifecycle node launched. 
+[amcl-13] 	Waiting on external lifecycle transitions to activate
+[amcl-13] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-13] [INFO] [1790430974.344211772] [amcl]: Creating
+[bt_navigator-20] [INFO] [1790430974.345514836] [bt_navigator]: Creating
+[lifecycle_manager-25] [INFO] [1790430974.346383406] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[opennav_docking-24] [INFO] [1790430974.356089002] [docking_server]: 
+[opennav_docking-24] 	docking_server lifecycle node launched. 
+[opennav_docking-24] 	Waiting on external lifecycle transitions to activate
+[opennav_docking-24] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[opennav_docking-24] [INFO] [1790430974.356260160] [docking_server]: Creating docking_server
+[collision_monitor-23] [INFO] [1790430974.361550420] [collision_monitor]: 
+[collision_monitor-23] 	collision_monitor lifecycle node launched. 
+[collision_monitor-23] 	Waiting on external lifecycle transitions to activate
+[collision_monitor-23] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-16] [INFO] [1790430974.371255388] [smoother_server]: 
+[smoother_server-16] 	smoother_server lifecycle node launched. 
+[smoother_server-16] 	Waiting on external lifecycle transitions to activate
+[smoother_server-16] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[route_server-18] [INFO] [1790430974.371346937] [route_server]: 
+[route_server-18] 	route_server lifecycle node launched. 
+[route_server-18] 	Waiting on external lifecycle transitions to activate
+[route_server-18] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-16] [INFO] [1790430974.373223601] [smoother_server]: Creating smoother server
+[controller_server-15] [INFO] [1790430974.376805213] [local_costmap.local_costmap]: 
+[controller_server-15] 	local_costmap lifecycle node launched. 
+[controller_server-15] 	Waiting on external lifecycle transitions to activate
+[controller_server-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-15] [INFO] [1790430974.377471759] [local_costmap.local_costmap]: Creating Costmap
+[planner_server-17] [INFO] [1790430974.389166030] [planner_server]: 
+[planner_server-17] 	planner_server lifecycle node launched. 
+[planner_server-17] 	Waiting on external lifecycle transitions to activate
+[planner_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-17] [INFO] [1790430974.390538507] [planner_server]: Creating
+[planner_server-17] [INFO] [1790430974.418162775] [global_costmap.global_costmap]: 
+[planner_server-17] 	global_costmap lifecycle node launched. 
+[planner_server-17] 	Waiting on external lifecycle transitions to activate
+[planner_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-17] [INFO] [1790430974.418620733] [global_costmap.global_costmap]: Creating Costmap
+[twist_to_twist_stamped_node.py-26] [INFO] [1790430974.503352326] [twist_to_twist_stamped_node]: Converting /cmd_vel_smoothed Twist to /diff_drive_base_controller/cmd_vel TwistStamped.
+[gazebo-1] [WARN] [1790430974.602782848] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[lifecycle_manager-14] [INFO] [1790430974.635557992] [lifecycle_manager_localization]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-14] [INFO] [1790430974.635612741] [lifecycle_manager_localization]: [34m[1mConfiguring map_server[0m[0m
+[map_server-12] [INFO] [1790430974.635962180] [map_server]: Configuring
+[map_server-12] [INFO] [1790430974.636027054] [map_io]: Loading yaml file: /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.yaml
+[map_server-12] [INFO] [1790430974.636288016] [map_io]: resolution: 0.05
+[map_server-12] [INFO] [1790430974.636302331] [map_io]: origin[0]: -4.1
+[map_server-12] [INFO] [1790430974.636310362] [map_io]: origin[1]: -3.1
+[map_server-12] [INFO] [1790430974.636315180] [map_io]: origin[2]: 0
+[map_server-12] [INFO] [1790430974.636321465] [map_io]: free_thresh: 0.196
+[map_server-12] [INFO] [1790430974.636327122] [map_io]: occupied_thresh: 0.65
+[map_server-12] [INFO] [1790430974.636335222] [map_io]: mode: trinary
+[map_server-12] [INFO] [1790430974.636344230] [map_io]: negate: 0
+[map_server-12] [INFO] [1790430974.636554704] [map_io]: Loading image_file: /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.pgm
+[map_server-12] [INFO] [1790430974.637320062] [map_io]: Read map /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.pgm: 164 X 124 map @ 0.05 m/cell
+[lifecycle_manager-14] [INFO] [1790430974.648268248] [lifecycle_manager_localization]: [34m[1mConfiguring amcl[0m[0m
+[amcl-13] [INFO] [1790430974.648502953] [amcl]: Configuring
+[amcl-13] [INFO] [1790430974.648570690] [amcl]: initTransforms
+[amcl-13] [INFO] [1790430974.659746947] [amcl]: initPubSub
+[amcl-13] [INFO] [1790430974.671437586] [amcl]: Subscribed to map topic.
+[lifecycle_manager-14] [INFO] [1790430974.678646829] [lifecycle_manager_localization]: [34m[1mActivating map_server[0m[0m
+[map_server-12] [INFO] [1790430974.678977204] [map_server]: Activating
+[map_server-12] [INFO] [1790430974.679212468] [map_server]: Creating bond (map_server) to lifecycle manager.
+[amcl-13] [INFO] [1790430974.679357928] [amcl]: Received a 164 X 124 map @ 0.050 m/pix
+[lifecycle_manager-14] [INFO] [1790430974.786021017] [lifecycle_manager_localization]: Server map_server connected with bond.
+[lifecycle_manager-14] [INFO] [1790430974.786061729] [lifecycle_manager_localization]: [34m[1mActivating amcl[0m[0m
+[amcl-13] [INFO] [1790430974.786298669] [amcl]: Activating
+[amcl-13] [INFO] [1790430974.786334492] [amcl]: initialPoseReceived
+[amcl-13] [INFO] [1790430974.786416824] [amcl]: Setting pose (2.823000): 0.300 0.000 0.000
+[amcl-13] [INFO] [1790430974.786828274] [amcl]: Creating bond (amcl) to lifecycle manager.
+[amcl-13] [INFO] [1790430974.866228196] [amcl]: createLaserObject
+[lifecycle_manager-14] [INFO] [1790430974.892286343] [lifecycle_manager_localization]: Server amcl connected with bond.
+[lifecycle_manager-14] [INFO] [1790430974.892325030] [lifecycle_manager_localization]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-14] [INFO] [1790430974.892337739] [lifecycle_manager_localization]: [34m[1mCreating bond timer...[0m[0m
+[lifecycle_manager-25] [INFO] [1790430975.127355085] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-25] [INFO] [1790430975.127418562] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-15] [INFO] [1790430975.127943280] [controller_server]: Configuring controller interface
+[controller_server-15] [INFO] [1790430975.127978056] [controller_server]: getting progress checker plugins..
+[controller_server-15] [INFO] [1790430975.128247608] [controller_server]: getting goal checker plugins..
+[controller_server-15] [INFO] [1790430975.128452564] [controller_server]: Controller frequency set to 20.0000Hz
+[controller_server-15] [INFO] [1790430975.128510036] [local_costmap.local_costmap]: Configuring
+[controller_server-15] [INFO] [1790430975.140202494] [local_costmap.local_costmap]: Using plugin "voxel_layer"
+[controller_server-15] [INFO] [1790430975.144588361] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-15] [INFO] [1790430975.158891697] [local_costmap.local_costmap]: Initialized plugin "voxel_layer"
+[controller_server-15] [INFO] [1790430975.158934574] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-15] [INFO] [1790430975.160285823] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[controller_server-15] [INFO] [1790430975.190446187] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[controller_server-15] [INFO] [1790430975.192464959] [controller_server]: Controller Server has progress_checker  progress checkers available.
+[controller_server-15] [INFO] [1790430975.193744980] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-15] [INFO] [1790430975.195595318] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-15] [INFO] [1790430975.196965072] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790430975.210649417] [controller_server]: Controller Server has FollowPath  controllers available.
+[lifecycle_manager-25] [INFO] [1790430975.227400853] [lifecycle_manager_navigation]: [34m[1mConfiguring smoother_server[0m[0m
+[smoother_server-16] [INFO] [1790430975.227844495] [smoother_server]: Configuring smoother server
+[smoother_server-16] [INFO] [1790430975.245158917] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[smoother_server-16] [INFO] [1790430975.246157165] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[lifecycle_manager-25] [INFO] [1790430975.257478605] [lifecycle_manager_navigation]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-17] [INFO] [1790430975.257830139] [planner_server]: Configuring
+[planner_server-17] [INFO] [1790430975.257889147] [global_costmap.global_costmap]: Configuring
+[planner_server-17] [INFO] [1790430975.275041908] [global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-17] [INFO] [1790430975.280987542] [global_costmap.global_costmap]: Subscribing to the map topic (/map) with transient local durability
+[planner_server-17] [INFO] [1790430975.285029557] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-17] [INFO] [1790430975.285081372] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-17] [INFO] [1790430975.287351750] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-17] [INFO] [1790430975.321275010] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 164 X 124 at 0.050000 m/pix
+[planner_server-17] [INFO] [1790430975.321759714] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner::NavfnPlanner
+[planner_server-17] [INFO] [1790430975.321795049] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-17] [INFO] [1790430975.323378279] [planner_server]: Planner Server has GridBased  planners available.
+[lifecycle_manager-25] [INFO] [1790430975.346451814] [lifecycle_manager_navigation]: [34m[1mConfiguring route_server[0m[0m
+[route_server-18] [INFO] [1790430975.347052090] [route_server]: Configuring
+[route_server-18] [INFO] [1790430975.392241413] [route_server]: Created GraphFileLoader GeoJsonGraphFileLoader of type nav2_route::GeoJsonGraphFileLoader
+[route_server-18] [INFO] [1790430975.392282893] [route_server]: Configuring geojson graph file loader
+[route_server-18] [INFO] [1790430975.392296720] [route_server]: No graph file provided to load yet.
+[route_server-18] [INFO] [1790430975.396234965] [route_server]: Created edge cost function plugin DistanceScorer of type nav2_route::DistanceScorer
+[route_server-18] [INFO] [1790430975.396281682] [route_server]: Configuring distance scorer.
+[route_server-18] [INFO] [1790430975.397292221] [route_server]: Created edge cost function plugin CostmapScorer of type nav2_route::CostmapScorer
+[route_server-18] [INFO] [1790430975.397330279] [route_server]: Configuring costmap scorer.
+[route_server-18] [INFO] [1790430975.401655882] [route_server]: Created route operation AdjustSpeedLimit of type nav2_route::AdjustSpeedLimit
+[route_server-18] [INFO] [1790430975.401691706] [route_server]: Configuring Adjust speed limit operation.
+[route_server-18] [INFO] [1790430975.403673188] [route_server]: Created route operation ReroutingService of type nav2_route::ReroutingService
+[route_server-18] [INFO] [1790430975.403731288] [route_server]: Configuring Rerouting service operation.
+[route_server-18] [INFO] [1790430975.406990766] [route_server]: Created route operation CollisionMonitor of type nav2_route::CollisionMonitor
+[route_server-18] [INFO] [1790430975.407244116] [route_server]: Using costmap topic: local_costmap/costmap_raw instead of server costmap topic: global_costmap/costmap_raw for CollisionMonitor.
+[lifecycle_manager-25] [INFO] [1790430975.415386875] [lifecycle_manager_navigation]: [34m[1mConfiguring behavior_server[0m[0m
+[behavior_server-19] [INFO] [1790430975.415702864] [behavior_server]: Configuring
+[behavior_server-19] [INFO] [1790430975.423605959] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors::Spin
+[behavior_server-19] [INFO] [1790430975.425042613] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors::BackUp
+[behavior_server-19] [INFO] [1790430975.426491208] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors::DriveOnHeading
+[behavior_server-19] [INFO] [1790430975.427977930] [behavior_server]: Creating behavior plugin assisted_teleop of type nav2_behaviors::AssistedTeleop
+[behavior_server-19] [INFO] [1790430975.430464577] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors::Wait
+[behavior_server-19] [INFO] [1790430975.441340979] [behavior_server]: Configuring spin
+[behavior_server-19] [INFO] [1790430975.453396423] [behavior_server]: Configuring backup
+[behavior_server-19] [INFO] [1790430975.462019695] [behavior_server]: Configuring drive_on_heading
+[behavior_server-19] [INFO] [1790430975.472209648] [behavior_server]: Configuring assisted_teleop
+[behavior_server-19] [INFO] [1790430975.485668366] [behavior_server]: Configuring wait
+[lifecycle_manager-25] [INFO] [1790430975.496017187] [lifecycle_manager_navigation]: [34m[1mConfiguring velocity_smoother[0m[0m
+[velocity_smoother-22] [INFO] [1790430975.496471164] [velocity_smoother]: Configuring velocity smoother
+[lifecycle_manager-25] [INFO] [1790430975.505171601] [lifecycle_manager_navigation]: [34m[1mConfiguring collision_monitor[0m[0m
+[collision_monitor-23] [INFO] [1790430975.505542688] [collision_monitor]: Configuring
+[collision_monitor-23] [INFO] [1790430975.516574745] [collision_monitor]: [scan]: Creating Scan
+[collision_monitor-23] [INFO] [1790430975.520586173] [collision_monitor]: [FootprintApproach]: Creating Polygon
+[collision_monitor-23] [INFO] [1790430975.520893085] [collision_monitor]: [FootprintApproach]: Polygon points are not defined. Using dynamic subscription instead.
+[collision_monitor-23] [INFO] [1790430975.522487000] [collision_monitor]: [FootprintApproach]: Making footprint subscriber on /local_costmap/published_footprint topic
+[lifecycle_manager-25] [INFO] [1790430975.539886686] [lifecycle_manager_navigation]: [34m[1mConfiguring bt_navigator[0m[0m
+[bt_navigator-20] [INFO] [1790430975.540214756] [bt_navigator]: Configuring
+[bt_navigator-20] [INFO] [1790430975.552046808] [bt_navigator]: Creating navigator id navigate_to_pose of type nav2_bt_navigator::NavigateToPoseNavigator
+[gazebo-1] [WARN] [1790430975.602879324] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[bt_navigator-20] [INFO] [1790430975.644642900] [bt_navigator]: Creating navigator id navigate_through_poses of type nav2_bt_navigator::NavigateThroughPosesNavigator
+[lifecycle_manager-25] [INFO] [1790430975.689380481] [lifecycle_manager_navigation]: [34m[1mConfiguring waypoint_follower[0m[0m
+[waypoint_follower-21] [INFO] [1790430975.689697169] [waypoint_follower]: Configuring
+[waypoint_follower-21] [INFO] [1790430975.724487672] [waypoint_follower]: Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint
+[lifecycle_manager-25] [INFO] [1790430975.725569230] [lifecycle_manager_navigation]: [34m[1mConfiguring docking_server[0m[0m
+[opennav_docking-24] [INFO] [1790430975.725911686] [docking_server]: Configuring docking_server
+[opennav_docking-24] [INFO] [1790430975.725979842] [docking_server]: Controller frequency set to 50.0000Hz
+[opennav_docking-24] [INFO] [1790430975.768267716] [docking_server]: Created charging dock plugin simple_charging_dock of type opennav_docking::SimpleChargingDock
+[nav_benchmark_runner.py-9] [INFO] [1790430975.778072685] [nav_benchmark_runner]: Lifecycle ready: map_server
+[opennav_docking-24] [WARN] [1790430975.782225174] [docking_server]: Dock database filepath nor dock parameters set. Docking actions can only be executed specifying the dock pose via the action request. Or update the dock database via the reload_database service.
+[opennav_docking-24] [INFO] [1790430975.782297032] [docking_server]: Docking Server has 1 dock types and 0 dock instances available.
+[lifecycle_manager-25] [INFO] [1790430975.785462306] [lifecycle_manager_navigation]: [34m[1mActivating controller_server[0m[0m
+[nav_benchmark_runner.py-9] [INFO] [1790430975.786382342] [nav_benchmark_runner]: Lifecycle ready: amcl
+[controller_server-15] [INFO] [1790430975.786579897] [controller_server]: Activating
+[controller_server-15] [INFO] [1790430975.786643793] [local_costmap.local_costmap]: Activating
+[controller_server-15] [INFO] [1790430975.786664254] [local_costmap.local_costmap]: Checking transform
+[controller_server-15] [INFO] [1790430975.786855314] [local_costmap.local_costmap]: start
+[controller_server-15] [INFO] [1790430975.988557874] [controller_server]: Activating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790430975.988595583] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430975.992858546] [nav_benchmark_runner]: Lifecycle ready: controller_server
+[lifecycle_manager-25] [INFO] [1790430976.294683904] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.294748568] [lifecycle_manager_navigation]: [34m[1mActivating smoother_server[0m[0m
+[smoother_server-16] [INFO] [1790430976.295262811] [smoother_server]: Activating
+[smoother_server-16] [INFO] [1790430976.295313928] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.302504599] [nav_benchmark_runner]: Lifecycle ready: smoother_server
+[lifecycle_manager-25] [INFO] [1790430976.404844164] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.404896189] [lifecycle_manager_navigation]: [34m[1mActivating planner_server[0m[0m
+[planner_server-17] [INFO] [1790430976.405321745] [planner_server]: Activating
+[planner_server-17] [INFO] [1790430976.405369021] [global_costmap.global_costmap]: Activating
+[planner_server-17] [INFO] [1790430976.405383197] [global_costmap.global_costmap]: Checking transform
+[planner_server-17] [INFO] [1790430976.405537666] [global_costmap.global_costmap]: start
+[planner_server-17] [INFO] [1790430976.455714682] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-17] [INFO] [1790430976.457744628] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.463268968] [nav_benchmark_runner]: Lifecycle ready: planner_server
+[lifecycle_manager-25] [INFO] [1790430976.567668926] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.567724792] [lifecycle_manager_navigation]: [34m[1mActivating route_server[0m[0m
+[route_server-18] [INFO] [1790430976.568178141] [route_server]: Activating
+[route_server-18] [INFO] [1790430976.568335473] [route_server]: Creating bond (route_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.573419871] [nav_benchmark_runner]: Lifecycle ready: route_server
+[gazebo-1] [WARN] [1790430976.603837224] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[lifecycle_manager-25] [INFO] [1790430976.677375698] [lifecycle_manager_navigation]: Server route_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.677426884] [lifecycle_manager_navigation]: [34m[1mActivating behavior_server[0m[0m
+[behavior_server-19] [INFO] [1790430976.678041965] [behavior_server]: Activating
+[behavior_server-19] [INFO] [1790430976.678089590] [behavior_server]: Activating spin
+[behavior_server-19] [INFO] [1790430976.678115847] [behavior_server]: Activating backup
+[behavior_server-19] [INFO] [1790430976.678134492] [behavior_server]: Activating drive_on_heading
+[behavior_server-19] [INFO] [1790430976.678152509] [behavior_server]: Activating assisted_teleop
+[behavior_server-19] [INFO] [1790430976.678171643] [behavior_server]: Activating wait
+[behavior_server-19] [INFO] [1790430976.678196503] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.685378585] [nav_benchmark_runner]: Lifecycle ready: behavior_server
+[lifecycle_manager-25] [INFO] [1790430976.788481553] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.788520659] [lifecycle_manager_navigation]: [34m[1mActivating velocity_smoother[0m[0m
+[velocity_smoother-22] [INFO] [1790430976.788868632] [velocity_smoother]: Activating
+[velocity_smoother-22] [INFO] [1790430976.788936858] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.795661121] [nav_benchmark_runner]: Lifecycle ready: velocity_smoother
+[lifecycle_manager-25] [INFO] [1790430976.900888030] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[lifecycle_manager-25] [INFO] [1790430976.900936144] [lifecycle_manager_navigation]: [34m[1mActivating collision_monitor[0m[0m
+[collision_monitor-23] [INFO] [1790430976.901301365] [collision_monitor]: Activating
+[collision_monitor-23] [INFO] [1790430976.901345010] [collision_monitor]: Creating bond (collision_monitor) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430976.907849372] [nav_benchmark_runner]: Lifecycle ready: collision_monitor
+[lifecycle_manager-25] [INFO] [1790430977.013367693] [lifecycle_manager_navigation]: Server collision_monitor connected with bond.
+[lifecycle_manager-25] [INFO] [1790430977.013424397] [lifecycle_manager_navigation]: [34m[1mActivating bt_navigator[0m[0m
+[bt_navigator-20] [INFO] [1790430977.013876908] [bt_navigator]: Activating
+[bt_navigator-20] [INFO] [1790430977.137115686] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430977.142311956] [nav_benchmark_runner]: Lifecycle ready: bt_navigator
+[lifecycle_manager-25] [INFO] [1790430977.249043982] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[lifecycle_manager-25] [INFO] [1790430977.249092654] [lifecycle_manager_navigation]: [34m[1mActivating waypoint_follower[0m[0m
+[waypoint_follower-21] [INFO] [1790430977.249476591] [waypoint_follower]: Activating
+[waypoint_follower-21] [INFO] [1790430977.249522261] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430977.254639691] [nav_benchmark_runner]: Lifecycle ready: waypoint_follower
+[lifecycle_manager-25] [INFO] [1790430977.359958456] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[lifecycle_manager-25] [INFO] [1790430977.360010760] [lifecycle_manager_navigation]: [34m[1mActivating docking_server[0m[0m
+[opennav_docking-24] [INFO] [1790430977.360492810] [docking_server]: Activating docking_server
+[opennav_docking-24] [INFO] [1790430977.378204934] [docking_server]: Creating bond (docking_server) to lifecycle manager.
+[nav_benchmark_runner.py-9] [INFO] [1790430977.385588901] [nav_benchmark_runner]: Lifecycle ready: docking_server
+[nav_benchmark_runner.py-9] [INFO] [1790430977.388114586] [nav_benchmark_runner]: Controller ready: diff_drive_base_controller
+[nav_benchmark_runner.py-9] [INFO] [1790430977.388697753] [nav_benchmark_runner]: Controller ready: joint_state_broadcaster
+[nav_benchmark_runner.py-9] [INFO] [1790430977.389562064] [nav_benchmark_runner]: Writing CSV results to /home/xiayuru/robot_ws/benchmark_results/nav_regression_amcl_20260926T135542Z.csv
+[bt_navigator-20] [INFO] [1790430977.392316588] [bt_navigator]: Begin navigating from current location (0.30, 0.00) to (2.80, 0.00)
+[nav_benchmark_runner.py-9] [INFO] [1790430977.393657712] [nav_benchmark_runner]: Goal 'straight_east' accepted: x=2.80, y=0.00, yaw=0.0000
+[controller_server-15] [INFO] [1790430977.413862000] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [WARN] [1790430977.413929109] [controller_server]: No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.
+[controller_server-15] [WARN] [1790430977.413962000] [controller_server]: No progress checker was specified in parameter 'current_progress_checker'. Server will use only plugin loaded progress_checker . This warning will appear once.
+[lifecycle_manager-25] [INFO] [1790430977.493237891] [lifecycle_manager_navigation]: Server docking_server connected with bond.
+[lifecycle_manager-25] [INFO] [1790430977.493280279] [lifecycle_manager_navigation]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-25] [INFO] [1790430977.493296480] [lifecycle_manager_navigation]: [34m[1mCreating bond timer...[0m[0m
+[controller_server-15] [INFO] [1790430978.464123384] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430979.514101668] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430980.514141708] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430981.564105937] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430982.564679239] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430983.614142469] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430984.614094006] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430985.664095614] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430986.664093396] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430987.714093297] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430988.714094233] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430989.764092074] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430989.814123302] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790430989.842767085] [bt_navigator]: Goal succeeded
+[bt_navigator-20] [INFO] [1790430990.844253868] [bt_navigator]: Begin navigating from current location (2.72, 0.00) to (0.30, 0.00)
+[nav_benchmark_runner.py-9] [INFO] [1790430990.844713295] [nav_benchmark_runner]: Goal 'return_to_start' accepted: x=0.30, y=0.00, yaw=0.0000
+[controller_server-15] [INFO] [1790430990.865105846] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [INFO] [1790430991.915250877] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430992.965255809] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430993.965286641] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430995.015250189] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430996.015261047] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790430997.065245433] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790430997.759535857] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790430997.799492397] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790430997.915721515] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430997.965618063] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790430998.065248533] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790430998.065805725] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.115586153] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.165585576] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.265619127] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.315595574] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.365572091] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.715669723] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430998.765558391] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430999.015662558] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430999.065568068] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790430999.115242362] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790430999.115618270] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430999.165604086] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430999.715596323] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790430999.765552181] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431000.115245871] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431000.359620891] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431000.419989402] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431000.559529497] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431000.599357992] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431000.765571763] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431000.859519396] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431000.920054806] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431000.965651738] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.059516144] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431001.099376143] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.159609681] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431001.165246694] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431001.165760661] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.219998667] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.259896864] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431001.299334516] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.359818962] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431001.365618126] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.399348095] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.459639315] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431001.499331087] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.559514975] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431001.565562742] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.599414848] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431001.765611618] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.859519120] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431001.899359356] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431001.959508048] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431001.965542896] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431001.999372865] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431002.059496780] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431002.099348827] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431002.165247047] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431002.959513611] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431002.999329415] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431003.215254512] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431004.165428959] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431004.215246956] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431004.365480486] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431004.759438144] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431004.799300684] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431005.215248427] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431005.659474742] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431005.699393576] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431005.799753057] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431005.869721788] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431006.265248871] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431007.265246478] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431008.315258163] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431009.315253369] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431010.365253107] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431011.365248561] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431012.415248987] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431013.415247759] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431014.415245005] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431015.465254027] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431016.465249419] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431017.515254580] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431018.515254258] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431019.565254159] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431020.565259865] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431021.615253593] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431022.615248704] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431023.665222639] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431024.715250228] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431025.715247602] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431026.765252180] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431027.765247400] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431028.565289068] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790431028.594610689] [bt_navigator]: Goal succeeded
+[nav_benchmark_runner.py-9] [INFO] [1790431029.602404244] [nav_benchmark_runner]: Saved trial 1 (straight_east): SUCCEEDED, error=0.076 m
+[bt_navigator-20] [INFO] [1790431029.603621291] [bt_navigator]: Begin navigating from current location (0.33, -0.01) to (2.80, -2.00)
+[nav_benchmark_runner.py-9] [INFO] [1790431029.604224787] [nav_benchmark_runner]: Goal 'east_detour' accepted: x=2.80, y=-2.00, yaw=-1.5708
+[controller_server-15] [INFO] [1790431029.624645239] [controller_server]: Received a goal, begin computing control effort.
+[collision_monitor-23] [INFO] [1790431030.109386721] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.149466666] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.209453866] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.249712793] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.309597060] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.349521906] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.409507500] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.449480950] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.509673319] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.549401027] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.609714068] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.649453997] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431030.674811777] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431030.709465569] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.749438320] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.809496331] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.849385772] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431030.909615432] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431030.949449286] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.009582090] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.050002129] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.109563781] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.149507979] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.210066564] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.249506778] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.309651534] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.349543637] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.409618909] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.449527772] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.509525459] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.549396822] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.609611061] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.649525091] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.709889052] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431031.724813177] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431031.749522145] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.809625699] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.849449436] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431031.909434344] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431031.949464018] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431032.009657868] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431032.049518484] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431032.109491812] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431032.149562067] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431032.209579879] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431032.249518988] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431032.309802513] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431032.349445112] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431032.375162542] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431032.449539323] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431032.549510979] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431032.575138115] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431032.710068606] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431032.724810330] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431032.749489415] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431032.775229890] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431032.909464077] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431032.975254066] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.009814857] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431033.049519684] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431033.149463706] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431033.175129954] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.249542365] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431033.375122048] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.409603094] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431033.449497728] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431033.525128654] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.549445660] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431033.575127271] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.709476500] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431033.725144491] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.749526093] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431033.774802743] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431033.775397370] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431033.909711893] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431033.975131781] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431034.009546069] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431034.049476744] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431034.149485312] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431034.275140020] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431034.325188997] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431034.375265139] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431034.709806114] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431034.725148197] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431034.749901804] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431034.774869728] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431034.775570292] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431034.909695315] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431034.949595683] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431035.175078755] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431035.225167477] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431035.275224705] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431035.325148202] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431035.375117230] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431035.749559556] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431035.824811878] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431035.875177209] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431035.909717138] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431036.375241383] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431036.749572959] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431036.809930906] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431036.824801903] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431036.909658506] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431037.009474656] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431037.175200994] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431037.225118855] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431037.275178197] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431037.325180695] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431037.375155330] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431037.874808594] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431037.925142729] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431037.975116666] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.025094099] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.075141440] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.125063152] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.174997294] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431038.609517926] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431038.649478801] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431038.675223148] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.725094021] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431038.775073624] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431038.874813974] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431039.125189114] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431039.175100989] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431039.709437567] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431039.749375126] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431039.875250354] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431039.924758175] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431039.925328222] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431039.975164049] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431040.209526480] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431040.349395569] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431040.375127776] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431040.509556524] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431040.525122511] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431040.549410431] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431040.575143615] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431040.709776207] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431040.749372081] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431040.775189832] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431040.849591734] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431040.924821157] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431040.949382613] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431041.009443959] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431041.049426855] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431041.075115631] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431041.125241424] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431041.175133556] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431041.325059397] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431041.375080022] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431041.575060775] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431041.709469159] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431041.749359666] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431041.775295930] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431041.909501798] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431041.924771207] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431041.949441398] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431041.975080312] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431042.075142597] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431042.125150661] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431042.175201255] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431042.325051565] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431042.375139589] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431042.599328841] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431042.659750897] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431042.699296646] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431042.725030469] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431042.759611089] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431042.775182879] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431042.899343291] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431042.924994781] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431042.959582036] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431042.974793766] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431042.975290697] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431043.099344215] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431043.159626896] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431043.174990935] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431043.299307309] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431043.359643692] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431043.399349157] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431043.459518080] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431043.474983586] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431043.525041243] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431043.574971244] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431043.775066113] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431043.899355043] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431043.959547989] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431043.974801412] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431043.975175368] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431044.024989521] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431044.075016251] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431044.124970424] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431044.175043034] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431044.375053165] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431044.699282068] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431044.775067212] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431044.799297190] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431044.899304700] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431044.925043211] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431044.959658343] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431044.975037329] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431045.024804773] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431045.099294249] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431045.125039400] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431045.159461799] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431045.175041907] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431045.375021630] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431045.475042497] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431045.525021331] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431045.574998210] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431046.024807583] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431047.074808574] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431048.074807311] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431049.124809694] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431050.124805263] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431050.674832398] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790431050.704008056] [bt_navigator]: Goal succeeded
+[bt_navigator-20] [INFO] [1790431051.705410226] [bt_navigator]: Begin navigating from current location (2.77, -1.98) to (0.30, 0.00)
+[nav_benchmark_runner.py-9] [INFO] [1790431051.706314705] [nav_benchmark_runner]: Goal 'return_to_start' accepted: x=0.30, y=0.00, yaw=0.0000
+[controller_server-15] [INFO] [1790431051.726254027] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [INFO] [1790431052.776398896] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431053.826403609] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431054.826394622] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431055.876401973] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431056.876406498] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431057.399350910] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431057.459541153] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431057.499332899] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431057.526691186] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431057.559492206] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431057.576659380] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431057.699328720] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431057.726683725] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431057.759501225] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431057.776757437] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431057.899299890] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431057.926425632] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431057.976622390] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431058.009408118] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431058.049647642] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431058.249357044] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431058.276625810] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.326770481] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.376624367] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.426640686] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.476683959] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.526697135] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431058.576692224] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [ERROR] [1790431058.576755143] [controller_server]: Controller patience exceeded
+[controller_server-15] [WARN] [1790431058.576849698] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-15] [INFO] [1790431058.595979468] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-15] [INFO] [1790431058.596598470] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [WARN] [1790431058.797049152] [controller_server]: Control loop missed its desired rate of 20.0000 Hz. Current loop rate is 5.0000 Hz.
+[controller_server-15] [INFO] [1790431058.947174085] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431059.409388418] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431059.449410139] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431059.509451590] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431059.547648219] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431059.549427221] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431059.709432959] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431059.747502142] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431059.749423744] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431059.897503149] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431059.909415656] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431059.947175827] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431059.947594407] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431059.949415449] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431060.147544030] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431060.297520343] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.309417558] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431060.347525227] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.349407652] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431060.509770268] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431060.549393598] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431060.609511038] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431060.649400293] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431060.697487834] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.709445595] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431060.747587971] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.749551962] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431060.897569940] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.909519531] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431060.947493329] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431060.949910188] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431060.997174815] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431061.109455635] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431061.147560657] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431061.149361029] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431061.309489802] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431061.349380042] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431061.409379754] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431061.447500419] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431061.449383892] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431061.497573120] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431061.547546378] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431061.747504637] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431061.909452567] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431061.947508426] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431061.949449442] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431061.997177840] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431062.109401907] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431062.147579841] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431062.149389082] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431062.309495399] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431062.349409180] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431062.409403176] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431062.449438048] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431062.497577912] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431062.509496850] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431062.547537563] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431062.549382768] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431062.909456318] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431062.947526988] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431062.949384554] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431063.047174506] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431063.109424129] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431063.147515478] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431063.149386521] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431063.309486582] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431063.349593459] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431063.409346542] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431063.449457958] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431063.497545386] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431063.509446240] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431063.547598692] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431063.549378883] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431063.709554992] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431063.747515542] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431063.749377368] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431063.909440138] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431063.947507323] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431064.010058140] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431064.047174971] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431064.097437506] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431064.109584943] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431064.147605557] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431064.149438682] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431064.309430390] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431064.347525726] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431064.409346654] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431064.449424278] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431064.509425908] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431064.697485934] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431064.747491064] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431064.897504987] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431064.947484487] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431065.047174779] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431065.147486178] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431065.349504385] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431065.609927844] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431066.097178937] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431067.097172060] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431067.959565409] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431068.097522769] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431068.147174438] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431068.159477891] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431068.199388713] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431068.259483823] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431068.499338350] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431068.559576479] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431068.699524796] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431068.759641066] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431068.799577516] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431068.859592598] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431068.999320172] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431069.059552585] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431069.147174002] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431069.147450054] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431069.299711279] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431069.359613520] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431069.499245028] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431069.559637221] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431069.847342744] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431069.897367053] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431069.947358121] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431070.197179974] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431070.299575012] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431070.347367873] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431070.359727896] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431070.497332095] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431070.499533663] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431070.547328828] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431070.559664828] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431070.697316933] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431070.747321628] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431070.947326997] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431071.197177736] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431072.247180665] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431073.247171943] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431074.297179926] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431075.297192650] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431076.347179777] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431077.347283918] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431078.397181538] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431079.397153137] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431080.447182691] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431081.447173702] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431082.497191469] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431083.497183245] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431084.547180841] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431085.547212067] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431086.597663171] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431087.597273151] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431088.647176138] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431089.647183739] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431090.697187777] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431091.697178464] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431092.747179919] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431093.747182530] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431094.797181050] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431095.797175680] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431096.847182574] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431097.847174947] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431098.897180856] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431099.897177463] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431100.947175959] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431101.947176519] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431102.147204380] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790431102.175751866] [bt_navigator]: Goal succeeded
+[nav_benchmark_runner.py-9] [INFO] [1790431103.183609337] [nav_benchmark_runner]: Saved trial 2 (east_detour): SUCCEEDED, error=0.035 m
+[bt_navigator-20] [INFO] [1790431103.184348318] [bt_navigator]: Begin navigating from current location (0.37, -0.00) to (-3.00, -2.40)
+[nav_benchmark_runner.py-9] [INFO] [1790431103.185281158] [nav_benchmark_runner]: Goal 'south_west_corridor' accepted: x=-3.00, y=-2.40, yaw=3.1416
+[controller_server-15] [INFO] [1790431103.205342098] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [INFO] [1790431104.255598688] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431105.305570316] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431106.305553114] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431107.355547559] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431108.355545964] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431108.356306106] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431108.455893552] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431108.505921394] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431108.555959850] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.105918138] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.155882578] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.305952297] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.355911848] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431109.405544717] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431109.455928858] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.505849303] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.555951943] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.656006524] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.705936675] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.755903419] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.805926869] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.855972874] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.906074747] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431109.956029410] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [ERROR] [1790431109.956104272] [controller_server]: Controller patience exceeded
+[controller_server-15] [WARN] [1790431109.956229205] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-15] [INFO] [1790431109.975142654] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-15] [INFO] [1790431109.975999166] [controller_server]: Received a goal, begin computing control effort.
+[collision_monitor-23] [INFO] [1790431110.359437517] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431110.426497152] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431110.459437991] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431110.549337766] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431110.576806494] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431110.619516740] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431110.659477208] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431110.709648294] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431110.749359944] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431110.776802554] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431110.809626631] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431110.859526621] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431110.876720624] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431110.919502869] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431110.926762867] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431110.976849453] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431111.149374922] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431111.209438541] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431111.249365705] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431111.309832335] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431111.349367591] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431111.419482468] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431111.426490366] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431111.449367661] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431111.519548112] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431111.526762439] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.576812650] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.676753920] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.726800011] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.776753711] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.876871312] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.926817121] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431111.976787162] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431112.476496797] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431112.477022716] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431112.526788780] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431112.576759109] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431112.876786879] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431112.926780532] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431112.976952331] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431113.126758235] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431113.176901549] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431113.376758730] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431113.476502330] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431113.559473158] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431113.576801808] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431113.619475969] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431113.749368115] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431113.776805221] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431113.809463527] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431113.876783253] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431113.926940465] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431113.976756398] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431114.076758814] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431114.126780904] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431114.176810187] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431114.526497769] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431114.659466746] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431114.709503012] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431114.759451288] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431114.776893561] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431114.809415625] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431114.849466483] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431114.909559668] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431114.926748095] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431114.976772070] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431115.076762629] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431115.126838499] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431115.176737549] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431115.526489570] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431115.559458506] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431115.609418661] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431115.649385863] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431115.709393721] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431115.759416377] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431115.776770941] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431115.809370736] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431115.859457220] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431115.909569752] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431115.959413913] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431116.009544185] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431116.049573894] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431116.076892154] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431116.109427916] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431116.126731713] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431116.176746765] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431116.326747366] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431116.376725964] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431116.559448086] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [INFO] [1790431116.576488609] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431116.576845530] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431116.609802809] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431116.759447118] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431116.809602675] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431116.926721068] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431116.976899951] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431117.126797146] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431117.176729312] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431117.276718158] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431117.326719879] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431117.376727536] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431117.576491397] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431117.659477497] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431117.719572595] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431117.859440594] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431117.919536600] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431117.959445782] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431117.976758241] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431117.999327868] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431118.059443366] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431118.099400320] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431118.159669453] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431118.176749158] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431118.219592209] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431118.226923376] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431118.276733130] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431118.326751758] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431118.376732815] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431118.626485794] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431118.759409178] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431118.799353143] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431118.859426182] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431118.899274823] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431118.926776964] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431118.976762072] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.126738224] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.176747361] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.276729044] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.326759830] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.376901164] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431119.626491326] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431119.659511819] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431119.699440706] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431119.759462984] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431119.799411494] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431119.859487475] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431119.899381096] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431119.926740849] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431119.976739372] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431120.076802143] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431120.126770575] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431120.176764147] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431120.576730461] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431120.676496441] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431120.759483416] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431120.776731845] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431120.799368313] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431120.859501986] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431120.876731629] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431120.899315512] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431120.926785119] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431120.976793915] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.126806074] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.176725909] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431121.359433219] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431121.399350106] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431121.459446425] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431121.526810436] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431121.559507957] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431121.576801571] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.626917151] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431121.676484882] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431121.676960661] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.726727001] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.776712130] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.876719680] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.926717310] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431121.976706210] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431122.359456117] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431122.476716585] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431122.499354456] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431122.526742295] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431122.676717188] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431122.726489121] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431122.726856099] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431122.976739672] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431123.359489494] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431123.526710820] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431123.559515545] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431123.726498738] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431123.826672312] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431123.876693909] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431123.926701330] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431123.976695343] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431124.359461490] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431124.499301977] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431124.776488760] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431124.976704928] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431125.776486937] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431125.776824165] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431125.859485424] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431125.899388925] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431125.959497012] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431125.976788820] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431125.999455263] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431126.059544154] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431126.076675975] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431126.099754232] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431126.126683975] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.176670747] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.276667544] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.326769262] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.376665249] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.776669338] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431126.826487740] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431126.876666275] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.926668201] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431126.976747083] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431127.076680412] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431127.126685836] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431127.176670868] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431127.499352823] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431127.526715401] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431127.559542422] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431127.576665936] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431127.759479619] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431127.799360576] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431127.826487674] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431127.859557368] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431127.876737377] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431127.899337973] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431127.926692242] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431127.976762192] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431128.076717812] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431128.126658996] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431128.176772670] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431128.726638343] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431128.776749573] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431128.876489129] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431129.876492494] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431130.876489225] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431131.926487776] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431132.826524572] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790431132.854875043] [bt_navigator]: Goal succeeded
+[bt_navigator-20] [INFO] [1790431133.856337235] [bt_navigator]: Begin navigating from current location (-2.92, -2.40) to (0.30, 0.00)
+[nav_benchmark_runner.py-9] [INFO] [1790431133.857259534] [nav_benchmark_runner]: Goal 'return_to_start' accepted: x=0.30, y=0.00, yaw=0.0000
+[controller_server-15] [INFO] [1790431133.858148452] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-15] [INFO] [1790431134.908735229] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431135.958381142] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431136.958359786] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431137.958338775] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431139.008347981] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431140.008350223] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431140.259508475] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431140.300517883] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431140.359436259] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431140.359513077] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431140.399313027] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431140.470929906] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431140.510247582] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431140.558678894] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431140.560752689] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431140.599809324] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431140.659735617] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431140.708618477] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431140.758618892] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431140.759741965] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431140.908877059] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431140.958590246] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431141.058391988] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431141.158640464] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431141.159505570] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.199488910] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431141.259493076] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.299350296] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431141.358771556] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431141.359622066] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.399379702] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431141.459612086] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.499425799] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431141.558862632] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431141.559864264] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.599381182] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431141.659613426] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431141.699342290] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431141.708595945] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431141.758618645] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431141.908667119] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431141.958771036] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431142.058354489] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431142.158680355] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431142.159539315] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431142.199375799] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431142.259582702] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431142.299317647] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431142.459552783] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431142.499341779] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431142.509037346] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.558612276] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.658789674] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.708715590] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.758661688] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.858654794] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.908837490] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431142.959118583] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431143.108356316] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431143.758753399] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431144.108351214] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431144.159443513] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431144.199477429] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431144.558604990] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431144.608777713] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431144.658656923] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431144.709052626] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431144.758647681] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431145.158350253] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431145.308700142] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431145.558784650] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431145.608606742] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431145.658740993] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431145.708751428] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431145.758595518] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431146.158354360] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431146.399385943] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431146.499417232] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431146.558607729] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431146.559579891] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431146.599348378] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431146.958579387] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431147.208343626] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431147.508656042] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431147.558581571] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431147.859598893] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431147.899365709] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431147.958568086] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431147.959506239] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431147.999361046] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431148.059473231] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431148.099391243] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431148.108575911] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431148.158604313] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431148.208341785] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431148.299376286] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[controller_server-15] [WARN] [1790431148.358609258] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431148.399350407] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431148.459569159] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431148.499336957] [collision_monitor]: Robot to continue normal operation
+[collision_monitor-23] [INFO] [1790431148.559660531] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431148.599361568] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431148.608601544] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431148.658747267] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431148.708572522] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431148.758579834] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431148.958554192] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431149.258353050] [controller_server]: Passing new path to controller.
+[collision_monitor-23] [INFO] [1790431149.259587858] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431149.299306080] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431149.358653378] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.508573236] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.558587818] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.658566281] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.708576323] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.758558291] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431149.958568431] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431150.158568744] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431150.258341558] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431150.308563135] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431150.358713131] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431150.659449627] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431150.699429313] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431150.758569701] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431150.908559971] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431150.958562268] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431151.158566587] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431151.308343254] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431151.358658415] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431151.558572514] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431151.708577189] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431151.758557914] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431151.958568384] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431152.159434275] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431152.199342740] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [INFO] [1790431152.308347251] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431152.358568211] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431152.558572353] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431152.659520293] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431152.699401035] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431152.758562527] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431152.958560383] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.158761617] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431153.259467455] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431153.299335352] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431153.308560808] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431153.358339934] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431153.358692807] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.558570643] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.658652791] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.708560692] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.758563357] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431153.958556769] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431154.059512412] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431154.099397493] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431154.308559823] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431154.358343215] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431154.358735404] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431154.508546975] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431154.558544689] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431154.758671859] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431154.958545880] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.108550138] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.158734594] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.308711063] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.358541949] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431155.408341200] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431155.558658879] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.658553408] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.708550010] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431155.758532018] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431156.158519243] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[collision_monitor-23] [INFO] [1790431156.159485749] [collision_monitor]: Robot to approach for 1.200000 seconds away from collision
+[collision_monitor-23] [INFO] [1790431156.199404640] [collision_monitor]: Robot to continue normal operation
+[controller_server-15] [WARN] [1790431156.358519295] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431156.408340969] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431156.508513242] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431156.558539460] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.058508348] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.108502659] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.158502486] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.308640380] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.358616603] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431157.458341390] [controller_server]: Passing new path to controller.
+[controller_server-15] [WARN] [1790431157.708591721] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.758509703] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.908482578] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431157.958580523] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431158.058488213] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431158.108485602] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431158.158488299] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [WARN] [1790431158.358478905] [controller_server]: RegulatedPurePursuitController detected collision ahead!
+[controller_server-15] [INFO] [1790431158.458341836] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431159.458346248] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431160.508341203] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431161.508341120] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431162.558342626] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431163.558328411] [controller_server]: Passing new path to controller.
+[controller_server-15] [INFO] [1790431164.158369055] [controller_server]: Reached the goal!
+[bt_navigator-20] [INFO] [1790431164.186742339] [bt_navigator]: Goal succeeded
+[nav_benchmark_runner.py-9] [INFO] [1790431165.195361737] [nav_benchmark_runner]: Saved trial 3 (south_west_corridor): SUCCEEDED, error=0.077 m
+[INFO] [nav_benchmark_runner.py-9]: process has finished cleanly [pid 807697]
+[INFO] [gz-27]: process started with pid [808994]
+[gazebo-1] [WARN] [1790431165.658957591] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gz-27] data: true
+[gz-27] 
+[INFO] [gz-27]: process has finished cleanly [pid 808994]
+[INFO] [twist_to_twist_stamped_node.py-26]: sending signal 'SIGINT' to process[twist_to_twist_stamped_node.py-26]
+[INFO] [lifecycle_manager-25]: sending signal 'SIGINT' to process[lifecycle_manager-25]
+[INFO] [opennav_docking-24]: sending signal 'SIGINT' to process[opennav_docking-24]
+[INFO] [collision_monitor-23]: sending signal 'SIGINT' to process[collision_monitor-23]
+[INFO] [velocity_smoother-22]: sending signal 'SIGINT' to process[velocity_smoother-22]
+[INFO] [waypoint_follower-21]: sending signal 'SIGINT' to process[waypoint_follower-21]
+[INFO] [bt_navigator-20]: sending signal 'SIGINT' to process[bt_navigator-20]
+[INFO] [behavior_server-19]: sending signal 'SIGINT' to process[behavior_server-19]
+[INFO] [route_server-18]: sending signal 'SIGINT' to process[route_server-18]
+[INFO] [planner_server-17]: sending signal 'SIGINT' to process[planner_server-17]
+[INFO] [smoother_server-16]: sending signal 'SIGINT' to process[smoother_server-16]
+[INFO] [controller_server-15]: sending signal 'SIGINT' to process[controller_server-15]
+[INFO] [lifecycle_manager-14]: sending signal 'SIGINT' to process[lifecycle_manager-14]
+[INFO] [amcl-13]: sending signal 'SIGINT' to process[amcl-13]
+[INFO] [map_server-12]: sending signal 'SIGINT' to process[map_server-12]
+[INFO] [ekf_node-7]: sending signal 'SIGINT' to process[ekf_node-7]
+[INFO] [imu_covariance_node.py-6]: sending signal 'SIGINT' to process[imu_covariance_node.py-6]
+[INFO] [parameter_bridge-5]: sending signal 'SIGINT' to process[parameter_bridge-5]
+[INFO] [parameter_bridge-4]: sending signal 'SIGINT' to process[parameter_bridge-4]
+[INFO] [parameter_bridge-3]: sending signal 'SIGINT' to process[parameter_bridge-3]
+[INFO] [robot_state_publisher-2]: sending signal 'SIGINT' to process[robot_state_publisher-2]
+[INFO] [gazebo-1]: sending signal 'SIGINT' to process[gazebo-1]
+[lifecycle_manager-25] [INFO] [1790431165.814398506] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-25] [INFO] [1790431165.814563594] [lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[lifecycle_manager-25] [INFO] [1790431165.814610174] [lifecycle_manager_navigation]: [34m[1mTerminating bond timer...[0m[0m
+[opennav_docking-24] [INFO] [1790431165.818859526] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-24] [INFO] [1790431165.819020634] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
+[opennav_docking-24] [INFO] [1790431165.819123221] [docking_server]: Deactivating docking_server
+[collision_monitor-23] [INFO] [1790431165.823389263] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[collision_monitor-23] [INFO] [1790431165.823520971] [collision_monitor]: Running Nav2 LifecycleNode rcl preshutdown (collision_monitor)
+[collision_monitor-23] [INFO] [1790431165.823605330] [collision_monitor]: Deactivating
+[collision_monitor-23] [INFO] [1790431165.823656938] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[velocity_smoother-22] [INFO] [1790431165.827091672] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[velocity_smoother-22] [INFO] [1790431165.827223729] [velocity_smoother]: Running Nav2 LifecycleNode rcl preshutdown (velocity_smoother)
+[velocity_smoother-22] [INFO] [1790431165.827301873] [velocity_smoother]: Deactivating
+[velocity_smoother-22] [INFO] [1790431165.827337210] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[waypoint_follower-21] [INFO] [1790431165.831269095] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[waypoint_follower-21] [INFO] [1790431165.831400243] [waypoint_follower]: Running Nav2 LifecycleNode rcl preshutdown (waypoint_follower)
+[waypoint_follower-21] [INFO] [1790431165.831497453] [waypoint_follower]: Deactivating
+[waypoint_follower-21] [INFO] [1790431165.831532649] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[opennav_docking-24] [INFO] [1790431165.833655265] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[collision_monitor-23] [INFO] [1790431165.834180629] [collision_monitor]: Cleaning up
+[collision_monitor-23] [INFO] [1790431165.834231958] [collision_monitor]: [FootprintApproach]: Destroying Polygon
+[collision_monitor-23] [INFO] [1790431165.834265408] [collision_monitor]: [scan]: Destroying Scan
+[bt_navigator-20] [INFO] [1790431165.836358694] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-20] [INFO] [1790431165.836445917] [bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-20] [INFO] [1790431165.836530347] [bt_navigator]: Deactivating
+[bt_navigator-20] [INFO] [1790431165.836571828] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[velocity_smoother-22] [INFO] [1790431165.837913207] [velocity_smoother]: Cleaning up
+[velocity_smoother-22] [INFO] [1790431165.837978572] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[collision_monitor-23] [INFO] [1790431165.840377522] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[behavior_server-19] [INFO] [1790431165.840694710] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-19] [INFO] [1790431165.840823066] [behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[behavior_server-19] [INFO] [1790431165.840901839] [behavior_server]: Deactivating
+[behavior_server-19] [INFO] [1790431165.840947511] [behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[waypoint_follower-21] [INFO] [1790431165.842045028] [waypoint_follower]: Cleaning up
+[opennav_docking-24] [INFO] [1790431165.844872063] [docking_server]: Cleaning up docking_server
+[velocity_smoother-22] [INFO] [1790431165.844933168] [velocity_smoother]: Destroying
+[route_server-18] [INFO] [1790431165.845677951] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[route_server-18] [INFO] [1790431165.845797857] [route_server]: Running Nav2 LifecycleNode rcl preshutdown (route_server)
+[route_server-18] [INFO] [1790431165.845872650] [route_server]: Deactivating
+[route_server-18] [INFO] [1790431165.845904564] [route_server]: Destroying bond (route_server) to lifecycle manager.
+[bt_navigator-20] [INFO] [1790431165.847042655] [bt_navigator]: Cleaning up
+[planner_server-17] [INFO] [1790431165.850383881] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-17] [INFO] [1790431165.850470196] [planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-17] [INFO] [1790431165.850556790] [planner_server]: Deactivating
+[planner_server-17] [INFO] [1790431165.850617337] [global_costmap.global_costmap]: Deactivating
+[behavior_server-19] [INFO] [1790431165.852268501] [behavior_server]: Cleaning up
+[collision_monitor-23] [INFO] [1790431165.852823544] [collision_monitor]: Destroying
+[smoother_server-16] [INFO] [1790431165.855665245] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[smoother_server-16] [INFO] [1790431165.855858686] [smoother_server]: Running Nav2 LifecycleNode rcl preshutdown (smoother_server)
+[smoother_server-16] [INFO] [1790431165.855973215] [smoother_server]: Deactivating
+[smoother_server-16] [INFO] [1790431165.856027615] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[route_server-18] [INFO] [1790431165.856744535] [route_server]: Cleaning up
+[behavior_server-19] [INFO] [1790431165.859939458] [behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[controller_server-15] [INFO] [1790431165.860681867] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-15] [INFO] [1790431165.860762526] [controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-15] [INFO] [1790431165.860825935] [controller_server]: Deactivating
+[controller_server-15] [INFO] [1790431165.860858897] [controller_server]: Deactivating controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790431165.860896608] [local_costmap.local_costmap]: Deactivating
+[lifecycle_manager-14] [INFO] [1790431165.865348968] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-14] [INFO] [1790431165.865478651] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[lifecycle_manager-14] [INFO] [1790431165.865530189] [lifecycle_manager_localization]: [34m[1mTerminating bond timer...[0m[0m
+[smoother_server-16] [INFO] [1790431165.866575888] [smoother_server]: Cleaning up
+[amcl-13] [INFO] [1790431165.873177123] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-13] [INFO] [1790431165.873353524] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-13] [INFO] [1790431165.873672667] [amcl]: Deactivating
+[amcl-13] [INFO] [1790431165.873713660] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[map_server-12] [INFO] [1790431165.878053517] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-12] [INFO] [1790431165.878182711] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-12] [INFO] [1790431165.878269655] [map_server]: Deactivating
+[map_server-12] [INFO] [1790431165.878299195] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[opennav_docking-24] [INFO] [1790431165.881337618] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[ekf_node-7] [INFO] [1790431165.884297339] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-13] [INFO] [1790431165.886351517] [amcl]: Cleaning up
+[map_server-12] [INFO] [1790431165.889117238] [map_server]: Cleaning up
+[map_server-12] [INFO] [1790431165.889209768] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[waypoint_follower-21] [INFO] [1790431165.897333392] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[waypoint_follower-21] [INFO] [1790431165.900950463] [waypoint_follower]: Destroying
+[parameter_bridge-5] [INFO] [1790431165.901585118] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[smoother_server-16] [INFO] [1790431165.906535537] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[amcl-13] [INFO] [1790431165.907836691] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[parameter_bridge-4] [INFO] [1790431165.909163894] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-12] [INFO] [1790431165.910967367] [map_server]: Destroying
+[parameter_bridge-3] [INFO] [1790431165.914169133] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-2] [INFO] [1790431165.921871795] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[smoother_server-16] [INFO] [1790431165.929798625] [smoother_server]: Destroying
+[lifecycle_manager-14] [INFO] [1790431165.934035546] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[opennav_docking-24] [INFO] [1790431165.937843894] [docking_server]: Destroying
+[route_server-18] [INFO] [1790431165.943121418] [route_server]: Destroying bond (route_server) to lifecycle manager.
+[amcl-13] [INFO] [1790431165.944851634] [amcl]: Destroying
+[route_server-18] [INFO] [1790431165.953796789] [route_server]: Destroying
+[controller_server-15] [INFO] [1790431165.987692719] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[controller_server-15] [INFO] [1790431165.999312950] [controller_server]: Cleaning up
+[controller_server-15] [INFO] [1790431165.999387184] [controller_server]: Cleaning up controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790431166.000188114] [local_costmap.local_costmap]: Cleaning up
+[behavior_server-19] [INFO] [1790431166.010335260] [behavior_server]: Destroying
+[lifecycle_manager-25] [INFO] [1790431166.013134292] [lifecycle_manager_navigation]: Destroying lifecycle_manager_navigation
+[controller_server-15] [INFO] [1790431166.027244958] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[INFO] [velocity_smoother-22]: process has finished cleanly [pid 808042]
+[controller_server-15] [INFO] [1790431166.032396780] [local_costmap.local_costmap]: Destroying
+[controller_server-15] [INFO] [1790431166.038959466] [controller_server]: Destroying
+[INFO] [parameter_bridge-5]: process has finished cleanly [pid 807693]
+[bt_navigator-20] [INFO] [1790431166.045411116] [bt_navigator]: Completed Cleaning up
+[bt_navigator-20] [INFO] [1790431166.045477458] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[bt_navigator-20] [INFO] [1790431166.051839999] [bt_navigator]: Destroying
+[INFO] [parameter_bridge-4]: process has finished cleanly [pid 807692]
+[INFO] [parameter_bridge-3]: process has finished cleanly [pid 807690]
+[INFO] [collision_monitor-23]: process has finished cleanly [pid 808043]
+[INFO] [twist_to_twist_stamped_node.py-26]: process has finished cleanly [pid 808046]
+[INFO] [waypoint_follower-21]: process has finished cleanly [pid 808041]
+[INFO] [lifecycle_manager-14]: process has finished cleanly [pid 808034]
+[INFO] [smoother_server-16]: process has finished cleanly [pid 808036]
+[INFO] [ekf_node-7]: process has finished cleanly [pid 807695]
+[INFO] [amcl-13]: process has finished cleanly [pid 808033]
+[INFO] [robot_state_publisher-2]: process has finished cleanly [pid 807689]
+[INFO] [opennav_docking-24]: process has finished cleanly [pid 808044]
+[INFO] [map_server-12]: process has finished cleanly [pid 808032]
+[INFO] [route_server-18]: process has finished cleanly [pid 808038]
+[INFO] [lifecycle_manager-25]: process has finished cleanly [pid 808045]
+[INFO] [behavior_server-19]: process has finished cleanly [pid 808039]
+[INFO] [controller_server-15]: process has finished cleanly [pid 808035]
+[INFO] [bt_navigator-20]: process has finished cleanly [pid 808040]
+[INFO] [imu_covariance_node.py-6]: process has finished cleanly [pid 807694]
+[planner_server-17] [INFO] [1790431166.405769947] [planner_server]: Deactivating plugin GridBased of type NavfnPlanner
+[planner_server-17] [INFO] [1790431166.405818482] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[planner_server-17] [INFO] [1790431166.415988254] [planner_server]: Cleaning up
+[planner_server-17] [INFO] [1790431166.420287608] [global_costmap.global_costmap]: Cleaning up
+[planner_server-17] [INFO] [1790431166.422446189] [planner_server]: Cleaning up plugin GridBased of type NavfnPlanner
+[planner_server-17] [INFO] [1790431166.422671824] [planner_server]: Destroying plugin GridBased of type NavfnPlanner
+[planner_server-17] [INFO] [1790431166.426908187] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[planner_server-17] [INFO] [1790431166.428780656] [global_costmap.global_costmap]: Destroying
+[planner_server-17] [INFO] [1790431166.432619801] [planner_server]: Destroying
+[INFO] [planner_server-17]: process has finished cleanly [pid 808037]
+[gazebo-1] Stack trace (most recent call last) in thread 809003:
+[gazebo-1] #5    Object "[0xffffffffffffffff]", at 0xffffffffffffffff, in 
+[gazebo-1] #4    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x788775529ecb, in 
+[gazebo-1] #3    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x78877549cb83, in 
+[gazebo-1] #2    Object "/lib/x86_64-linux-gnu/libstdc++.so.6", at 0x78876fcecdb3, in 
+[gazebo-1] #1    Object "/opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8", at 0x78876ed608f0, in 
+[gazebo-1] #0    Object "/opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8", at 0x78876ed6aa7c, in 
+[gazebo-1] Segmentation fault (Address not mapped to object [(nil)])
+[gazebo-1] Segmentation fault (core dumped)
+[ERROR] [gazebo-1]: process has died [pid 807688, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s -v 1 /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/worlds/nav_benchmark_world.sdf --force-version 8'].
+
+Script done on 2026-09-26 21:59:28+08:00 [COMMAND_EXIT_CODE="0"]

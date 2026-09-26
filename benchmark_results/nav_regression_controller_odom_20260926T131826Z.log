@@ -1,0 +1,480 @@
+Script started on 2026-09-26 21:18:51+08:00 [COMMAND="bash -lc 'source /opt/ros/jazzy/setup.bash && source install/setup.bash && ros2 launch diffbot_navigation run_benchmark.launch.py goal_names:=straight_east repetitions:=1 return_to_start:=true goal_timeout_sec:=180.0 output_csv:=/home/xiayuru/robot_ws/benchmark_results/nav_regression_controller_odom_20260926T131826Z.csv'" TERM="dumb" TTY="/dev/pts/12" COLUMNS="80" LINES="24"]
+[INFO] [launch]: All log files can be found below /home/xiayuru/.ros/log/2026-09-26-21-18-51-883950-xiayuru-Lenovo-ThinkBook-16p-Gen-2-795607
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gazebo-1]: process started with pid [795640]
+[INFO] [robot_state_publisher-2]: process started with pid [795641]
+[INFO] [parameter_bridge-3]: process started with pid [795642]
+[INFO] [parameter_bridge-4]: process started with pid [795644]
+[INFO] [parameter_bridge-5]: process started with pid [795645]
+[INFO] [imu_covariance_node.py-6]: process started with pid [795646]
+[INFO] [ekf_node-7]: process started with pid [795647]
+[INFO] [create-8]: process started with pid [795648]
+[INFO] [nav_benchmark_runner.py-9]: process started with pid [795651]
+[robot_state_publisher-2] [INFO] [1790428732.400464409] [robot_state_publisher]: Robot initialized
+[ekf_node-7] [INFO] [1790428732.409717523] [ekf_filter_node]: Waiting for clock to start...
+[create-8] [INFO] [1790428732.420248042] [ros_gz_sim]: Requesting list of world names.
+[parameter_bridge-5] [INFO] [1790428732.431416425] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/imu (gz.msgs.IMU) -> /imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-3] [INFO] [1790428732.435090306] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-4] [INFO] [1790428732.437584911] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/scan (gz.msgs.LaserScan) -> /scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[create-8] [INFO] [1790428732.920013717] [ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-8] [INFO] [1790428732.931997013] [ros_gz_sim]: Entity creation successful.
+[INFO] [create-8]: process has finished cleanly [pid 795648]
+[INFO] [spawner-10]: process started with pid [795797]
+[nav_benchmark_runner.py-9] [INFO] [1790428733.100469597] [nav_benchmark_runner]: Benchmark goals: straight_east; repetitions: 1
+[imu_covariance_node.py-6] [INFO] [1790428733.125727980] [imu_covariance_node]: Relaying /imu/raw to /imu with fallback covariance.
+[spawner-10] [INFO] [1790428733.423701981] [spawner_joint_state_broadcaster]: waiting for service /controller_manager/list_controllers to become available...
+[gazebo-1] [INFO] [1790428734.662922360] [gz_ros_control]: Loading controller_manager
+[gazebo-1] [INFO] [1790428734.676735717] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[gazebo-1] [WARN] [1790428734.676767984] [controller_manager]: The resource manager is not yet initialized, will wait for the robot description to initialize it..
+[gazebo-1] [INFO] [1790428734.683123926] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[gazebo-1] [WARN] [1790428734.683194396] [gz_ros_control]: Waiting RM to load and initialize hardware...
+[gazebo-1] [INFO] [1790428735.176998527] [controller_manager]: Received robot description from topic.
+[gazebo-1] [INFO] [1790428735.177091346] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[gazebo-1] [INFO] [1790428735.181784218] [gz_ros_control]: The position_proportional_gain has been set to: 0.1
+[gazebo-1] [INFO] [1790428735.181886885] [gz_ros_control]: Loading joint: left_wheel_joint
+[gazebo-1] [INFO] [1790428735.181914193] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1790428735.181935635] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1790428735.181954143] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790428735.181979914] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1790428735.181996746] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790428735.182032924] [gz_ros_control]: Loading joint: right_wheel_joint
+[gazebo-1] [INFO] [1790428735.182050804] [gz_ros_control]: 	State:
+[gazebo-1] [INFO] [1790428735.182067496] [gz_ros_control]: 		 position
+[gazebo-1] [INFO] [1790428735.182084398] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790428735.182102207] [gz_ros_control]: 	Command:
+[gazebo-1] [INFO] [1790428735.182119249] [gz_ros_control]: 		 velocity
+[gazebo-1] [INFO] [1790428735.182212278] [gz_ros_control]: Loading sensor: imu_sensor
+[gazebo-1] [INFO] [1790428735.182243707] [gz_ros_control]: 	State:
+[gazebo-1] [WARN] [1790428735.182263751] [gz_ros_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[gazebo-1] [INFO] [1790428735.182455816] [controller_manager]: Initialize hardware 'GazeboSimSystem' 
+[gazebo-1] [WARN] [1790428735.182503518] [controller_manager.hardware_component.system.GazeboSimSystem]: Executor is not available during hardware component initialization for 'GazeboSimSystem'. Skipping node creation!
+[gazebo-1] [INFO] [1790428735.182611144] [controller_manager]: Successful initialization of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1790428735.182785468] [controller_manager]: Activating component 'GazeboSimSystem'.
+[gazebo-1] [INFO] [1790428735.182826605] [resource_manager]: 'configure' hardware 'GazeboSimSystem' 
+[gazebo-1] [INFO] [1790428735.182841621] [gz_ros_control]: System Successfully configured!
+[gazebo-1] [INFO] [1790428735.182858313] [resource_manager]: Successful 'configure' of hardware 'GazeboSimSystem'
+[gazebo-1] [INFO] [1790428735.182871932] [resource_manager]: 'activate' hardware 'GazeboSimSystem' 
+[gazebo-1] [INFO] [1790428735.182907622] [resource_manager]: Successful 'activate' of hardware 'GazeboSimSystem'
+[gazebo-1] [WARN] [1790428735.183084181] [controller_manager]: Component 'GazeboSimSystem' does not have read or write statistics initialized, skipping registration.
+[gazebo-1] [INFO] [1790428735.183106391] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[gazebo-1] [INFO] [1790428735.427433533] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[gazebo-1] [INFO] [1790428735.427515039] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1790428735.433466946] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /home/xiayuru/robot_ws/src/diffbot_controllers.yaml -p use_sim_time:=true --param use_sim_time:=true 
+[spawner-10] [INFO] [1790428735.448482069] [spawner_joint_state_broadcaster]: Loaded joint_state_broadcaster
+[gazebo-1] [INFO] [1790428735.450096390] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[gazebo-1] [INFO] [1790428735.450365350] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[gazebo-1] [INFO] [1790428735.460160156] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[gazebo-1] [WARN] [1790428736.708687220] [gz_ros_control]:  Desired controller update period (0.01 s) is slower than the gazebo simulation period (0.001 s).
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] pci id for fd 97: 10de:2520, driver (null)
+[gazebo-1] pci id for fd 98: 10de:2520, driver (null)
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] pci id for fd 97: 10de:2520, driver (null)
+[gazebo-1] pci id for fd 98: 10de:2520, driver (null)
+[gazebo-1] libEGL warning: egl: failed to create dri2 screen
+[gazebo-1] libEGL warning: pci id for fd 96: 10de:2520, driver (null)
+[gazebo-1] 
+[gazebo-1] [INFO] [1790428738.712563349] [controller_manager]: Successfully switched controllers!
+[spawner-10] [INFO] [1790428738.723721675] [spawner_joint_state_broadcaster]: Configured and activated joint_state_broadcaster
+[INFO] [spawner-10]: process has finished cleanly [pid 795797]
+[INFO] [spawner-11]: process started with pid [795972]
+[spawner-11] [INFO] [1790428739.276139318] [spawner_diff_drive_base_controller]: waiting for service /controller_manager/list_controllers to become available...
+[INFO] [map_server-12]: process started with pid [795989]
+[INFO] [amcl-13]: process started with pid [795990]
+[INFO] [lifecycle_manager-14]: process started with pid [795991]
+[INFO] [controller_server-15]: process started with pid [795992]
+[INFO] [smoother_server-16]: process started with pid [795993]
+[INFO] [planner_server-17]: process started with pid [795994]
+[INFO] [route_server-18]: process started with pid [795995]
+[INFO] [behavior_server-19]: process started with pid [795996]
+[INFO] [bt_navigator-20]: process started with pid [795997]
+[INFO] [waypoint_follower-21]: process started with pid [795998]
+[INFO] [velocity_smoother-22]: process started with pid [795999]
+[INFO] [collision_monitor-23]: process started with pid [796000]
+[INFO] [opennav_docking-24]: process started with pid [796001]
+[INFO] [lifecycle_manager-25]: process started with pid [796002]
+[INFO] [twist_to_twist_stamped_node.py-26]: process started with pid [796003]
+[velocity_smoother-22] [INFO] [1790428740.721684872] [velocity_smoother]: 
+[velocity_smoother-22] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-22] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-22] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-14] [INFO] [1790428740.724458843] [lifecycle_manager_localization]: Creating
+[lifecycle_manager-14] [INFO] [1790428740.729510003] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[ekf_node-7] [ERROR] [1790428741.041258252] [ekf_filter_node]: Failed to meet update rate! Took 0.021999999999999998723seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[amcl-13] [INFO] [1790428741.098623692] [amcl]: 
+[amcl-13] 	amcl lifecycle node launched. 
+[amcl-13] 	Waiting on external lifecycle transitions to activate
+[amcl-13] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-13] [INFO] [1790428741.099192692] [amcl]: Creating
+[planner_server-17] [INFO] [1790428741.102448013] [planner_server]: 
+[planner_server-17] 	planner_server lifecycle node launched. 
+[planner_server-17] 	Waiting on external lifecycle transitions to activate
+[planner_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[route_server-18] [INFO] [1790428741.102586439] [route_server]: 
+[route_server-18] 	route_server lifecycle node launched. 
+[route_server-18] 	Waiting on external lifecycle transitions to activate
+[route_server-18] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-17] [INFO] [1790428741.104337929] [planner_server]: Creating
+[smoother_server-16] [INFO] [1790428741.118420945] [smoother_server]: 
+[smoother_server-16] 	smoother_server lifecycle node launched. 
+[smoother_server-16] 	Waiting on external lifecycle transitions to activate
+[smoother_server-16] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-16] [INFO] [1790428741.120389921] [smoother_server]: Creating smoother server
+[opennav_docking-24] [INFO] [1790428741.122482098] [docking_server]: 
+[opennav_docking-24] 	docking_server lifecycle node launched. 
+[opennav_docking-24] 	Waiting on external lifecycle transitions to activate
+[opennav_docking-24] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[opennav_docking-24] [INFO] [1790428741.122640220] [docking_server]: Creating docking_server
+[planner_server-17] [INFO] [1790428741.138981636] [global_costmap.global_costmap]: 
+[planner_server-17] 	global_costmap lifecycle node launched. 
+[planner_server-17] 	Waiting on external lifecycle transitions to activate
+[planner_server-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-17] [INFO] [1790428741.139612376] [global_costmap.global_costmap]: Creating Costmap
+[lifecycle_manager-25] [INFO] [1790428741.243151617] [lifecycle_manager_navigation]: Creating
+[map_server-12] [INFO] [1790428741.244040981] [map_server]: 
+[map_server-12] 	map_server lifecycle node launched. 
+[map_server-12] 	Waiting on external lifecycle transitions to activate
+[map_server-12] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-12] [INFO] [1790428741.244174658] [map_server]: Creating
+[lifecycle_manager-25] [INFO] [1790428741.260087177] [lifecycle_manager_navigation]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[collision_monitor-23] [INFO] [1790428741.272218955] [collision_monitor]: 
+[collision_monitor-23] 	collision_monitor lifecycle node launched. 
+[collision_monitor-23] 	Waiting on external lifecycle transitions to activate
+[collision_monitor-23] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[twist_to_twist_stamped_node.py-26] [INFO] [1790428741.274477216] [twist_to_twist_stamped_node]: Converting /cmd_vel_smoothed Twist to /diff_drive_base_controller/cmd_vel TwistStamped.
+[bt_navigator-20] [INFO] [1790428741.276327532] [bt_navigator]: 
+[bt_navigator-20] 	bt_navigator lifecycle node launched. 
+[bt_navigator-20] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-20] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-15] [INFO] [1790428741.278258864] [controller_server]: 
+[controller_server-15] 	controller_server lifecycle node launched. 
+[controller_server-15] 	Waiting on external lifecycle transitions to activate
+[controller_server-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-20] [INFO] [1790428741.278617012] [bt_navigator]: Creating
+[behavior_server-19] [INFO] [1790428741.282484285] [behavior_server]: 
+[behavior_server-19] 	behavior_server lifecycle node launched. 
+[behavior_server-19] 	Waiting on external lifecycle transitions to activate
+[behavior_server-19] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-15] [INFO] [1790428741.283345154] [controller_server]: Creating controller server
+[controller_server-15] [INFO] [1790428741.318270184] [local_costmap.local_costmap]: 
+[controller_server-15] 	local_costmap lifecycle node launched. 
+[controller_server-15] 	Waiting on external lifecycle transitions to activate
+[controller_server-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-15] [INFO] [1790428741.318968321] [local_costmap.local_costmap]: Creating Costmap
+[waypoint_follower-21] [INFO] [1790428741.540501376] [waypoint_follower]: 
+[waypoint_follower-21] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-21] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-21] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-21] [INFO] [1790428741.541155164] [waypoint_follower]: Creating
+[spawner-11] [INFO] [1790428741.793834953] [spawner_diff_drive_base_controller]: Setting controller param "params_file" to "['/home/xiayuru/robot_ws/install/robot_description/share/robot_description/config/controllers.yaml']" for diff_drive_base_controller
+[spawner-11] [INFO] [1790428741.806755873] [spawner_diff_drive_base_controller]: Setting controller param "type" to "diff_drive_controller/DiffDriveController" for diff_drive_base_controller
+[gazebo-1] [INFO] [1790428741.811375900] [controller_manager]: Loading controller : 'diff_drive_base_controller' of type 'diff_drive_controller/DiffDriveController'
+[gazebo-1] [INFO] [1790428741.811421367] [controller_manager]: Loading controller 'diff_drive_base_controller'
+[gazebo-1] [INFO] [1790428741.816265097] [controller_manager]: Controller 'diff_drive_base_controller' node arguments: --ros-args --params-file /home/xiayuru/robot_ws/src/diffbot_controllers.yaml -p use_sim_time:=true --params-file /home/xiayuru/robot_ws/install/robot_description/share/robot_description/config/controllers.yaml --param use_sim_time:=true 
+[spawner-11] [INFO] [1790428741.860488289] [spawner_diff_drive_base_controller]: Loaded diff_drive_base_controller
+[gazebo-1] [INFO] [1790428741.862711349] [controller_manager]: Configuring controller: 'diff_drive_base_controller'
+[gazebo-1] [INFO] [1790428741.881761436] [controller_manager]: Activating controllers: [ diff_drive_base_controller ]
+[gazebo-1] [INFO] [1790428741.889559748] [controller_manager]: Successfully switched controllers!
+[lifecycle_manager-25] [INFO] [1790428741.895390341] [lifecycle_manager_navigation]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-25] [INFO] [1790428741.895443770] [lifecycle_manager_navigation]: [34m[1mConfiguring controller_server[0m[0m
+[controller_server-15] [INFO] [1790428741.895721739] [controller_server]: Configuring controller interface
+[controller_server-15] [INFO] [1790428741.895750863] [controller_server]: getting progress checker plugins..
+[controller_server-15] [INFO] [1790428741.896079608] [controller_server]: getting goal checker plugins..
+[controller_server-15] [INFO] [1790428741.896299540] [controller_server]: Controller frequency set to 20.0000Hz
+[controller_server-15] [INFO] [1790428741.896358626] [local_costmap.local_costmap]: Configuring
+[spawner-11] [INFO] [1790428741.900799509] [spawner_diff_drive_base_controller]: Configured and activated diff_drive_base_controller
+[controller_server-15] [INFO] [1790428741.912884214] [local_costmap.local_costmap]: Using plugin "voxel_layer"
+[controller_server-15] [INFO] [1790428741.917337669] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[controller_server-15] [INFO] [1790428741.938120248] [local_costmap.local_costmap]: Initialized plugin "voxel_layer"
+[controller_server-15] [INFO] [1790428741.938175912] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[controller_server-15] [INFO] [1790428741.939204610] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[controller_server-15] [INFO] [1790428741.970011076] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::PoseProgressChecker
+[controller_server-15] [INFO] [1790428741.970838560] [controller_server]: Controller Server has progress_checker  progress checkers available.
+[controller_server-15] [INFO] [1790428741.971912934] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[controller_server-15] [INFO] [1790428741.972540322] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[controller_server-15] [INFO] [1790428741.973763529] [controller_server]: Created controller : FollowPath of type nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790428741.984688723] [controller_server]: Controller Server has FollowPath  controllers available.
+[controller_server-15] [WARN] [1790428742.101926362] [controller_server.rclcpp]: failed to send response to /controller_server/change_state (timeout): client will not receive response, at ./src/rmw_response.cpp:153, at ./src/rcl/service.c:400
+[INFO] [spawner-11]: process has finished cleanly [pid 795972]
+[lifecycle_manager-14] [INFO] [1790428742.195622326] [lifecycle_manager_localization]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-14] [INFO] [1790428742.195689513] [lifecycle_manager_localization]: [34m[1mConfiguring map_server[0m[0m
+[map_server-12] [INFO] [1790428742.195998214] [map_server]: Configuring
+[map_server-12] [INFO] [1790428742.196058208] [map_io]: Loading yaml file: /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.yaml
+[map_server-12] [INFO] [1790428742.196297276] [map_io]: resolution: 0.05
+[map_server-12] [INFO] [1790428742.196310825] [map_io]: origin[0]: -4.1
+[map_server-12] [INFO] [1790428742.196320184] [map_io]: origin[1]: -3.1
+[map_server-12] [INFO] [1790428742.196328216] [map_io]: origin[2]: 0
+[map_server-12] [INFO] [1790428742.196336736] [map_io]: free_thresh: 0.196
+[map_server-12] [INFO] [1790428742.196344908] [map_io]: occupied_thresh: 0.65
+[map_server-12] [INFO] [1790428742.196353568] [map_io]: mode: trinary
+[map_server-12] [INFO] [1790428742.196363416] [map_io]: negate: 0
+[map_server-12] [INFO] [1790428742.196515531] [map_io]: Loading image_file: /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.pgm
+[map_server-12] [INFO] [1790428742.197124969] [map_io]: Read map /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/maps/nav_benchmark_map.pgm: 164 X 124 map @ 0.05 m/cell
+[lifecycle_manager-14] [INFO] [1790428742.205928094] [lifecycle_manager_localization]: [34m[1mConfiguring amcl[0m[0m
+[amcl-13] [INFO] [1790428742.206181480] [amcl]: Configuring
+[amcl-13] [INFO] [1790428742.206253417] [amcl]: initTransforms
+[amcl-13] [INFO] [1790428742.216121836] [amcl]: initPubSub
+[amcl-13] [INFO] [1790428742.225486697] [amcl]: Subscribed to map topic.
+[lifecycle_manager-14] [INFO] [1790428742.230475209] [lifecycle_manager_localization]: [34m[1mActivating map_server[0m[0m
+[map_server-12] [INFO] [1790428742.230681032] [map_server]: Activating
+[map_server-12] [INFO] [1790428742.230855916] [map_server]: Creating bond (map_server) to lifecycle manager.
+[amcl-13] [INFO] [1790428742.230971504] [amcl]: Received a 164 X 124 map @ 0.050 m/pix
+[lifecycle_manager-14] [INFO] [1790428742.337818028] [lifecycle_manager_localization]: Server map_server connected with bond.
+[lifecycle_manager-14] [INFO] [1790428742.337867336] [lifecycle_manager_localization]: [34m[1mActivating amcl[0m[0m
+[amcl-13] [INFO] [1790428742.338174150] [amcl]: Activating
+[amcl-13] [INFO] [1790428742.338210328] [amcl]: initialPoseReceived
+[amcl-13] [INFO] [1790428742.338278075] [amcl]: Setting pose (0.000000): 0.300 0.000 0.000
+[amcl-13] [INFO] [1790428742.338746643] [amcl]: Creating bond (amcl) to lifecycle manager.
+[gazebo-1] [WARN] [1790428742.429090276] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[lifecycle_manager-14] [INFO] [1790428742.443595275] [lifecycle_manager_localization]: Server amcl connected with bond.
+[lifecycle_manager-14] [INFO] [1790428742.443642139] [lifecycle_manager_localization]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-14] [INFO] [1790428742.443656736] [lifecycle_manager_localization]: [34m[1mCreating bond timer...[0m[0m
+[amcl-13] [INFO] [1790428742.463700040] [amcl]: createLaserObject
+[gazebo-1] [WARN] [1790428743.422082289] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428744.422177621] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428745.431989817] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428746.431972286] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428747.431988979] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428748.431981856] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428749.431996385] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428750.431981790] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428751.432008194] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428752.431965525] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428753.432059187] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428754.432023504] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428755.441975880] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428756.441965620] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428757.441970168] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428758.441975135] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428759.441964738] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428760.441965447] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428761.441971395] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428762.442003184] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428763.441960314] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428764.444995856] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428765.450317038] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428766.460007586] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428767.460033373] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428768.470126699] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428769.480016298] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428770.480002208] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428771.480001039] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428772.480007414] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428773.479996608] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428774.480004242] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428775.480081368] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428776.490046541] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428777.490254413] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428778.491302062] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428779.491196486] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428780.501079877] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428781.501089122] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428782.501096971] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428783.501086103] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428784.501084454] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428785.501096985] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428786.501097713] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428787.501084822] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428788.501170199] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428789.501172466] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428790.501126822] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428791.501172950] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428792.501225435] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428793.511075521] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428794.511118579] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428795.511114005] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428796.521186819] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428797.531087822] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428798.531091422] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428799.531159417] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428800.541221826] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428801.541173396] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428802.541141659] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428803.541246324] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428804.551095300] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428805.551083330] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428806.551119831] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428807.551085583] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428808.551194651] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428809.561240514] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428810.561474530] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428811.571107561] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428812.571112079] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428813.571127702] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428814.581187258] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428815.591093722] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428816.591110325] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428817.591090541] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428818.591088288] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428819.591096162] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428820.595837558] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428821.595794799] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428822.595802606] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428823.595807619] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428824.595799853] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428825.595809198] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428826.596917364] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428827.596920076] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428828.596929702] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428829.596939260] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428830.597013631] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428831.597042047] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428832.607027583] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428833.607065080] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428834.609190635] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428835.621150038] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428836.621146401] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428837.631097997] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428838.631103440] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428839.631095124] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428840.631152810] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428841.631210636] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428842.631200786] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428843.631518983] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428844.641081426] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428845.641087572] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428846.641143446] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428847.651269024] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428848.661077173] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428849.661128858] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428850.671119993] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428851.681076069] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[gazebo-1] [WARN] [1790428852.681084454] [diff_drive_base_controller]: Velocity command timed out. Braking.
+[nav_benchmark_runner.py-9] [ERROR] [1790428853.181787168] [nav_benchmark_runner]: NavigateToPose action server did not become available.
+[ERROR] [nav_benchmark_runner.py-9]: process has died [pid 795651, exit code 2, cmd '/home/xiayuru/robot_ws/install/diffbot_navigation/lib/diffbot_navigation/nav_benchmark_runner.py --ros-args -r __node:=nav_benchmark_runner --params-file /tmp/launch_params_p20wb_v0'].
+[INFO] [gz-27]: process started with pid [796442]
+[gz-27] data: true
+[gz-27] 
+[INFO] [gz-27]: process has finished cleanly [pid 796442]
+[INFO] [twist_to_twist_stamped_node.py-26]: sending signal 'SIGINT' to process[twist_to_twist_stamped_node.py-26]
+[INFO] [lifecycle_manager-25]: sending signal 'SIGINT' to process[lifecycle_manager-25]
+[INFO] [opennav_docking-24]: sending signal 'SIGINT' to process[opennav_docking-24]
+[INFO] [collision_monitor-23]: sending signal 'SIGINT' to process[collision_monitor-23]
+[INFO] [velocity_smoother-22]: sending signal 'SIGINT' to process[velocity_smoother-22]
+[INFO] [waypoint_follower-21]: sending signal 'SIGINT' to process[waypoint_follower-21]
+[INFO] [bt_navigator-20]: sending signal 'SIGINT' to process[bt_navigator-20]
+[INFO] [behavior_server-19]: sending signal 'SIGINT' to process[behavior_server-19]
+[INFO] [route_server-18]: sending signal 'SIGINT' to process[route_server-18]
+[INFO] [planner_server-17]: sending signal 'SIGINT' to process[planner_server-17]
+[INFO] [smoother_server-16]: sending signal 'SIGINT' to process[smoother_server-16]
+[INFO] [controller_server-15]: sending signal 'SIGINT' to process[controller_server-15]
+[INFO] [lifecycle_manager-14]: sending signal 'SIGINT' to process[lifecycle_manager-14]
+[INFO] [amcl-13]: sending signal 'SIGINT' to process[amcl-13]
+[INFO] [map_server-12]: sending signal 'SIGINT' to process[map_server-12]
+[INFO] [ekf_node-7]: sending signal 'SIGINT' to process[ekf_node-7]
+[INFO] [imu_covariance_node.py-6]: sending signal 'SIGINT' to process[imu_covariance_node.py-6]
+[INFO] [parameter_bridge-5]: sending signal 'SIGINT' to process[parameter_bridge-5]
+[INFO] [parameter_bridge-4]: sending signal 'SIGINT' to process[parameter_bridge-4]
+[INFO] [parameter_bridge-3]: sending signal 'SIGINT' to process[parameter_bridge-3]
+[INFO] [robot_state_publisher-2]: sending signal 'SIGINT' to process[robot_state_publisher-2]
+[INFO] [gazebo-1]: sending signal 'SIGINT' to process[gazebo-1]
+[lifecycle_manager-25] [INFO] [1790428853.749896886] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-25] [INFO] [1790428853.750003254] [lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[opennav_docking-24] [INFO] [1790428853.753789931] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-24] [INFO] [1790428853.753966351] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
+[opennav_docking-24] [INFO] [1790428853.754022643] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[opennav_docking-24] [INFO] [1790428853.755618177] [docking_server]: Destroying
+[collision_monitor-23] [INFO] [1790428853.757730678] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[collision_monitor-23] [INFO] [1790428853.757877625] [collision_monitor]: Running Nav2 LifecycleNode rcl preshutdown (collision_monitor)
+[collision_monitor-23] [INFO] [1790428853.757931543] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[collision_monitor-23] [INFO] [1790428853.760029587] [collision_monitor]: Destroying
+[velocity_smoother-22] [INFO] [1790428853.761713679] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[velocity_smoother-22] [INFO] [1790428853.761847356] [velocity_smoother]: Running Nav2 LifecycleNode rcl preshutdown (velocity_smoother)
+[velocity_smoother-22] [INFO] [1790428853.761914055] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[velocity_smoother-22] [INFO] [1790428853.764070557] [velocity_smoother]: Destroying
+[waypoint_follower-21] [INFO] [1790428853.766682706] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[waypoint_follower-21] [INFO] [1790428853.766856472] [waypoint_follower]: Running Nav2 LifecycleNode rcl preshutdown (waypoint_follower)
+[waypoint_follower-21] [INFO] [1790428853.766924148] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[waypoint_follower-21] [INFO] [1790428853.769786750] [waypoint_follower]: Destroying
+[bt_navigator-20] [INFO] [1790428853.771671986] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-20] [INFO] [1790428853.771895479] [bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-20] [INFO] [1790428853.771985156] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[bt_navigator-20] [INFO] [1790428853.776280140] [bt_navigator]: Destroying
+[behavior_server-19] [INFO] [1790428853.777042113] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-19] [INFO] [1790428853.777216508] [behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[behavior_server-19] [INFO] [1790428853.777267562] [behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[behavior_server-19] [INFO] [1790428853.780889761] [behavior_server]: Destroying
+[route_server-18] [INFO] [1790428853.781743087] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[route_server-18] [INFO] [1790428853.782819068] [route_server]: Running Nav2 LifecycleNode rcl preshutdown (route_server)
+[route_server-18] [INFO] [1790428853.782870960] [route_server]: Destroying bond (route_server) to lifecycle manager.
+[route_server-18] [INFO] [1790428853.786276231] [route_server]: Destroying
+[planner_server-17] [INFO] [1790428853.786333711] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-17] [INFO] [1790428853.786492741] [planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-17] [INFO] [1790428853.786565376] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[smoother_server-16] [INFO] [1790428853.792236870] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[smoother_server-16] [INFO] [1790428853.792386122] [smoother_server]: Running Nav2 LifecycleNode rcl preshutdown (smoother_server)
+[smoother_server-16] [INFO] [1790428853.792473913] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[smoother_server-16] [INFO] [1790428853.794883660] [smoother_server]: Destroying
+[controller_server-15] [INFO] [1790428853.798151902] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-15] [INFO] [1790428853.798317636] [controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-15] [INFO] [1790428853.798390551] [controller_server]: Cleaning up
+[controller_server-15] [INFO] [1790428853.798424354] [controller_server]: Cleaning up controller: FollowPath of type regulated_pure_pursuit_controller::RegulatedPurePursuitController
+[controller_server-15] [INFO] [1790428853.798512913] [local_costmap.local_costmap]: Cleaning up
+[planner_server-17] [INFO] [1790428853.799862604] [global_costmap.global_costmap]: Destroying
+[lifecycle_manager-14] [INFO] [1790428853.803146630] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-14] [INFO] [1790428853.803305520] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[lifecycle_manager-14] [INFO] [1790428853.803545635] [lifecycle_manager_localization]: [34m[1mTerminating bond timer...[0m[0m
+[amcl-13] [INFO] [1790428853.808695621] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-13] [INFO] [1790428853.808956340] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-13] [INFO] [1790428853.809229282] [amcl]: Deactivating
+[amcl-13] [INFO] [1790428853.809276425] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[map_server-12] [INFO] [1790428853.813699499] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-12] [INFO] [1790428853.813889328] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-12] [INFO] [1790428853.813965246] [map_server]: Deactivating
+[map_server-12] [INFO] [1790428853.813994370] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[ekf_node-7] [INFO] [1790428853.819649032] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-13] [INFO] [1790428853.823575462] [amcl]: Cleaning up
+[map_server-12] [INFO] [1790428853.825767164] [map_server]: Cleaning up
+[map_server-12] [INFO] [1790428853.825825761] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[parameter_bridge-5] [INFO] [1790428853.829708051] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-13] [INFO] [1790428853.830532113] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[parameter_bridge-4] [INFO] [1790428853.836697807] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-12] [INFO] [1790428853.838140247] [map_server]: Destroying
+[planner_server-17] [INFO] [1790428853.839386013] [planner_server]: Destroying
+[parameter_bridge-3] [INFO] [1790428853.840799678] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-2] [INFO] [1790428853.848287126] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-14] [INFO] [1790428853.848975416] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[amcl-13] [INFO] [1790428853.851590708] [amcl]: Destroying
+[controller_server-15] [INFO] [1790428853.867468516] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[controller_server-15] [INFO] [1790428853.872674794] [local_costmap.local_costmap]: Destroying
+[controller_server-15] [INFO] [1790428853.878862768] [controller_server]: Destroying
+[INFO] [opennav_docking-24]: process has finished cleanly [pid 796001]
+[INFO] [velocity_smoother-22]: process has finished cleanly [pid 795999]
+[INFO] [waypoint_follower-21]: process has finished cleanly [pid 795998]
+[INFO] [collision_monitor-23]: process has finished cleanly [pid 796000]
+[INFO] [bt_navigator-20]: process has finished cleanly [pid 795997]
+[INFO] [route_server-18]: process has finished cleanly [pid 795995]
+[INFO] [behavior_server-19]: process has finished cleanly [pid 795996]
+[INFO] [smoother_server-16]: process has finished cleanly [pid 795993]
+[INFO] [parameter_bridge-5]: process has finished cleanly [pid 795645]
+[INFO] [parameter_bridge-4]: process has finished cleanly [pid 795644]
+[INFO] [parameter_bridge-3]: process has finished cleanly [pid 795642]
+[INFO] [map_server-12]: process has finished cleanly [pid 795989]
+[INFO] [lifecycle_manager-14]: process has finished cleanly [pid 795991]
+[INFO] [robot_state_publisher-2]: process has finished cleanly [pid 795641]
+[INFO] [planner_server-17]: process has finished cleanly [pid 795994]
+[INFO] [ekf_node-7]: process has finished cleanly [pid 795647]
+[INFO] [amcl-13]: process has finished cleanly [pid 795990]
+[INFO] [twist_to_twist_stamped_node.py-26]: process has finished cleanly [pid 796003]
+[INFO] [controller_server-15]: process has finished cleanly [pid 795992]
+[INFO] [imu_covariance_node.py-6]: process has finished cleanly [pid 795646]
+[gazebo-1] Stack trace (most recent call last) in thread 796450:
+[gazebo-1] #5    Object "[0xffffffffffffffff]", at 0xffffffffffffffff, in 
+[gazebo-1] #4    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7b4f62729ecb, in 
+[gazebo-1] #3    Object "/lib/x86_64-linux-gnu/libc.so.6", at 0x7b4f6269cb83, in 
+[gazebo-1] #2    Object "/lib/x86_64-linux-gnu/libstdc++.so.6", at 0x7b4f5ceecdb3, in 
+[gazebo-1] #1    Object "/opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8", at 0x7b4f5bf608f0, in 
+[gazebo-1] #0    Object "/opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8", at 0x7b4f5bf6aa7c, in 
+[gazebo-1] Segmentation fault (Address not mapped to object [(nil)])
+[gazebo-1] Segmentation fault (core dumped)
+[ERROR] [gazebo-1]: process has died [pid 795640, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s -v 1 /home/xiayuru/robot_ws/install/diffbot_navigation/share/diffbot_navigation/worlds/nav_benchmark_world.sdf --force-version 8'].
+[ERROR] [lifecycle_manager-25]: process[lifecycle_manager-25] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [lifecycle_manager-25]: sending signal 'SIGTERM' to process[lifecycle_manager-25]
+[ERROR] [lifecycle_manager-25]: process[lifecycle_manager-25] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[INFO] [lifecycle_manager-25]: sending signal 'SIGKILL' to process[lifecycle_manager-25]
+[ERROR] [lifecycle_manager-25]: process has died [pid 796002, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __node:=lifecycle_manager_navigation -p use_sim_time:=True --params-file /tmp/launch_params_7n29v8wc --params-file /tmp/launch_params_w64ky_50'].
+
+Script done on 2026-09-26 21:21:03+08:00 [COMMAND_EXIT_CODE="0"]

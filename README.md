@@ -25,6 +25,19 @@ The first simulation milestone is complete:
 - `/odometry/filtered` published by `ekf_filter_node` at approximately 50 Hz
 - `odom -> base_footprint` TF now published by the EKF, with `diff_drive_controller` odom TF disabled to avoid duplicate TF publishers
 - IMU covariance relay node normalizes Gazebo IMU covariance from `/imu/raw` to `/imu`
+- SLAM Toolbox mapping and Nav2 map saving validated
+- Dedicated `diffbot_navigation` package for Nav2 bringup and configuration
+- Automatic AMCL initialization for the fixed simulation spawn pose
+- Robot-specific rectangular footprint, conservative velocity limits, and tighter goal tolerances
+- Regulated Pure Pursuit control with pose-aware progress checking and filtered-odometry feedback
+- Static global planning separated from live local obstacle and collision monitoring
+- Full `/navigate_to_pose` control path validated with the Nav2 action returning `SUCCEEDED`
+- Deterministic `8.2 x 6.2 m` structured navigation map and matching Gazebo world
+- One-source benchmark layout with automatic clearance and reachability checks for five fixed goals
+- One-command benchmark simulation, localization, and Nav2 startup
+- Durable CSV logging plus offline Markdown/JSON validation reports
+- Three-repetition navigation baseline with 15/15 measured goals and 15/15
+  return-to-start actions completed successfully
 
 ## Development Environment
 
@@ -41,7 +54,7 @@ The first simulation milestone is complete:
 ```bash
 source /opt/ros/jazzy/setup.bash
 cd ~/robot_ws
-colcon build --symlink-install --packages-select robot_description
+colcon build --symlink-install --packages-select robot_description diffbot_navigation
 source install/setup.bash
 ```
 
@@ -188,24 +201,186 @@ Expected results:
 
 In the recorded validation run, SLAM Toolbox saved a `33 x 10` occupancy grid at `0.05 m/pix`.
 
-## Verify Minimal Nav2 Control Path
+## Verify the Structured Nav2 Baseline
 
 ```bash
-ros2 launch robot_description sim.launch.py
-ros2 launch nav2_bringup localization_launch.py map:=/home/xiayuru/robot_ws/maps/diffbot_slam_test.yaml use_sim_time:=true
-ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "{header: {frame_id: 'map'}, pose: {pose: {position: {x: 0.3, y: 0.0, z: 0.0}, orientation: {w: 1.0}}, covariance: [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0685]}}"
-ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
-ros2 run robot_description twist_to_twist_stamped_node.py
-ros2 action send_goal /compute_path_to_pose nav2_msgs/action/ComputePathToPose "{goal: {header: {frame_id: 'map'}, pose: {position: {x: 0.55, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}"
-ros2 action send_goal /follow_path nav2_msgs/action/FollowPath "{path: {header: {frame_id: 'map'}, poses: [{header: {frame_id: 'map'}, pose: {position: {x: 0.30, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}, {header: {frame_id: 'map'}, pose: {position: {x: 0.70, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}]}, controller_id: 'FollowPath', goal_checker_id: 'general_goal_checker'}"
+ros2 launch diffbot_navigation benchmark.launch.py
+```
+
+The launch file loads the generated benchmark world, spawns the robot at
+`(0.30, 0.00, 0.0)`, waits eight seconds for the simulator and controllers,
+then starts AMCL and Nav2 with the matching occupancy grid.
+
+In another sourced terminal, send the first fixed goal:
+
+```bash
+ros2 action send_goal /navigate_to_pose nav2_msgs/action/NavigateToPose \
+  "{pose: {header: {frame_id: 'map'}, pose: {position: {x: 2.8, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}"
 ```
 
 Expected results:
 
-- `/compute_path_to_pose` accepts the goal and returns `SUCCEEDED` with `error_code: 0`.
-- `/follow_path` accepts the path and returns `SUCCEEDED` with `error_code: 0`.
-- `twist_to_twist_stamped_node.py` converts Nav2 `geometry_msgs/msg/Twist` commands from `/cmd_vel_smoothed` to the `geometry_msgs/msg/TwistStamped` command topic required by `diff_drive_controller`.
-- `/navigate_to_pose` accepts goals, but the default Nav2 bringup still aborts during this minimal map test and requires follow-up Nav2 parameter or behavior-tree tuning.
+- AMCL initializes automatically at the fixed simulation start pose `(0.3, 0.0, 0.0)`.
+- The localization and navigation lifecycle managers report `Managed nodes are active`.
+- The map server loads a `164 x 124` map at `0.05 m/pix`.
+- `twist_to_twist_stamped_node.py` is started by the navigation launch file.
+- `/navigate_to_pose` accepts the goal and returns `SUCCEEDED` with `error_code: 0`.
+
+The benchmark layout defines these fixed targets:
+
+| Name | X (m) | Y (m) | Yaw (rad) | Scenario |
+| --- | ---: | ---: | ---: | --- |
+| `straight_east` | 2.80 | 0.00 | 0.0000 | Straight tracking |
+| `east_detour` | 2.80 | -2.00 | -1.5708 | Wall detour |
+| `south_west_corridor` | -3.00 | -2.40 | 3.1416 | Narrow corridor |
+| `north_west_turn` | -2.50 | 2.00 | 1.5708 | Multi-turn route |
+| `north_east_corridor` | 3.40 | 2.20 | 0.0000 | Wall and pillar avoidance |
+
+The first recorded structured-world run reached `straight_east` with action
+status `4` (`SUCCEEDED`) and stopped at approximately `(2.720, -0.002)` in the
+`map` frame, or about `0.080 m` planar error. This was the pre-automation
+functional check; the repeated benchmark results are recorded below.
+
+The Gazebo world and occupancy map are generated from one reviewed layout file.
+After editing the layout, regenerate the assets and verify that committed files
+are current:
+
+```bash
+python3 src/diffbot_navigation/scripts/generate_benchmark_assets.py
+python3 src/diffbot_navigation/scripts/generate_benchmark_assets.py --check
+```
+
+The `--check` command also inflates every obstacle by the configured `0.30 m`
+validation clearance and confirms that all five goal cells remain connected to
+the start. The same check runs under `colcon test`.
+
+## Run the Automated Navigation Benchmark
+
+For a complete run, including a return to the fixed start after every measured
+goal, use:
+
+```bash
+cd ~/robot_ws
+source install/setup.bash
+ros2 launch diffbot_navigation run_benchmark.launch.py repetitions:=1
+```
+
+The runner waits for `/navigate_to_pose`, executes all five goals in layout
+order, writes each completed row immediately, and shuts down the launch after
+the run. The one-command entry point runs Gazebo server-only and skips RViz so
+that automated trials do not depend on a desktop or GPU window. Before sending
+the first goal, it verifies all localization/navigation lifecycle nodes, both
+ros2_control controllers, `/navigate_to_pose`, and `map -> base_footprint`.
+By default, results are written to a timestamped CSV under
+`benchmark_results/`. An explicit output path can be supplied with
+`output_csv:=/absolute/path/results.csv`.
+
+Each CSV row contains the target and measured start/finish poses, Nav2 action
+status and error code, navigation and wall-clock durations, position and yaw
+errors, maximum recovery count, timeout state, and return-to-start status.
+The header and every completed row are flushed and synchronized to disk before
+the next trial begins, so a later failure does not discard earlier evidence.
+The runner stops if returning to the fixed start fails because later trials
+would no longer share a comparable initial condition.
+
+To validate configuration without moving the robot:
+
+```bash
+ros2 launch diffbot_navigation run_benchmark.launch.py dry_run:=true
+```
+
+This health check sends no motion goal and writes no benchmark CSV. At shutdown,
+the launch file first requests `stop: true` through Gazebo's `/server_control`
+service and then tears down the ROS graph, preventing old simulator servers and
+controller managers from contaminating the next run.
+
+To select individual goals without launching a second simulator, run the node
+against an already active benchmark stack:
+
+```bash
+ros2 run diffbot_navigation nav_benchmark_runner.py --ros-args \
+  -p dry_run:=true \
+  -p "goal_names:=['straight_east','east_detour']" \
+  -p repetitions:=2
+```
+
+The first runner smoke test executed only `straight_east`, with
+`return_to_start:=false`. It recorded `SUCCEEDED`, Nav2 error code `0`,
+`114.504 s` navigation time, `0.0755 m` final position error,
+`0.00475 rad` yaw error, and zero recoveries. This validates the measurement
+pipeline but is not a repeated benchmark result.
+
+The recorded one-command dry run confirmed all 12 managed Nav2 lifecycle nodes,
+both ros2_control controllers, the action server, and the required TF. Gazebo
+returned `data: true` to the stop request, and a host-process check found no
+remaining Gazebo server, GUI, or bridge process after launch exited.
+
+## Validate and Summarize Benchmark Results
+
+After a complete run, validate the raw CSV and write reviewable Markdown and
+machine-readable JSON reports:
+
+```bash
+ros2 run diffbot_navigation summarize_nav_benchmark.py \
+  benchmark_results/nav_benchmark_<UTC>.csv \
+  --expected-repetitions 3 \
+  --output-markdown benchmark_results/nav_benchmark_<UTC>_summary.md \
+  --output-json benchmark_results/nav_benchmark_<UTC>_summary.json
+```
+
+The command exits with code `0` only when every input run is complete and
+internally consistent. It checks the schema version, trial numbering, ordered
+coverage of all five layout goals, target coordinates, derived position/yaw
+errors, action result consistency, return-to-start status, and whether every
+measured start is within `0.12 m` and `0.15 rad` of the fixed start pose.
+Reports are replaced atomically after being synchronized to disk.
+
+Timing and pose-error statistics use successful trials only; recovery counts
+include all observed trials. Both the overall result and each goal report the
+trial count, success count, success rate, mean, standard deviation, median,
+95th percentile, minimum, and maximum where applicable. Failed trials are
+classified by timeout, action status, Nav2 error code, or return failure.
+
+Targeted smoke tests with `return_to_start:=false` can be inspected with
+`--allow-disabled-return`, but they still fail formal validation if they do not
+contain the full ordered goal set. The recorded one-goal smoke CSV is therefore
+correctly reported as incomplete rather than accepted as a benchmark.
+
+### Recorded navigation baselines
+
+The post-tuning validation run in
+`benchmark_results/nav_benchmark_20260926T140003Z.csv` passed every integrity
+gate: all five goals and all five returns succeeded, no action timed out, and
+all measured starts stayed within `0.12 m` and `0.15 rad` of the fixed start.
+The generated reports are:
+
+- `benchmark_results/nav_benchmark_20260926T140003Z_summary.md`
+- `benchmark_results/nav_benchmark_20260926T140003Z_summary.json`
+
+This is a one-repetition engineering baseline, not a repeatability claim. Its
+measured navigation times ranged from `12.527 s` to `39.250 s`, and final
+planar errors ranged from `0.0574 m` to `0.1366 m`.
+
+The formal repeated baseline is
+`benchmark_results/nav_benchmark_20260926T141653Z.csv`. It ran three complete
+repetitions without restarting Gazebo or Nav2: all `15/15` measured goals and
+all `15/15` return-to-start actions succeeded, with no timeouts or validation
+warnings. The generated reports are:
+
+- `benchmark_results/nav_benchmark_20260926T141653Z_summary.md`
+- `benchmark_results/nav_benchmark_20260926T141653Z_summary.json`
+
+Across the 15 measured goals, mean navigation time was `24.950 s` and the 95th
+percentile was `38.089 s`; mean planar error was `0.0672 m` and the 95th
+percentile was `0.0807 m`. The `north_west_turn` route exposed the largest
+variance (`24.122--46.490 s`) and one trial required 14 recoveries. It still
+passed, but this variability remains a visible optimization target rather than
+being hidden behind the aggregate success rate.
+
+The earlier failed formal runs and targeted regression artifacts remain in
+`benchmark_results/` so the controller, progress-checker, odometry-feedback,
+costmap-layering, and AMCL tuning decisions are reviewable rather than
+presented as unexplained values.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -220,10 +395,13 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 
 ## Roadmap
 
-- Add SLAM Toolbox and Nav2
+- [x] Build a larger structured navigation world and deterministic map
+- [x] Add a repeatable multi-goal runner, durable CSV logging, and validation
+- [x] Run three repeated trials and publish the raw CSV plus summary reports
+- Add a safety supervisor and controlled sensor/communication fault injection
+- Implement a fake MCU transport and a ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
 - Add FreeRTOS tasks, watchdogs, and safety mechanisms
 - Connect the MCU through micro-ROS
-- Implement a real ros2_control hardware interface
-- Perform fault-injection and quantitative tests
+- Replace the fake transport with the real STM32 hardware path

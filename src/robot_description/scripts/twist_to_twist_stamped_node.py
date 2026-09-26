@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import rclpy
 from geometry_msgs.msg import Twist, TwistStamped
+import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
 
@@ -48,11 +49,16 @@ def main(args=None):
 
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
+    except RuntimeError:
+        # A subscription may be taken just after launch shuts down the context.
+        # Preserve unexpected runtime errors while treating that race as normal.
+        if rclpy.ok():
+            raise
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':

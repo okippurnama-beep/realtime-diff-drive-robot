@@ -1,8 +1,18 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, RegisterEventHandler
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+)
+from launch.conditions import UnlessCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
@@ -38,7 +48,7 @@ def generate_launch_description():
             'diffbot.rviz',
         ]
     )
-    world_path = PathJoinSubstitution(
+    default_world_path = PathJoinSubstitution(
         [
             FindPackageShare('robot_description'),
             'worlds',
@@ -63,7 +73,11 @@ def generate_launch_description():
             ]
         ),
         launch_arguments={
-            'gz_args': ['-r -v 1 ', world_path]
+            'gz_args': [
+                LaunchConfiguration('gz_args'),
+                ' ',
+                LaunchConfiguration('world'),
+            ]
         }.items(),
     )
 
@@ -87,8 +101,14 @@ def generate_launch_description():
             'robot_description',
             '-name',
             'intern_diffbot',
+            '-x',
+            LaunchConfiguration('spawn_x'),
+            '-y',
+            LaunchConfiguration('spawn_y'),
             '-z',
-            '0.05',
+            LaunchConfiguration('spawn_z'),
+            '-Y',
+            LaunchConfiguration('spawn_yaw'),
         ],
         output='screen',
     )
@@ -96,11 +116,7 @@ def generate_launch_description():
     joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=[
-            'joint_state_broadcaster',
-            '--param-file',
-            controllers_path,
-        ],
+        arguments=['joint_state_broadcaster'],
         output='screen',
     )
 
@@ -168,6 +184,7 @@ def generate_launch_description():
         executable='rviz2',
         arguments=['-d', rviz_config],
         parameters=[{'use_sim_time': True}],
+        condition=UnlessCondition(LaunchConfiguration('headless')),
         output='screen',
     )
     start_joint_state_broadcaster = RegisterEventHandler(
@@ -186,6 +203,41 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            DeclareLaunchArgument(
+                'world',
+                default_value=default_world_path,
+                description='Absolute path to the Gazebo world SDF file.',
+            ),
+            DeclareLaunchArgument(
+                'gz_args',
+                default_value='-r -v 1',
+                description='Arguments passed to Gazebo before the world.',
+            ),
+            DeclareLaunchArgument(
+                'headless',
+                default_value='False',
+                description='Skip RViz for automated, headless runs.',
+            ),
+            DeclareLaunchArgument(
+                'spawn_x',
+                default_value='0.0',
+                description='Robot spawn X coordinate in metres.',
+            ),
+            DeclareLaunchArgument(
+                'spawn_y',
+                default_value='0.0',
+                description='Robot spawn Y coordinate in metres.',
+            ),
+            DeclareLaunchArgument(
+                'spawn_z',
+                default_value='0.05',
+                description='Robot spawn Z coordinate in metres.',
+            ),
+            DeclareLaunchArgument(
+                'spawn_yaw',
+                default_value='0.0',
+                description='Robot spawn yaw angle in radians.',
+            ),
             gazebo,
             robot_state_publisher,
             clock_bridge,

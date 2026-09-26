@@ -1,0 +1,347 @@
+{
+  "inputs": [
+    "/home/xiayuru/robot_ws/benchmark_results/nav_benchmark_20260926T123738Z.csv"
+  ],
+  "overall": {
+    "all_trial_recoveries": {
+      "count": 1,
+      "max": 0.0,
+      "mean": 0.0,
+      "min": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "stddev": 0.0
+    },
+    "failure_counts": {
+      "RETURN_CANCELED": 1
+    },
+    "success_rate_percent": 0.0,
+    "successes": 0,
+    "successful_trial_metrics": {
+      "navigation_time_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "position_error_m": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "wall_time_s": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "yaw_error_rad": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      }
+    },
+    "trials": 1
+  },
+  "per_goal": {
+    "east_detour": {
+      "all_trial_recoveries": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "failure_counts": {},
+      "success_rate_percent": 0.0,
+      "successes": 0,
+      "successful_trial_metrics": {
+        "navigation_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "position_error_m": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "wall_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "yaw_error_rad": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        }
+      },
+      "trials": 0
+    },
+    "north_east_corridor": {
+      "all_trial_recoveries": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "failure_counts": {},
+      "success_rate_percent": 0.0,
+      "successes": 0,
+      "successful_trial_metrics": {
+        "navigation_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "position_error_m": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "wall_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "yaw_error_rad": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        }
+      },
+      "trials": 0
+    },
+    "north_west_turn": {
+      "all_trial_recoveries": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "failure_counts": {},
+      "success_rate_percent": 0.0,
+      "successes": 0,
+      "successful_trial_metrics": {
+        "navigation_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "position_error_m": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "wall_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "yaw_error_rad": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        }
+      },
+      "trials": 0
+    },
+    "south_west_corridor": {
+      "all_trial_recoveries": {
+        "count": 0,
+        "max": null,
+        "mean": null,
+        "min": null,
+        "p50": null,
+        "p95": null,
+        "stddev": null
+      },
+      "failure_counts": {},
+      "success_rate_percent": 0.0,
+      "successes": 0,
+      "successful_trial_metrics": {
+        "navigation_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "position_error_m": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "wall_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "yaw_error_rad": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        }
+      },
+      "trials": 0
+    },
+    "straight_east": {
+      "all_trial_recoveries": {
+        "count": 1,
+        "max": 0.0,
+        "mean": 0.0,
+        "min": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "stddev": 0.0
+      },
+      "failure_counts": {
+        "RETURN_CANCELED": 1
+      },
+      "success_rate_percent": 0.0,
+      "successes": 0,
+      "successful_trial_metrics": {
+        "navigation_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "position_error_m": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "wall_time_s": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        },
+        "yaw_error_rad": {
+          "count": 0,
+          "max": null,
+          "mean": null,
+          "min": null,
+          "p50": null,
+          "p95": null,
+          "stddev": null
+        }
+      },
+      "trials": 1
+    }
+  },
+  "report_schema_version": 1,
+  "run_count": 1,
+  "run_ids": [
+    "20260926T123812Z"
+  ],
+  "valid": false,
+  "validation": {
+    "errors": [
+      "/home/xiayuru/robot_ws/benchmark_results/nav_benchmark_20260926T123738Z.csv:2: return_status 'CANCELED' is not valid for this report",
+      "/home/xiayuru/robot_ws/benchmark_results/nav_benchmark_20260926T123738Z.csv: run 20260926T123812Z trial_index sequence is [1], expected [1, 2, 3, 4, 5]",
+      "/home/xiayuru/robot_ws/benchmark_results/nav_benchmark_20260926T123738Z.csv: run 20260926T123812Z repetition 1 goals are ['straight_east'], expected ['straight_east', 'east_detour', 'south_west_corridor', 'north_west_turn', 'north_east_corridor']"
+    ],
+    "expected_repetitions_per_run": 1,
+    "required_return_to_start": true,
+    "start_position_tolerance_m": 0.12,
+    "start_yaw_tolerance_rad": 0.15,
+    "warnings": []
+  }
+}
