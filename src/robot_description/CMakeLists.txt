@@ -27,7 +27,9 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 install(
-  PROGRAMS scripts/imu_covariance_node.py
+  PROGRAMS
+    scripts/imu_covariance_node.py
+    scripts/twist_to_twist_stamped_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()
