@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
        name="intern_diffbot">
 
+  <xacro:arg name="use_fake_mcu" default="false"/>
+
   <material name="blue">
     <color rgba="0.10 0.30 0.80 1.0"/>
   </material>
@@ -215,37 +217,72 @@
     <child link="caster_link"/>
     <origin xyz="-0.15 0 -0.10"/>
   </joint>
-  <!-- Simulated hardware interface -->
-  <ros2_control name="GazeboSimSystem" type="system">
-    <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-    </hardware>
+  <!-- Gazebo owns the joints only in the existing physics-simulation path. -->
+  <xacro:unless value="$(arg use_fake_mcu)">
+    <ros2_control name="GazeboSimSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
 
-    <joint name="left_wheel_joint">
-      <command_interface name="velocity">
-        <param name="min">-10.0</param>
-        <param name="max">10.0</param>
-      </command_interface>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
 
-    <joint name="right_wheel_joint">
-      <command_interface name="velocity">
-        <param name="min">-10.0</param>
-        <param name="max">10.0</param>
-      </command_interface>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-  </ros2_control>
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
 
-  <!-- Load ros2_control inside Gazebo -->
-  <gazebo>
-    <plugin
-      filename="gz_ros2_control-system"
-      name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-            <parameters>$(env HOME)/robot_ws/src/diffbot_controllers.yaml</parameters>
-    </plugin>
-  </gazebo>
+    <gazebo>
+      <plugin
+        filename="gz_ros2_control-system"
+        name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+              <parameters>$(env HOME)/robot_ws/src/diffbot_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:unless>
+
+  <!-- Standalone M8 path: no Gazebo control plugin may bypass this boundary. -->
+  <xacro:if value="$(arg use_fake_mcu)">
+    <ros2_control name="DiffbotMcuSystem" type="system">
+      <hardware>
+        <plugin>diffbot_hardware/DiffbotSystemHardware</plugin>
+        <param name="left_wheel_name">left_wheel_joint</param>
+        <param name="right_wheel_name">right_wheel_joint</param>
+        <param name="encoder_counts_per_revolution">2048</param>
+        <param name="command_validity_ms">100</param>
+        <param name="state_timeout_ms">200</param>
+        <param name="activation_timeout_ms">500</param>
+        <param name="mcu_state_topic">/mcu/state</param>
+      </hardware>
+
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+  </xacro:if>
 </robot>

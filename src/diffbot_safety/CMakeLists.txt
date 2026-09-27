@@ -157,6 +157,18 @@ if(BUILD_TESTING)
     safety_supervisor_node_lib
   )
 
+  ament_add_gtest(
+    test_mcu_heartbeat
+    test/test_mcu_heartbeat.cpp
+    TIMEOUT 30
+  )
+  ament_target_dependencies(test_mcu_heartbeat
+    diffbot_interfaces
+    geometry_msgs
+    rclcpp
+  )
+  target_link_libraries(test_mcu_heartbeat safety_supervisor_node_lib)
+
   add_test(
     NAME command_chain_contract_unit
     COMMAND

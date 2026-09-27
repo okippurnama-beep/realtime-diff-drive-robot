@@ -121,6 +121,20 @@ DiffbotSystemHardware::CallbackReturn DiffbotSystemHardware::on_init(
     return CallbackReturn::ERROR;
   }
 
+  const auto node = get_node();
+  if (node) {
+    const auto topic_entry = info_.hardware_parameters.find("mcu_state_topic");
+    const std::string topic = topic_entry == info_.hardware_parameters.end() ?
+      "/mcu/state" : topic_entry->second;
+    if (topic.empty()) {
+      RCLCPP_ERROR(get_logger(), "mcu_state_topic cannot be empty");
+      return CallbackReturn::ERROR;
+    }
+    mcu_state_publisher_ = std::make_unique<realtime_tools::RealtimePublisher<
+          diffbot_interfaces::msg::McuState>>(
+      node, topic, rclcpp::QoS(10).reliable());
+  }
+
   left_position_interface_ = left_wheel_name_ + "/" + hardware_interface::HW_IF_POSITION;
   left_velocity_state_interface_ = left_wheel_name_ + "/" + hardware_interface::HW_IF_VELOCITY;
   left_velocity_command_interface_ = left_velocity_state_interface_;
@@ -401,7 +415,35 @@ bool DiffbotSystemHardware::accept_state(
   last_valid_state_time_ = received.received_at;
   have_state_sequence_ = true;
   have_valid_state_ = true;
+  if (frame.accepted_host_session_id == host_session_id_ &&
+    frame.mode == McuMode::kArmed && frame.active_faults == 0U)
+  {
+    publish_valid_state(frame);
+  }
   return true;
+}
+
+void DiffbotSystemHardware::publish_valid_state(const McuStateFrame & frame) noexcept
+{
+  if (!mcu_state_publisher_) {
+    return;
+  }
+  diffbot_interfaces::msg::McuState message;
+  message.protocol_version = frame.protocol_version;
+  message.mcu_boot_id = frame.mcu_boot_id;
+  message.state_sequence = frame.state_sequence;
+  message.accepted_host_session_id = frame.accepted_host_session_id;
+  message.last_accepted_command_sequence = frame.last_accepted_command_sequence;
+  message.mcu_uptime_ms = frame.mcu_uptime_ms;
+  message.mode = static_cast<std::uint8_t>(frame.mode);
+  message.active_faults = frame.active_faults;
+  message.left_encoder_count = frame.left_encoder_count;
+  message.right_encoder_count = frame.right_encoder_count;
+  message.left_velocity_mrad_s = frame.left_velocity_mrad_s;
+  message.right_velocity_mrad_s = frame.right_velocity_mrad_s;
+  message.last_command_age_ms = frame.last_command_age_ms;
+  message.control_loop_overrun_count = frame.control_loop_overrun_count;
+  static_cast<void>(mcu_state_publisher_->try_publish(message));
 }
 
 bool DiffbotSystemHardware::copy_feedback(const McuStateFrame & frame)

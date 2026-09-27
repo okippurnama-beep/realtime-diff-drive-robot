@@ -1,0 +1,28 @@
+safety_supervisor:
+  ros__parameters:
+    control_frequency_hz: 50.0
+    status_frequency_hz: 10.0
+
+    command_timeout_sec: 0.30
+    scan_timeout_sec: 0.50
+    odom_timeout_sec: 0.50
+    mcu_heartbeat_timeout_sec: 0.20
+    reset_health_hold_sec: 0.50
+
+    max_forward_velocity: 0.25
+    max_reverse_velocity: 0.10
+    max_angular_velocity: 1.0
+    zero_velocity_epsilon: 0.0001
+
+    require_scan: false
+    require_odom: false
+    require_nav2_active: false
+    require_mcu_heartbeat: true
+
+    input_command_topic: /cmd_vel_m8
+    output_command_topic: /cmd_vel_safe
+    mcu_state_topic: /mcu/state
+    status_topic: /safety/status
+    diagnostics_topic: /diagnostics
+    estop_topic: /safety/estop
+    reset_service: /safety/reset

@@ -577,7 +577,7 @@ injection boundary to the first zero observed on `/cmd_vel_safe`. They do not
 measure wheel deceleration, stopping distance, STM32/micro-ROS latency, or
 functional-safety certification performance.
 
-## Verify the M8.1-M8.3 Virtual MCU Boundary
+## Verify the M8.1-M8.4 Virtual MCU Boundary
 
 M8 currently provides a versioned fixed-size MCU contract, a deterministic
 in-process fake MCU, and the exported
@@ -601,13 +601,29 @@ write callbacks use cached interfaces and do not wait for recovery; stale
 feedback, a changed boot ID, a session mismatch, an MCU fault, or an invalid
 command returns `ERROR` for lifecycle handling.
 
-M8.3 deliberately does not change the existing Gazebo navigation launch path.
-M8.4 will add a separate fake-hardware launch profile, prove that controllers
-use this plugin without a Gazebo control bypass, and derive the M7 MCU heartbeat
-only from valid fresh state. No virtual-transport latency or physical stopping
-claim is made at this stage. The final M8.3 five-package regression reported
-`227 tests, 0 errors, 0 failures, 21 skipped`; all skips are Jazzy's known
-slow-version cppcheck exclusions.
+M8.4 keeps the existing Gazebo path unchanged and adds a standalone no-bypass
+profile:
+
+```bash
+source install/setup.bash
+ros2 launch robot_description fake_mcu.launch.py headless:=true
+```
+
+In another terminal, confirm both controllers, the single-owner heartbeat
+edge, and the M7 status:
+
+```bash
+source install/setup.bash
+ros2 control list_controllers
+ros2 topic info /mcu/state --verbose
+ros2 topic echo /safety/status --once
+```
+
+Only validated, fresh, session-matching `ARMED` feedback is published by the
+hardware plugin. M7 then rejects malformed, faulted, or duplicate state frames
+before refreshing the heartbeat. This profile is an interface and failure-path
+test; it is not a physics simulation, virtual-transport latency result, or
+physical stopping claim.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -632,7 +648,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Freeze the M8 virtual-MCU protocol, fault model, and `SystemInterface` boundary
 - [x] Implement the deterministic fake MCU core and transport
 - [x] Implement and lifecycle-test the ros2_control `SystemInterface`
-- Add the separate fake-hardware launch path and M7 MCU-heartbeat integration
+- [x] Add the separate fake-hardware launch path and M7 MCU-heartbeat integration
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
 - Add FreeRTOS tasks, watchdogs, and safety mechanisms

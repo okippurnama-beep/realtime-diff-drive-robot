@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.8)
 project(diffbot_hardware)
 
 find_package(ament_cmake REQUIRED)
+find_package(diffbot_interfaces REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
+find_package(realtime_tools REQUIRED)
 
 add_library(mcu_contract INTERFACE)
 target_compile_features(mcu_contract INTERFACE cxx_std_17)
@@ -38,10 +40,12 @@ target_include_directories(diffbot_system_hardware
     $<INSTALL_INTERFACE:include>
 )
 ament_target_dependencies(diffbot_system_hardware
+  diffbot_interfaces
   hardware_interface
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  realtime_tools
 )
 target_link_libraries(diffbot_system_hardware fake_mcu)
 
@@ -64,12 +68,18 @@ install(
 
 ament_export_targets(export_${PROJECT_NAME})
 ament_export_include_directories(include)
-ament_export_dependencies(hardware_interface pluginlib rclcpp rclcpp_lifecycle)
+ament_export_dependencies(
+  diffbot_interfaces
+  hardware_interface
+  pluginlib
+  rclcpp
+  rclcpp_lifecycle
+  realtime_tools
+)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(ament_lint_auto REQUIRED)
-  find_package(diffbot_interfaces REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
   ament_add_gtest(test_mcu_protocol test/test_mcu_protocol.cpp)

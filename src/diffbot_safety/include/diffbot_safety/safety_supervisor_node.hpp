@@ -23,6 +23,7 @@
 #include <string>
 
 #include "diagnostic_msgs/msg/diagnostic_array.hpp"
+#include "diffbot_interfaces/msg/mcu_state.hpp"
 #include "diffbot_interfaces/msg/safety_status.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
@@ -74,6 +75,8 @@ private:
   void command_callback(const geometry_msgs::msg::Twist::SharedPtr message);
   void scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr message);
   void odom_callback(const nav_msgs::msg::Odometry::SharedPtr message);
+  void mcu_state_callback(
+    const diffbot_interfaces::msg::McuState::SharedPtr message);
   void estop_callback(const std_msgs::msg::Bool::SharedPtr message);
   void reset_callback(
     const Trigger::Request::SharedPtr request,
@@ -120,6 +123,11 @@ private:
   SteadyTimePoint last_scan_time_{};
   bool odom_seen_{false};
   SteadyTimePoint last_odom_time_{};
+  bool mcu_heartbeat_seen_{false};
+  SteadyTimePoint last_mcu_heartbeat_time_{};
+  std::uint32_t mcu_boot_id_{0U};
+  std::uint32_t mcu_session_id_{0U};
+  std::uint32_t mcu_state_sequence_{0U};
   bool emergency_stop_{false};
   ManagerHealth localization_health_;
   ManagerHealth navigation_health_;
@@ -137,6 +145,8 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr command_sub_;
   rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Subscription<diffbot_interfaces::msg::McuState>::SharedPtr
+    mcu_state_sub_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr estop_sub_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr command_pub_;
   rclcpp::Publisher<diffbot_interfaces::msg::SafetyStatus>::SharedPtr status_pub_;

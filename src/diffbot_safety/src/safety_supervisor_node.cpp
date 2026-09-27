@@ -63,6 +63,13 @@ std::string duration_string(const Duration value)
   return std::to_string(std::chrono::duration<double>(value).count());
 }
 
+bool sequence_is_newer(
+  const std::uint32_t candidate, const std::uint32_t reference)
+{
+  const auto distance = static_cast<std::uint32_t>(candidate - reference);
+  return distance != 0U && distance < 0x80000000U;
+}
+
 }  // namespace
 
 SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
@@ -88,6 +95,8 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
   const std::string scan_topic = declare_parameter("scan_topic", "/scan");
   const std::string odom_topic = declare_parameter(
     "odom_topic", "/odometry/filtered");
+  const std::string mcu_state_topic = declare_parameter(
+    "mcu_state_topic", "/mcu/state");
   const std::string output_command_topic = declare_parameter(
     "output_command_topic", "/cmd_vel_safe");
   const std::string status_topic = declare_parameter(
@@ -108,6 +117,7 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
   validate_topic(input_command_topic, "input_command_topic");
   validate_topic(scan_topic, "scan_topic");
   validate_topic(odom_topic, "odom_topic");
+  validate_topic(mcu_state_topic, "mcu_state_topic");
   validate_topic(output_command_topic, "output_command_topic");
   validate_topic(status_topic, "status_topic");
   validate_topic(diagnostics_topic, "diagnostics_topic");
@@ -156,6 +166,13 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
     rclcpp::QoS(10).reliable(),
     std::bind(
       &SafetySupervisorNode::odom_callback,
+      this,
+      std::placeholders::_1));
+  mcu_state_sub_ = create_subscription<diffbot_interfaces::msg::McuState>(
+    mcu_state_topic,
+    rclcpp::QoS(10).reliable(),
+    std::bind(
+      &SafetySupervisorNode::mcu_state_callback,
       this,
       std::placeholders::_1));
   estop_sub_ = create_subscription<std_msgs::msg::Bool>(
@@ -268,6 +285,36 @@ void SafetySupervisorNode::odom_callback(
   std::lock_guard<std::mutex> lock(input_mutex_);
   odom_seen_ = true;
   last_odom_time_ = SteadyClock::now();
+}
+
+void SafetySupervisorNode::mcu_state_callback(
+  const diffbot_interfaces::msg::McuState::SharedPtr message)
+{
+  using McuState = diffbot_interfaces::msg::McuState;
+  if (message->protocol_version != McuState::PROTOCOL_VERSION_CURRENT ||
+    message->mcu_boot_id == 0U ||
+    message->accepted_host_session_id == 0U ||
+    message->mode != McuState::MODE_ARMED ||
+    message->active_faults != McuState::FAULT_NONE)
+  {
+    return;
+  }
+
+  std::lock_guard<std::mutex> lock(input_mutex_);
+  const bool same_session = mcu_heartbeat_seen_ &&
+    message->mcu_boot_id == mcu_boot_id_ &&
+    message->accepted_host_session_id == mcu_session_id_;
+  if (same_session &&
+    !sequence_is_newer(message->state_sequence, mcu_state_sequence_))
+  {
+    return;
+  }
+
+  mcu_heartbeat_seen_ = true;
+  last_mcu_heartbeat_time_ = SteadyClock::now();
+  mcu_boot_id_ = message->mcu_boot_id;
+  mcu_session_id_ = message->accepted_host_session_id;
+  mcu_state_sequence_ = message->state_sequence;
 }
 
 void SafetySupervisorNode::estop_callback(
@@ -460,6 +507,11 @@ SafetySnapshot SafetySupervisorNode::make_snapshot(
   snapshot.odom_seen = odom_seen_;
   if (odom_seen_) {
     snapshot.odom_age = now - last_odom_time_;
+  }
+
+  snapshot.mcu_heartbeat_seen = mcu_heartbeat_seen_;
+  if (mcu_heartbeat_seen_) {
+    snapshot.mcu_heartbeat_age = now - last_mcu_heartbeat_time_;
   }
 
   snapshot.nav2_active =

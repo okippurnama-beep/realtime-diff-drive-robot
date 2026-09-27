@@ -277,3 +277,33 @@ The final five-package M6/M7/M8 build and regression completed with
 Jazzy cppcheck slow-version exclusions for the M7/M8 C++ packages, not failed
 functional tests. No transport-latency or physical-motion measurement was
 added in M8.3.
+
+## M8.4 Implementation Result (2026-09-27)
+
+M8.4 adds a standalone `fake_mcu.launch.py` profile. The Xacro now emits
+exactly one hardware owner: the original profile contains only
+`GazeboSimSystem` and the Gazebo control plugin, while `use_fake_mcu:=true`
+contains only `DiffbotMcuSystem`. This prevents a Gazebo joint path from
+bypassing the virtual MCU boundary.
+
+The hardware plugin publishes `/mcu/state` with a realtime publisher only
+after a frame passes protocol, boot ID, session, state-sequence, mode, fault,
+receive-time, and freshness validation. The M7 supervisor independently
+requires protocol v1, nonzero boot/session IDs, `ARMED`, zero MCU faults, and a
+newer state sequence before refreshing its MCU heartbeat. Invalid, faulted,
+and duplicate frames therefore cannot keep the command gate healthy.
+
+The standalone runtime was exercised with both controllers active. The ROS
+graph had one `/mcu/state` publisher (the hardware component), one subscriber
+(the safety supervisor), one `/cmd_vel_safe` publisher, and one command-adapter
+subscriber. A 1 s, 0.12 m/s command produced equal wheel feedback positions of
+2.01565 rad before a zero command. The deliberately slow CLI handoff also
+triggered the existing command-stale latch; sustained zero input followed by
+`/safety/reset` returned `reset accepted` and `READY`, showing that the M7 gate
+remains authoritative in the M8 path.
+
+New node-level tests prove that faulted MCU frames and repeated state sequence
+numbers cannot refresh the heartbeat. The final targeted results were
+`81 tests, 0 errors, 0 failures, 12 skipped` for `diffbot_hardware` and
+`87 tests, 0 errors, 0 failures, 10 skipped` for `diffbot_safety`; skips remain
+the installed Jazzy slow-cppcheck exclusions.
