@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Static contract tests for the M7.2-M7.3 runtime safety chain."""
+"""Static contract tests for the M7.2-M7.4 runtime safety chain."""
 
 from pathlib import Path
 import unittest
@@ -140,6 +140,12 @@ class CommandChainContractTest(unittest.TestCase):
             '/lifecycle_manager_navigation/is_active',
         )
         self.assertEqual(self.safety['diagnostics_topic'], '/diagnostics')
+
+    def test_m7_4_exposes_guarded_estop_and_reset_interfaces(self):
+        self.assertEqual(self.safety['estop_topic'], '/safety/estop')
+        self.assertEqual(self.safety['reset_service'], '/safety/reset')
+        self.assertEqual(self.safety['reset_health_hold_sec'], 0.50)
+        self.assertNotIn('automatic_reset', self.safety)
 
 
 if __name__ == '__main__':

@@ -347,8 +347,8 @@ the following are true:
 5. No active fault bit remains.
 6. All required conditions have remained healthy continuously for 0.50 s.
 
-M7.4 will extend the pure policy snapshot with recovery-health duration and
-will reject a reset when the zero command itself is stale. This prevents a
+M7.4 extends the pure policy snapshot with recovery-health duration and
+rejects a reset when the zero command itself is stale. This prevents a
 disconnected command source from being mistaken for a deliberate safe command.
 
 Rejected resets return `success: false` and a deterministic reason, for
@@ -372,6 +372,37 @@ There is no automatic reset parameter.
   prevents arming.
 - Restarting or killing the supervisor cannot bypass the controller's 0.5 s
   command timeout.
+
+### M7.4 implementation result (2026-09-27)
+
+M7.4 is implemented. The supervisor subscribes to the reliable,
+transient-local `/safety/estop` input and invokes its control path immediately
+when stop is asserted. Releasing the input leaves the policy latched. The
+`/safety/reset` Trigger service reports deterministic rejection reasons and
+only accepts a reset after fresh scan, odometry, Nav2 lifecycle health, and an
+explicit fresh zero command have remained healthy for the configured `0.50 s`.
+
+The policy test suite contains 13 deterministic no-ROS cases. Six ROS GTests
+cover E-stop from READY and startup, reset while asserted, release without
+automatic resume, stale sensor/Nav2/command rejection, the full recovery hold,
+no replay of the pre-fault command, and a retained stop published before node
+startup. The READY E-stop case enforces the command-level `40 ms` test bound.
+The static configuration contract also pins the public topic, service, hold
+duration, and absence of an automatic-reset option.
+
+The Gazebo acceptance run also passed. It entered `ESTOP_LATCHED` with
+`MANUAL_ESTOP`, published zero, rejected reset while asserted, remained latched
+after release, and rejected reset without a fresh zero command. A temporary
+test-only zero publisher at the supervisor input then satisfied the full
+recovery hold; reset returned `reset accepted`, state returned to `READY`, and
+output remained zero. After removing that publisher, the four-link runtime
+graph gate again reported `PASS`. The four affected packages reported
+`129 tests, 0 errors, 0 failures, 9 skipped`; all skipped checks are the known
+Jazzy slow-version cppcheck handling.
+
+These results validate the implementation contract but are not a physical
+stopping-distance measurement. Production-threshold latency and stopping
+distance remain future measured acceptance work.
 
 ## Test Architecture
 

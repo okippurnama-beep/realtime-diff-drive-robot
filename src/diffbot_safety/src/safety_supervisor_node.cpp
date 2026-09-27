@@ -94,6 +94,10 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
     "status_topic", "/safety/status");
   const std::string diagnostics_topic = declare_parameter(
     "diagnostics_topic", "/diagnostics");
+  const std::string estop_topic = declare_parameter(
+    "estop_topic", "/safety/estop");
+  const std::string reset_service = declare_parameter(
+    "reset_service", "/safety/reset");
   const std::string localization_manager_service = declare_parameter(
     "localization_manager_service",
     "/lifecycle_manager_localization/is_active");
@@ -107,6 +111,8 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
   validate_topic(output_command_topic, "output_command_topic");
   validate_topic(status_topic, "status_topic");
   validate_topic(diagnostics_topic, "diagnostics_topic");
+  validate_topic(estop_topic, "estop_topic");
+  validate_topic(reset_service, "reset_service");
   validate_topic(
     localization_manager_service,
     "localization_manager_service");
@@ -123,6 +129,13 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
     localization_manager_service);
   navigation_health_client_ = create_client<Trigger>(
     navigation_manager_service);
+  reset_service_ = create_service<Trigger>(
+    reset_service,
+    std::bind(
+      &SafetySupervisorNode::reset_callback,
+      this,
+      std::placeholders::_1,
+      std::placeholders::_2));
 
   command_sub_ = create_subscription<geometry_msgs::msg::Twist>(
     input_command_topic,
@@ -143,6 +156,13 @@ SafetySupervisorNode::SafetySupervisorNode(const rclcpp::NodeOptions & options)
     rclcpp::QoS(10).reliable(),
     std::bind(
       &SafetySupervisorNode::odom_callback,
+      this,
+      std::placeholders::_1));
+  estop_sub_ = create_subscription<std_msgs::msg::Bool>(
+    estop_topic,
+    rclcpp::QoS(1).reliable().transient_local(),
+    std::bind(
+      &SafetySupervisorNode::estop_callback,
       this,
       std::placeholders::_1));
 
@@ -178,6 +198,9 @@ SafetyConfig SafetySupervisorNode::declare_and_load_config()
   config.mcu_heartbeat_timeout = checked_positive_seconds(
     declare_parameter("mcu_heartbeat_timeout_sec", 0.20),
     "mcu_heartbeat_timeout_sec");
+  config.reset_health_hold = checked_positive_seconds(
+    declare_parameter("reset_health_hold_sec", 0.50),
+    "reset_health_hold_sec");
 
   config.max_forward_velocity = declare_parameter(
     "max_forward_velocity", 0.25);
@@ -245,6 +268,40 @@ void SafetySupervisorNode::odom_callback(
   std::lock_guard<std::mutex> lock(input_mutex_);
   odom_seen_ = true;
   last_odom_time_ = SteadyClock::now();
+}
+
+void SafetySupervisorNode::estop_callback(
+  const std_msgs::msg::Bool::SharedPtr message)
+{
+  {
+    std::lock_guard<std::mutex> lock(input_mutex_);
+    emergency_stop_ = message->data;
+  }
+  if (message->data) {
+    recovery_health_since_.reset();
+  }
+  control_cycle();
+}
+
+void SafetySupervisorNode::reset_callback(
+  const Trigger::Request::SharedPtr request,
+  Trigger::Response::SharedPtr response)
+{
+  (void)request;
+  const SteadyTimePoint now = SteadyClock::now();
+  SafetySnapshot snapshot = make_snapshot(now);
+  update_recovery_health(snapshot, now);
+  const ResetResult result = policy_->reset(snapshot);
+  response->success = result.accepted;
+  response->message = result.message;
+
+  if (result.accepted) {
+    recovery_health_since_.reset();
+    RCLCPP_INFO(get_logger(), "%s", result.message.c_str());
+    control_cycle();
+  } else {
+    RCLCPP_WARN(get_logger(), "%s", result.message.c_str());
+  }
 }
 
 void SafetySupervisorNode::poll_nav2_health()
@@ -344,7 +401,8 @@ void SafetySupervisorNode::manager_response_callback(
 void SafetySupervisorNode::control_cycle()
 {
   const SteadyTimePoint now = SteadyClock::now();
-  const SafetySnapshot snapshot = make_snapshot(now);
+  SafetySnapshot snapshot = make_snapshot(now);
+  update_recovery_health(snapshot, now);
   const SafetyDecision decision = policy_->evaluate(snapshot);
   const bool state_changed = !last_state_.has_value() ||
     decision.state != last_state_.value();
@@ -361,6 +419,25 @@ void SafetySupervisorNode::control_cycle()
       fault_mask_to_string(decision.latched_faults).c_str());
     last_state_ = decision.state;
   }
+}
+
+void SafetySupervisorNode::update_recovery_health(
+  SafetySnapshot & snapshot,
+  const SteadyTimePoint now)
+{
+  const SafetyState state = policy_->state();
+  const bool latched = state == SafetyState::kFaultLatched ||
+    state == SafetyState::kEstopLatched;
+  if (!latched || !policy_->reset_inputs_healthy(snapshot)) {
+    recovery_health_since_.reset();
+    snapshot.recovery_health_duration = Duration::zero();
+    return;
+  }
+
+  if (!recovery_health_since_.has_value()) {
+    recovery_health_since_ = now;
+  }
+  snapshot.recovery_health_duration = now - recovery_health_since_.value();
 }
 
 SafetySnapshot SafetySupervisorNode::make_snapshot(
@@ -388,6 +465,7 @@ SafetySnapshot SafetySupervisorNode::make_snapshot(
   snapshot.nav2_active =
     manager_is_healthy(localization_health_, now) &&
     manager_is_healthy(navigation_health_, now);
+  snapshot.emergency_stop = emergency_stop_;
 
   return snapshot;
 }
@@ -507,6 +585,11 @@ void SafetySupervisorNode::publish_diagnostics(
           snapshot.mcu_heartbeat_seen,
           snapshot.mcu_heartbeat_age))),
     diagnostic_value(
+      "emergency_stop", bool_string(snapshot.emergency_stop)),
+    diagnostic_value(
+      "recovery_health_duration_sec",
+      duration_string(snapshot.recovery_health_duration)),
+    diagnostic_value(
       "localization_manager_response_seen",
       bool_string(localization.response_seen)),
     diagnostic_value(
@@ -545,6 +628,8 @@ void SafetySupervisorNode::publish_diagnostics(
       "nav2_poll_period_sec", duration_string(nav2_poll_period_)),
     diagnostic_value(
       "nav2_health_timeout_sec", duration_string(nav2_health_timeout_)),
+    diagnostic_value(
+      "reset_health_hold_sec", duration_string(config.reset_health_hold)),
   };
   array.status.push_back(std::move(status));
   diagnostics_pub_->publish(array);

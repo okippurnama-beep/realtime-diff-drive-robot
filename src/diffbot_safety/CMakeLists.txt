@@ -8,6 +8,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 
 add_library(safety_policy src/safety_policy.cpp)
@@ -32,6 +33,7 @@ ament_target_dependencies(safety_supervisor_node_lib
   nav_msgs
   rclcpp
   sensor_msgs
+  std_msgs
   std_srvs
 )
 target_link_libraries(safety_supervisor_node_lib safety_policy)
@@ -80,6 +82,7 @@ ament_export_dependencies(
   nav_msgs
   rclcpp
   sensor_msgs
+  std_msgs
   std_srvs
 )
 
@@ -104,6 +107,7 @@ if(BUILD_TESTING)
     nav_msgs
     rclcpp
     sensor_msgs
+    std_msgs
     std_srvs
   )
   target_link_libraries(
@@ -123,10 +127,30 @@ if(BUILD_TESTING)
     nav_msgs
     rclcpp
     sensor_msgs
+    std_msgs
     std_srvs
   )
   target_link_libraries(
     test_safety_watchdogs
+    safety_supervisor_node_lib
+  )
+
+  ament_add_gtest(
+    test_safety_estop_reset
+    test/test_safety_estop_reset.cpp
+    TIMEOUT 60
+  )
+  ament_target_dependencies(test_safety_estop_reset
+    diffbot_interfaces
+    geometry_msgs
+    nav_msgs
+    rclcpp
+    sensor_msgs
+    std_msgs
+    std_srvs
+  )
+  target_link_libraries(
+    test_safety_estop_reset
     safety_supervisor_node_lib
   )
 

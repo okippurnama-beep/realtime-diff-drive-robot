@@ -15,6 +15,8 @@
 #include "diffbot_safety/safety_policy.hpp"
 
 #include <cmath>
+#include <iomanip>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -44,6 +46,9 @@ SafetyPolicy::SafetyPolicy(SafetyConfig config)
   validate_positive_duration(
     config_.mcu_heartbeat_timeout,
     "mcu_heartbeat_timeout");
+  validate_positive_duration(
+    config_.reset_health_hold,
+    "reset_health_hold");
 
   if (!std::isfinite(config_.max_forward_velocity) ||
     !std::isfinite(config_.max_reverse_velocity) ||
@@ -101,25 +106,45 @@ SafetyDecision SafetyPolicy::evaluate(const SafetySnapshot & snapshot)
   return make_decision(snapshot, active_faults);
 }
 
-bool SafetyPolicy::reset(const SafetySnapshot & snapshot)
+ResetResult SafetyPolicy::reset(const SafetySnapshot & snapshot)
 {
   if (state_ != SafetyState::kFaultLatched &&
     state_ != SafetyState::kEstopLatched)
   {
-    return false;
+    return {false, "reset rejected: state is not latched"};
   }
 
   const FaultMask active_faults = detect_active_faults(snapshot);
-  if (active_faults != to_mask(Fault::kNone)) {
-    return false;
+  if (has_fault(active_faults, Fault::kManualEstop)) {
+    return {false, "reset rejected: MANUAL_ESTOP active"};
   }
-  if (snapshot.command_seen && !command_is_zero(snapshot.command)) {
-    return false;
+  if (active_faults != to_mask(Fault::kNone)) {
+    return {
+      false,
+      "reset rejected: " + fault_mask_to_string(active_faults) + " active"};
+  }
+  if (!command_is_fresh_zero(snapshot)) {
+    return {false, "reset rejected: fresh zero command required"};
+  }
+  if (snapshot.recovery_health_duration < config_.reset_health_hold) {
+    std::ostringstream reason;
+    reason << "reset rejected: recovery hold " << std::fixed <<
+      std::setprecision(2) <<
+      std::chrono::duration<double>(config_.reset_health_hold).count() <<
+      " s not satisfied";
+    return {false, reason.str()};
   }
 
   latched_faults_ = to_mask(Fault::kNone);
   state_ = SafetyState::kReady;
-  return true;
+  return {true, "reset accepted"};
+}
+
+bool SafetyPolicy::reset_inputs_healthy(
+  const SafetySnapshot & snapshot) const
+{
+  return detect_active_faults(snapshot) == to_mask(Fault::kNone) &&
+         command_is_fresh_zero(snapshot);
 }
 
 SafetyState SafetyPolicy::state() const noexcept
@@ -216,6 +241,16 @@ bool SafetyPolicy::command_exceeds_limits(
          std::abs(command.linear_z) > config_.zero_velocity_epsilon ||
          std::abs(command.angular_x) > config_.zero_velocity_epsilon ||
          std::abs(command.angular_y) > config_.zero_velocity_epsilon;
+}
+
+bool SafetyPolicy::command_is_fresh_zero(
+  const SafetySnapshot & snapshot) const
+{
+  return snapshot.command_seen &&
+         snapshot.command_age <= config_.command_timeout &&
+         command_is_finite(snapshot.command) &&
+         !command_exceeds_limits(snapshot.command) &&
+         command_is_zero(snapshot.command);
 }
 
 SafetyDecision SafetyPolicy::make_decision(

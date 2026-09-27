@@ -9,6 +9,8 @@ safety_supervisor:
     output_command_topic: /cmd_vel_safe
     status_topic: /safety/status
     diagnostics_topic: /diagnostics
+    estop_topic: /safety/estop
+    reset_service: /safety/reset
 
     localization_manager_service: /lifecycle_manager_localization/is_active
     navigation_manager_service: /lifecycle_manager_navigation/is_active
@@ -19,6 +21,7 @@ safety_supervisor:
     mcu_heartbeat_timeout_sec: 0.20
     nav2_poll_period_sec: 0.25
     nav2_health_timeout_sec: 1.00
+    reset_health_hold_sec: 0.50
 
     max_forward_velocity: 0.25
     max_reverse_velocity: 0.10

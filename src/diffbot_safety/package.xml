@@ -16,6 +16,7 @@
   <depend>rclcpp</depend>
   <exec_depend>rclpy</exec_depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>std_srvs</depend>
 
   <exec_depend>ament_index_python</exec_depend>

@@ -109,7 +109,10 @@ TEST(SafetyPolicyTest, LatchesSensorFaultUntilExplicitReset)
   EXPECT_EQ(recovered_but_latched.state, SafetyState::kFaultLatched);
   EXPECT_EQ(recovered_but_latched.active_faults, to_mask(Fault::kNone));
 
-  EXPECT_TRUE(policy.reset(snapshot));
+  snapshot.command_seen = true;
+  snapshot.command_age = 10ms;
+  snapshot.recovery_health_duration = 500ms;
+  EXPECT_TRUE(policy.reset(snapshot).accepted);
   EXPECT_EQ(policy.state(), SafetyState::kReady);
   EXPECT_EQ(policy.latched_faults(), to_mask(Fault::kNone));
 }
@@ -124,10 +127,16 @@ TEST(SafetyPolicyTest, EstopHasPriorityAndCannotResetWhileAsserted)
   const auto estopped = policy.evaluate(snapshot);
   EXPECT_EQ(estopped.state, SafetyState::kEstopLatched);
   EXPECT_TRUE(has_fault(estopped.latched_faults, Fault::kManualEstop));
-  EXPECT_FALSE(policy.reset(snapshot));
+  EXPECT_FALSE(policy.reset(snapshot).accepted);
+  EXPECT_EQ(
+    policy.reset(snapshot).message,
+    "reset rejected: MANUAL_ESTOP active");
 
   snapshot.emergency_stop = false;
-  EXPECT_TRUE(policy.reset(snapshot));
+  snapshot.command_seen = true;
+  snapshot.command_age = 10ms;
+  snapshot.recovery_health_duration = 500ms;
+  EXPECT_TRUE(policy.reset(snapshot).accepted);
   EXPECT_EQ(policy.state(), SafetyState::kReady);
 }
 
@@ -173,13 +182,75 @@ TEST(SafetyPolicyTest, ResetRequiresRecoveredHealthAndZeroCommand)
 
   snapshot.odom_age = 300ms;
   policy.evaluate(snapshot);
-  EXPECT_FALSE(policy.reset(snapshot));
+  EXPECT_FALSE(policy.reset(snapshot).accepted);
 
   snapshot.odom_age = 10ms;
-  EXPECT_FALSE(policy.reset(snapshot));
+  EXPECT_FALSE(policy.reset(snapshot).accepted);
 
   snapshot.command = MotionCommand{};
-  EXPECT_TRUE(policy.reset(snapshot));
+  snapshot.recovery_health_duration = 500ms;
+  EXPECT_TRUE(policy.reset(snapshot).accepted);
+}
+
+TEST(SafetyPolicyTest, ResetRequiresFreshZeroAndContinuousHealthHold)
+{
+  SafetyPolicy policy;
+  auto snapshot = healthy_snapshot();
+  policy.evaluate(snapshot);
+
+  snapshot.scan_age = 600ms;
+  policy.evaluate(snapshot);
+  snapshot.scan_age = 10ms;
+
+  auto result = policy.reset(snapshot);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_EQ(result.message, "reset rejected: fresh zero command required");
+
+  snapshot.command_seen = true;
+  snapshot.command_age = 301ms;
+  result = policy.reset(snapshot);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_EQ(result.message, "reset rejected: fresh zero command required");
+
+  snapshot.command_age = 10ms;
+  snapshot.command.linear_x = 0.1;
+  result = policy.reset(snapshot);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_EQ(result.message, "reset rejected: fresh zero command required");
+
+  snapshot.command = MotionCommand{};
+  snapshot.recovery_health_duration = 499ms;
+  EXPECT_TRUE(policy.reset_inputs_healthy(snapshot));
+  result = policy.reset(snapshot);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_EQ(
+    result.message,
+    "reset rejected: recovery hold 0.50 s not satisfied");
+
+  snapshot.recovery_health_duration = 500ms;
+  result = policy.reset(snapshot);
+  EXPECT_TRUE(result.accepted);
+  EXPECT_EQ(result.message, "reset accepted");
+}
+
+TEST(SafetyPolicyTest, ResetReportsRecoveredSensorAndNav2Faults)
+{
+  SafetyPolicy policy;
+  auto snapshot = healthy_snapshot();
+  policy.evaluate(snapshot);
+
+  snapshot.scan_age = 600ms;
+  snapshot.nav2_active = false;
+  policy.evaluate(snapshot);
+  snapshot.command_seen = true;
+  snapshot.command_age = 10ms;
+  snapshot.recovery_health_duration = 500ms;
+
+  const auto result = policy.reset(snapshot);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_EQ(
+    result.message,
+    "reset rejected: SCAN_STALE|NAV2_INACTIVE active");
 }
 
 TEST(SafetyPolicyTest, RejectsInvalidAndOutOfRangeCommands)
@@ -223,6 +294,10 @@ TEST(SafetyPolicyTest, RejectsInvalidConfiguration)
 {
   SafetyConfig config;
   config.command_timeout = Duration::zero();
+  EXPECT_THROW(SafetyPolicy policy(config), std::invalid_argument);
+
+  config = SafetyConfig{};
+  config.reset_health_hold = Duration::zero();
   EXPECT_THROW(SafetyPolicy policy(config), std::invalid_argument);
 
   config = SafetyConfig{};

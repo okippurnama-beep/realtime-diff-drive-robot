@@ -389,7 +389,7 @@ The earlier failed formal runs and targeted regression artifacts remain in
 costmap-layering, and AMCL tuning decisions are reviewable rather than
 presented as unexplained values.
 
-## Verify the M7.2-M7.3 Runtime Safety Gate
+## Verify the M7.2-M7.4 Runtime Safety Gate
 
 The navigation launch now owns one explicit command path:
 
@@ -438,8 +438,8 @@ active or latched safety faults. The four-package regression suite reported
 `104 tests, 0 errors, 0 failures, 7 skipped`; the skipped items are Jazzy's
 default handling of a known slow cppcheck version.
 
-M7.2 deliberately does not yet expose operator E-stop/reset services or claim
-watchdog response latency.
+M7.2 deliberately introduced the no-bypass command gate before operator
+E-stop/reset behavior was enabled in M7.4.
 
 M7.3 adds steady-clock watchdogs for nonzero commands, laser scans, filtered
 odometry, and both Nav2 lifecycle managers. The lifecycle checks use
@@ -469,9 +469,45 @@ four-package regression suite reported `116 tests, 0 errors, 0 failures, 8
 skipped`; the skipped items are Jazzy's default handling of a known slow
 cppcheck version.
 
-M7.4 will add the operator E-stop and controlled-reset state machine. The
-production-threshold fault latency table remains an acceptance target until a
-separate measured fault-injection run records it.
+M7.4 adds a reliable, transient-local `/safety/estop` input and guarded
+`/safety/reset` service. Assert emergency stop with:
+
+```bash
+ros2 topic pub --once --qos-reliability reliable \
+  --qos-durability transient_local \
+  /safety/estop std_msgs/msg/Bool "{data: true}"
+```
+
+Expect `ESTOP_LATCHED`, `MANUAL_ESTOP`, and a zero command. Publishing
+`{data: false}` releases the physical/operator input but intentionally does not
+clear the latch. A reset is accepted only after every required input is fresh,
+Nav2 is active, and a new explicit zero command has remained healthy for
+`0.50 s`:
+
+```bash
+ros2 service call /safety/reset std_srvs/srv/Trigger "{}"
+```
+
+Rejected calls return a deterministic explanation. A successful reset returns
+`reset accepted`, enters `READY`, and still outputs zero until a later command
+arrives; it never replays the command from before the fault. Six synthetic ROS
+GTests cover READY/startup E-stop, retained E-stop delivery, release behavior,
+rejection paths, the health-hold window, and no-command-replay recovery. The
+command-level E-stop test enforces the designed `40 ms` test bound.
+
+The recorded Gazebo acceptance run started from `READY`, passed the four-link
+runtime graph gate, entered `ESTOP_LATCHED` with `MANUAL_ESTOP`, and published
+zero. Reset was rejected both while E-stop remained asserted and after release
+without a fresh zero. A test-only zero stream at the supervisor input then
+satisfied the `0.50 s` recovery hold; reset returned `reset accepted`, state
+returned to `READY`, output remained zero, and the graph gate passed again after
+the temporary publisher was removed. The four-package regression suite
+reported `129 tests, 0 errors, 0 failures, 9 skipped`.
+
+This is a host-side engineering safety mechanism, not a hardware E-stop or a
+functional-safety certification claim. The production fault-latency table
+remains an acceptance target until a separate repeated fault-injection run
+records it.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -491,7 +527,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Run three repeated trials and publish the raw CSV plus summary reports
 - [x] Add the M7.1 safety contract and M7.2 no-bypass runtime command gate
 - [x] Add M7.3 lifecycle/data watchdogs and standard diagnostics
-- Add M7.4 E-stop/controlled reset
+- [x] Add M7.4 E-stop/controlled reset
 - Add controlled sensor and communication fault injection
 - Implement a fake MCU transport and a ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware

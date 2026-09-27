@@ -28,6 +28,7 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include "std_srvs/srv/trigger.hpp"
 
 #include "diffbot_safety/safety_policy.hpp"
@@ -73,6 +74,10 @@ private:
   void command_callback(const geometry_msgs::msg::Twist::SharedPtr message);
   void scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr message);
   void odom_callback(const nav_msgs::msg::Odometry::SharedPtr message);
+  void estop_callback(const std_msgs::msg::Bool::SharedPtr message);
+  void reset_callback(
+    const Trigger::Request::SharedPtr request,
+    Trigger::Response::SharedPtr response);
   void poll_nav2_health();
   void poll_manager(
     const rclcpp::Client<Trigger>::SharedPtr & client,
@@ -84,6 +89,9 @@ private:
     const char * manager_name,
     rclcpp::Client<Trigger>::SharedFuture future);
   void control_cycle();
+  void update_recovery_health(
+    SafetySnapshot & snapshot,
+    SteadyTimePoint now);
 
   SafetySnapshot make_snapshot(SteadyTimePoint now) const;
   ManagerHealthView manager_health_view(
@@ -112,6 +120,7 @@ private:
   SteadyTimePoint last_scan_time_{};
   bool odom_seen_{false};
   SteadyTimePoint last_odom_time_{};
+  bool emergency_stop_{false};
   ManagerHealth localization_health_;
   ManagerHealth navigation_health_;
 
@@ -121,18 +130,21 @@ private:
   Duration status_period_{std::chrono::milliseconds(100)};
   Duration nav2_poll_period_{std::chrono::milliseconds(250)};
   Duration nav2_health_timeout_{std::chrono::seconds(1)};
+  std::optional<SteadyTimePoint> recovery_health_since_;
   std::optional<SteadyTimePoint> last_status_time_;
   std::optional<SafetyState> last_state_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr command_sub_;
   rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr estop_sub_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr command_pub_;
   rclcpp::Publisher<diffbot_interfaces::msg::SafetyStatus>::SharedPtr status_pub_;
   rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr
     diagnostics_pub_;
   rclcpp::Client<Trigger>::SharedPtr localization_health_client_;
   rclcpp::Client<Trigger>::SharedPtr navigation_health_client_;
+  rclcpp::Service<Trigger>::SharedPtr reset_service_;
   rclcpp::TimerBase::SharedPtr control_timer_;
   rclcpp::TimerBase::SharedPtr nav2_health_timer_;
 };

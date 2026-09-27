@@ -72,6 +72,7 @@ struct SafetyConfig
   Duration scan_timeout{std::chrono::milliseconds(500)};
   Duration odom_timeout{std::chrono::milliseconds(500)};
   Duration mcu_heartbeat_timeout{std::chrono::milliseconds(200)};
+  Duration reset_health_hold{std::chrono::milliseconds(500)};
 
   double max_forward_velocity{0.25};
   double max_reverse_velocity{0.10};
@@ -101,6 +102,8 @@ struct SafetySnapshot
 
   bool mcu_heartbeat_seen{false};
   Duration mcu_heartbeat_age{Duration::zero()};
+
+  Duration recovery_health_duration{Duration::zero()};
 };
 
 struct SafetyDecision
@@ -112,13 +115,20 @@ struct SafetyDecision
   MotionCommand output_command{};
 };
 
+struct ResetResult
+{
+  bool accepted{false};
+  std::string message;
+};
+
 class SafetyPolicy
 {
 public:
   explicit SafetyPolicy(SafetyConfig config = SafetyConfig{});
 
   SafetyDecision evaluate(const SafetySnapshot & snapshot);
-  bool reset(const SafetySnapshot & snapshot);
+  ResetResult reset(const SafetySnapshot & snapshot);
+  bool reset_inputs_healthy(const SafetySnapshot & snapshot) const;
 
   SafetyState state() const noexcept;
   FaultMask latched_faults() const noexcept;
@@ -129,6 +139,7 @@ private:
   bool command_is_zero(const MotionCommand & command) const;
   bool command_is_finite(const MotionCommand & command) const;
   bool command_exceeds_limits(const MotionCommand & command) const;
+  bool command_is_fresh_zero(const SafetySnapshot & snapshot) const;
   SafetyDecision make_decision(
     const SafetySnapshot & snapshot,
     FaultMask active_faults) const;
