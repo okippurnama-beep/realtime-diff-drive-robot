@@ -1,0 +1,145 @@
+{
+  "accepted": true,
+  "inputs": [
+    "/home/xiayuru/robot_ws/benchmark_results/safety_benchmark_20260927.csv"
+  ],
+  "overall": {
+    "failure_counts": {},
+    "fault_detection_latency_ms": {
+      "count": 12,
+      "max": 958.390746,
+      "mean": 461.32119933333337,
+      "min": 0.458069,
+      "p50": 499.89334099999996,
+      "p95": 903.3448122,
+      "stddev": 313.0758702268868
+    },
+    "success_rate_percent": 100.0,
+    "successes": 12,
+    "trials": 12,
+    "zero_command_latency_ms": {
+      "count": 12,
+      "max": 958.509687,
+      "mean": 461.43143274999994,
+      "min": 0.589703,
+      "p50": 499.990339,
+      "p95": 903.4911338499999,
+      "stddev": 313.0830682282576
+    }
+  },
+  "per_scenario": {
+    "estop": {
+      "failure_counts": {},
+      "fault_detection_latency_ms": {
+        "count": 3,
+        "max": 0.890971,
+        "mean": 0.7041583333333333,
+        "min": 0.458069,
+        "p50": 0.763435,
+        "p95": 0.8782174,
+        "stddev": 0.1816339318690817
+      },
+      "success_rate_percent": 100.0,
+      "successes": 3,
+      "trials": 3,
+      "zero_command_latency_ms": {
+        "count": 3,
+        "max": 0.976836,
+        "mean": 0.814654,
+        "min": 0.589703,
+        "p50": 0.877423,
+        "p95": 0.9668947,
+        "stddev": 0.1641603899503978
+      }
+    },
+    "nav2_timeout": {
+      "failure_counts": {},
+      "fault_detection_latency_ms": {
+        "count": 3,
+        "max": 958.390746,
+        "mean": 878.127336,
+        "min": 817.684032,
+        "p50": 858.30723,
+        "p95": 948.3823944,
+        "stddev": 59.12823517608644
+      },
+      "success_rate_percent": 100.0,
+      "successes": 3,
+      "trials": 3,
+      "zero_command_latency_ms": {
+        "count": 3,
+        "max": 958.509687,
+        "mean": 878.259899,
+        "min": 817.794056,
+        "p50": 858.475954,
+        "p95": 948.5063137,
+        "stddev": 59.12571669335496
+      }
+    },
+    "odom_timeout": {
+      "failure_counts": {},
+      "fault_detection_latency_ms": {
+        "count": 3,
+        "max": 500.102362,
+        "mean": 500.0200996666667,
+        "min": 499.881457,
+        "p50": 500.07648,
+        "p95": 500.0997738,
+        "stddev": 0.09860294534591485
+      },
+      "success_rate_percent": 100.0,
+      "successes": 3,
+      "trials": 3,
+      "zero_command_latency_ms": {
+        "count": 3,
+        "max": 500.250571,
+        "mean": 500.131441,
+        "min": 499.980651,
+        "p50": 500.163101,
+        "p95": 500.241824,
+        "stddev": 0.11244544840349194
+      }
+    },
+    "scan_timeout": {
+      "failure_counts": {},
+      "fault_detection_latency_ms": {
+        "count": 3,
+        "max": 499.905225,
+        "mean": 466.4332033333333,
+        "min": 419.936357,
+        "p50": 479.458028,
+        "p95": 497.86050529999994,
+        "stddev": 33.92137482963028
+      },
+      "success_rate_percent": 100.0,
+      "successes": 3,
+      "trials": 3,
+      "zero_command_latency_ms": {
+        "count": 3,
+        "max": 500.000027,
+        "mean": 466.519737,
+        "min": 420.022905,
+        "p50": 479.536279,
+        "p95": 497.95365219999996,
+        "stddev": 33.923028413149716
+      }
+    }
+  },
+  "report_schema_version": 1,
+  "run_count": 1,
+  "run_ids": [
+    "20260927T100818Z"
+  ],
+  "valid": true,
+  "validation": {
+    "errors": [],
+    "expected_repetitions_per_run": 3,
+    "scenario_order": [
+      "estop",
+      "scan_timeout",
+      "odom_timeout",
+      "nav2_timeout"
+    ],
+    "warnings": []
+  }
+}

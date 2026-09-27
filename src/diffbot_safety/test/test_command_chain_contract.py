@@ -47,6 +47,12 @@ class CommandChainContractTest(unittest.TestCase):
             / 'config'
             / 'safety_params.yaml'
         )['safety_supervisor']['ros__parameters']
+        cls.fault_injection_safety = load_yaml(
+            SOURCE_ROOT
+            / 'diffbot_safety'
+            / 'config'
+            / 'safety_fault_injection_params.yaml'
+        )['safety_supervisor']['ros__parameters']
         cls.controller = load_yaml(
             SOURCE_ROOT
             / 'robot_description'
@@ -58,6 +64,18 @@ class CommandChainContractTest(unittest.TestCase):
             / 'diffbot_navigation'
             / 'launch'
             / 'navigation.launch.py'
+        ).read_text(encoding='utf-8')
+        cls.benchmark_launch = (
+            SOURCE_ROOT
+            / 'diffbot_navigation'
+            / 'launch'
+            / 'benchmark.launch.py'
+        ).read_text(encoding='utf-8')
+        cls.safety_benchmark_launch = (
+            SOURCE_ROOT
+            / 'diffbot_navigation'
+            / 'launch'
+            / 'run_safety_benchmark.launch.py'
         ).read_text(encoding='utf-8')
         cls.bridge_source = (
             SOURCE_ROOT
@@ -146,6 +164,42 @@ class CommandChainContractTest(unittest.TestCase):
         self.assertEqual(self.safety['reset_service'], '/safety/reset')
         self.assertEqual(self.safety['reset_health_hold_sec'], 0.50)
         self.assertNotIn('automatic_reset', self.safety)
+
+    def test_m7_5_profile_changes_only_injected_evidence_inputs(self):
+        allowed_differences = {
+            'scan_topic',
+            'odom_topic',
+            'localization_manager_service',
+            'navigation_manager_service',
+        }
+        self.assertEqual(
+            set(self.safety),
+            set(self.fault_injection_safety),
+        )
+        for name, value in self.safety.items():
+            if name not in allowed_differences:
+                self.assertEqual(
+                    self.fault_injection_safety[name],
+                    value,
+                    msg=f'fault profile changed production parameter {name}',
+                )
+
+        self.assertEqual(
+            self.fault_injection_safety['input_command_topic'],
+            '/cmd_vel_collision_checked',
+        )
+        self.assertEqual(
+            self.fault_injection_safety['output_command_topic'],
+            '/cmd_vel_safe',
+        )
+        self.assertIn(
+            "'safety_params_file': safety_params_file",
+            self.benchmark_launch,
+        )
+        self.assertIn(
+            "executable='safety_fault_injection_runner.py'",
+            self.safety_benchmark_launch,
+        )
 
 
 if __name__ == '__main__':

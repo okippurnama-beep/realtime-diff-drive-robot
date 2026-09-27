@@ -28,9 +28,11 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     navigation_dir = get_package_share_directory('diffbot_navigation')
     robot_description_dir = get_package_share_directory('robot_description')
+    safety_dir = get_package_share_directory('diffbot_safety')
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     navigation_delay = LaunchConfiguration('navigation_delay')
+    safety_params_file = LaunchConfiguration('safety_params_file')
     world_path = os.path.join(
         navigation_dir, 'worlds', 'nav_benchmark_world.sdf'
     )
@@ -60,6 +62,7 @@ def generate_launch_description():
         launch_arguments={
             'map': map_path,
             'use_sim_time': use_sim_time,
+            'safety_params_file': safety_params_file,
         }.items(),
     )
 
@@ -77,6 +80,13 @@ def generate_launch_description():
                     'Wall-clock delay before Nav2 starts, allowing Gazebo and '
                     'ros2_control to become ready.'
                 ),
+            ),
+            DeclareLaunchArgument(
+                'safety_params_file',
+                default_value=os.path.join(
+                    safety_dir, 'config', 'safety_params.yaml'
+                ),
+                description='Safety-supervisor parameter file.',
             ),
             simulation,
             TimerAction(period=navigation_delay, actions=[navigation]),

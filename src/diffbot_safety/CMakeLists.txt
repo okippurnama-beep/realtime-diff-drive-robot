@@ -64,7 +64,10 @@ install(
 )
 
 install(
-  PROGRAMS scripts/verify_runtime_command_chain.py
+  PROGRAMS
+    scripts/safety_fault_injection_runner.py
+    scripts/summarize_safety_benchmark.py
+    scripts/verify_runtime_command_chain.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -159,6 +162,13 @@ if(BUILD_TESTING)
     COMMAND
       ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/test/test_command_chain_contract.py
+  )
+
+  add_test(
+    NAME safety_benchmark_summary_unit
+    COMMAND
+      ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/test_safety_benchmark_summary.py
   )
 endif()
 

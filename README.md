@@ -41,6 +41,10 @@ The first simulation milestone is complete:
 - Typed `SafetyStatus` interface and independently tested C++ safety policy
 - 50 Hz ROS 2 safety command gate inserted after Nav2 collision monitoring
 - No-bypass velocity chain with an executable runtime graph validator
+- Steady-clock command, LiDAR, odometry, and Nav2 lifecycle watchdogs
+- Latched emergency stop with guarded, no-command-replay recovery
+- Isolated four-scenario fault injection with durable CSV evidence and an
+  independent offline acceptance gate
 
 ## Development Environment
 
@@ -506,8 +510,66 @@ reported `129 tests, 0 errors, 0 failures, 9 skipped`.
 
 This is a host-side engineering safety mechanism, not a hardware E-stop or a
 functional-safety certification claim. The production fault-latency table
-remains an acceptance target until a separate repeated fault-injection run
-records it.
+is measured separately below and remains a command-level simulation result.
+
+## Verify the M7.5-M7.6 Fault-Injection Benchmark
+
+M7.5 runs controlled faults only through a dedicated test profile. Normal
+`benchmark.launch.py` behavior and the production velocity chain are unchanged.
+The test relays `/scan` and `/odometry/filtered`, and proxies the two lifecycle
+health services so one required source can be removed without killing an
+unrelated process.
+
+Check that the complete stack and all relays are ready without commanding
+motion:
+
+```bash
+ros2 launch diffbot_navigation run_safety_benchmark.launch.py dry_run:=true
+```
+
+Run the formal four-scenario benchmark with three repetitions:
+
+```bash
+ros2 launch diffbot_navigation run_safety_benchmark.launch.py \
+  repetitions:=3 \
+  output_csv:=$PWD/benchmark_results/safety_benchmark_run.csv
+```
+
+Each trial requires a recent nonzero `/cmd_vel_safe` command before injecting
+one of `estop`, `scan_timeout`, `odom_timeout`, or `nav2_timeout`. The runner
+records monotonic injection, fault-status, and first-zero timestamps; cancels
+the navigation goal; restores the evidence source; then requires a guarded
+reset and clean `READY` state before continuing. Every CSV row is flushed and
+`fsync`ed before the next trial.
+
+Validate the evidence and generate reports offline:
+
+```bash
+ros2 run diffbot_safety summarize_safety_benchmark.py \
+  benchmark_results/safety_benchmark_run.csv \
+  --expected-repetitions 3 \
+  --output-json benchmark_results/safety_benchmark_run.json \
+  --output-markdown benchmark_results/safety_benchmark_run.md
+```
+
+The 2026-09-27 formal run passed all 12 trials with no validation warnings:
+
+| Fault | Trials | Limit | Mean first-zero latency | P95 | Maximum |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Manual E-stop | 3/3 | 40 ms | 0.815 ms | 0.967 ms | 0.977 ms |
+| LiDAR timeout | 3/3 | 540 ms | 466.520 ms | 497.954 ms | 500.000 ms |
+| Odometry timeout | 3/3 | 540 ms | 500.131 ms | 500.242 ms | 500.251 ms |
+| Nav2 health timeout | 3/3 | 1040 ms | 878.260 ms | 948.506 ms | 958.510 ms |
+
+The raw evidence and generated reports are stored as
+`benchmark_results/safety_benchmark_20260927.{csv,json,md}`. The final
+four-package regression suite reported `138 tests, 0 errors, 0 failures, 9
+skipped`; the skipped checks are Jazzy's known slow-version cppcheck handling.
+
+These values measure the host-side ROS command path from the controlled
+injection boundary to the first zero observed on `/cmd_vel_safe`. They do not
+measure wheel deceleration, stopping distance, STM32/micro-ROS latency, or
+functional-safety certification performance.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -528,7 +590,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Add the M7.1 safety contract and M7.2 no-bypass runtime command gate
 - [x] Add M7.3 lifecycle/data watchdogs and standard diagnostics
 - [x] Add M7.4 E-stop/controlled reset
-- Add controlled sensor and communication fault injection
+- [x] Add controlled sensor/Nav2 fault injection and a repeated safety benchmark
 - Implement a fake MCU transport and a ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
