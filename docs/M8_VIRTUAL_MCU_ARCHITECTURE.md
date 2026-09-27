@@ -110,8 +110,9 @@ limits beside measured evidence. Real STM32 values must be measured again.
 4. Duplicate or older commands do not refresh the watchdog. Sequence ordering
    uses modulo-2^32 half-range comparison so wraparound remains valid.
 5. A changed `mcu_boot_id` invalidates the active session and wheel-state
-   continuity. The host commands zero and repeats the bounded activation
-   handshake; it never silently treats the reboot as ordinary packet loss.
+   continuity. The realtime `read()` returns `ERROR`; lifecycle recovery must
+   then deactivate and execute a new bounded activation handshake. A reboot is
+   never silently treated as ordinary packet loss inside the control loop.
 6. A state frame with an unexpected session, version, boot ID, sequence, or
    unknown mode is not copied into ros2_control state interfaces.
 
@@ -235,6 +236,44 @@ complete package suite both passed immediately afterward, and the final CTest
 record contains no failure. This was retained as an external validator-fetch
 event, not misclassified as an M8 code defect.
 
-No transport latency or physical motion result is claimed in M8.2. The next
-module is M8.3, which connects this transport to the installed Jazzy
-`hardware_interface::SystemInterface` lifecycle and wheel interfaces.
+No transport latency or physical motion result is claimed in M8.2.
+
+## M8.3 Implementation Result (2026-09-27)
+
+M8.3 implements and exports
+`diffbot_hardware/DiffbotSystemHardware` as a Jazzy
+`hardware_interface::SystemInterface` plugin. It validates an exact two-wheel
+URDF contract, requires a velocity command plus position/velocity state for
+each wheel, and requires an explicit encoder-count scale. Command validity,
+host feedback timeout, and bounded activation timeout are configurable
+hardware parameters with checked defaults.
+
+`on_configure()` caches the six ros2_control interface handles and prepares a
+new nonzero host session. `on_activate()` will not expose motion until the MCU
+has echoed both a zero `DISARM` frame and a later zero `ARMED` frame from that
+session, including the corresponding command sequence. Deactivation, shutdown,
+error handling, and object destruction all make a best-effort zero `DISARM`
+before closing the transport; the MCU watchdog remains the independent stop.
+
+The 100 Hz `read()` and `write()` paths use cached handles with single-attempt,
+non-blocking access. `write()` rejects NaN, infinity, and wheel targets beyond
+10 rad/s before converting rad/s to integer mrad/s. `read()` validates protocol,
+boot ID, session, state sequence, MCU mode, faults, receive timestamp, and the
+200 ms default freshness budget before converting cumulative encoder counts to
+radians and measured mrad/s to rad/s. A changed boot ID or stale feedback
+returns `hardware_interface::return_type::ERROR`; the realtime loop never
+blocks to repair a session.
+
+Nine new GTests cover invalid wheel contracts, pluginlib discovery, a real
+`ResourceManager` configure/activate/read/write cycle, zero handshake ordering,
+command and feedback conversions, non-finite/over-limit rejection, stale state,
+MCU reboot detection, and zero/disarm deactivation. Together with M8.1 and
+M8.2, `diffbot_hardware` now has 28 functional GTest cases. M8.3 does not yet
+replace the Gazebo hardware block or publish the M7 MCU heartbeat; that runtime
+integration belongs to M8.4.
+
+The final five-package M6/M7/M8 build and regression completed with
+`227 tests, 0 errors, 0 failures, 21 skipped`. All 21 skips are the installed
+Jazzy cppcheck slow-version exclusions for the M7/M8 C++ packages, not failed
+functional tests. No transport-latency or physical-motion measurement was
+added in M8.3.

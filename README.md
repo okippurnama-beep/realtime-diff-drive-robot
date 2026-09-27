@@ -45,6 +45,11 @@ The first simulation milestone is complete:
 - Latched emergency stop with guarded, no-command-replay recovery
 - Isolated four-scenario fault injection with durable CSV evidence and an
   independent offline acceptance gate
+- Versioned host/MCU command-state protocol with session, sequence, watchdog,
+  fault, and reboot semantics
+- Deterministic fake MCU transport with controllable loss, delay, and reboot
+- Jazzy ros2_control `SystemInterface` plugin with bounded zero-speed activation
+  handshake and non-blocking wheel command/feedback conversion
 
 ## Development Environment
 
@@ -62,7 +67,8 @@ The first simulation milestone is complete:
 source /opt/ros/jazzy/setup.bash
 cd ~/robot_ws
 colcon build --symlink-install --packages-select \
-  diffbot_interfaces robot_description diffbot_safety diffbot_navigation
+  diffbot_interfaces diffbot_hardware robot_description \
+  diffbot_safety diffbot_navigation
 source install/setup.bash
 ```
 
@@ -571,6 +577,38 @@ injection boundary to the first zero observed on `/cmd_vel_safe`. They do not
 measure wheel deceleration, stopping distance, STM32/micro-ROS latency, or
 functional-safety certification performance.
 
+## Verify the M8.1-M8.3 Virtual MCU Boundary
+
+M8 currently provides a versioned fixed-size MCU contract, a deterministic
+in-process fake MCU, and the exported
+`diffbot_hardware/DiffbotSystemHardware` ros2_control plugin. Verify the package
+with:
+
+```bash
+colcon build --symlink-install --packages-select \
+  diffbot_interfaces diffbot_hardware
+source install/setup.bash
+colcon test --packages-select diffbot_hardware
+colcon test-result --test-result-base build/diffbot_hardware --verbose
+```
+
+The functional tests cover protocol validation, session/sequence rules, MCU
+watchdog and encoder behavior, controlled transport loss/delay/reboot, pluginlib
+discovery, and a real `ResourceManager` lifecycle/read/write cycle. Activation
+requires a zero `DISARM` acknowledgement followed by a zero `ARMED`
+acknowledgement before nonzero wheel targets can be sent. The realtime read and
+write callbacks use cached interfaces and do not wait for recovery; stale
+feedback, a changed boot ID, a session mismatch, an MCU fault, or an invalid
+command returns `ERROR` for lifecycle handling.
+
+M8.3 deliberately does not change the existing Gazebo navigation launch path.
+M8.4 will add a separate fake-hardware launch profile, prove that controllers
+use this plugin without a Gazebo control bypass, and derive the M7 MCU heartbeat
+only from valid fresh state. No virtual-transport latency or physical stopping
+claim is made at this stage. The final M8.3 five-package regression reported
+`227 tests, 0 errors, 0 failures, 21 skipped`; all skips are Jazzy's known
+slow-version cppcheck exclusions.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -593,7 +631,8 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Add controlled sensor/Nav2 fault injection and a repeated safety benchmark
 - [x] Freeze the M8 virtual-MCU protocol, fault model, and `SystemInterface` boundary
 - [x] Implement the deterministic fake MCU core and transport
-- Implement the ros2_control `SystemInterface`
+- [x] Implement and lifecycle-test the ros2_control `SystemInterface`
+- Add the separate fake-hardware launch path and M7 MCU-heartbeat integration
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
 - Add FreeRTOS tasks, watchdogs, and safety mechanisms

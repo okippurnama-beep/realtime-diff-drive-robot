@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<library path="diffbot_system_hardware">
+  <class
+    name="diffbot_hardware/DiffbotSystemHardware"
+    type="diffbot_hardware::DiffbotSystemHardware"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Two-wheel ros2_control SystemInterface backed by the versioned Diffbot MCU transport.
+    </description>
+  </class>
+</library>
