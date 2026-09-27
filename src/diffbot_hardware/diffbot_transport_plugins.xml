@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<library path="fake_mcu">
+  <class
+    name="diffbot_hardware/FakeMcuTransport"
+    type="diffbot_hardware::FakeMcuTransport"
+    base_class_type="diffbot_hardware::McuTransport">
+    <description>
+      Deterministic in-process MCU transport for interface and fault-path validation.
+    </description>
+  </class>
+</library>

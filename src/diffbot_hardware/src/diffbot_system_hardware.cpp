@@ -27,8 +27,6 @@
 #include "pluginlib/class_list_macros.hpp"
 #include "rclcpp/logging.hpp"
 
-#include "diffbot_hardware/fake_mcu_transport.hpp"
-
 namespace diffbot_hardware
 {
 namespace
@@ -92,7 +90,7 @@ bool parse_positive_u32(
 }  // namespace
 
 DiffbotSystemHardware::DiffbotSystemHardware()
-: DiffbotSystemHardware(std::make_unique<FakeMcuTransport>())
+: now_([] () noexcept {return Clock::now();})
 {
 }
 
@@ -100,7 +98,7 @@ DiffbotSystemHardware::DiffbotSystemHardware(
   std::unique_ptr<McuTransport> transport, NowFunction now)
 : transport_(std::move(transport)), now_(std::move(now))
 {
-  fake_transport_ = dynamic_cast<FakeMcuTransport *>(transport_.get());
+  fault_injector_ = dynamic_cast<FaultInjectableMcuTransport *>(transport_.get());
 }
 
 DiffbotSystemHardware::~DiffbotSystemHardware()
@@ -114,14 +112,18 @@ DiffbotSystemHardware::CallbackReturn DiffbotSystemHardware::on_init(
   if (hardware_interface::SystemInterface::on_init(params) != CallbackReturn::SUCCESS) {
     return CallbackReturn::ERROR;
   }
-  if (!transport_ || !now_) {
-    RCLCPP_ERROR(get_logger(), "MCU transport or steady clock is not available");
+  if (!now_) {
+    RCLCPP_ERROR(get_logger(), "Steady clock is not available");
     return CallbackReturn::ERROR;
   }
   if (!parse_hardware_parameters() || !validate_hardware_info()) {
     RCLCPP_ERROR(get_logger(), "Invalid DiffbotSystemHardware URDF configuration");
     return CallbackReturn::ERROR;
   }
+  if (!transport_ && !load_transport()) {
+    return CallbackReturn::ERROR;
+  }
+  fault_injector_ = dynamic_cast<FaultInjectableMcuTransport *>(transport_.get());
 
   const auto node = get_node();
   if (node) {
@@ -135,7 +137,7 @@ DiffbotSystemHardware::CallbackReturn DiffbotSystemHardware::on_init(
     mcu_state_publisher_ = std::make_unique<realtime_tools::RealtimePublisher<
           diffbot_interfaces::msg::McuState>>(
       node, topic, rclcpp::QoS(10).reliable());
-    if (fake_transport_) {
+    if (fault_injector_) {
       fault_control_service_ = node->create_service<
         diffbot_interfaces::srv::McuFaultControl>(
         "/mcu/fault_control",
@@ -356,6 +358,30 @@ bool DiffbotSystemHardware::parse_hardware_parameters()
   return true;
 }
 
+bool DiffbotSystemHardware::load_transport()
+{
+  const auto entry = info_.hardware_parameters.find("transport_plugin");
+  if (entry == info_.hardware_parameters.end() || entry->second.empty()) {
+    RCLCPP_ERROR(get_logger(), "transport_plugin is required and cannot be empty");
+    return false;
+  }
+  const std::string & plugin_name = entry->second;
+
+  try {
+    transport_loader_ = std::make_unique<pluginlib::ClassLoader<McuTransport>>(
+      "diffbot_hardware", "diffbot_hardware::McuTransport");
+    transport_ = transport_loader_->createSharedInstance(plugin_name);
+  } catch (const pluginlib::PluginlibException & exception) {
+    RCLCPP_ERROR(
+      get_logger(), "Failed to load MCU transport '%s': %s",
+      plugin_name.c_str(), exception.what());
+    transport_.reset();
+    transport_loader_.reset();
+    return false;
+  }
+  return static_cast<bool>(transport_);
+}
+
 bool DiffbotSystemHardware::prepare_session()
 {
   host_session_id_ = next_session_id();
@@ -469,25 +495,25 @@ void DiffbotSystemHardware::fault_control_callback(
   diffbot_interfaces::srv::McuFaultControl::Response::SharedPtr response)
 {
   using FaultControl = diffbot_interfaces::srv::McuFaultControl;
-  if (!fake_transport_) {
+  if (!fault_injector_) {
     response->message = "fault injection is unavailable for this transport";
     return;
   }
 
   switch (request->scenario) {
     case FaultControl::Request::SCENARIO_CLEAR:
-      fake_transport_->set_drop_commands(false);
-      fake_transport_->set_drop_states(false);
-      fake_transport_->set_command_delay(std::chrono::milliseconds{0});
+      fault_injector_->set_drop_commands(false);
+      fault_injector_->set_drop_states(false);
+      fault_injector_->set_command_delay(std::chrono::milliseconds{0});
       response->message = "all transport faults cleared";
       break;
     case FaultControl::Request::SCENARIO_DROP_COMMANDS:
-      fake_transport_->set_drop_commands(request->enabled);
+      fault_injector_->set_drop_commands(request->enabled);
       response->message = request->enabled ?
         "command loss enabled" : "command loss disabled";
       break;
     case FaultControl::Request::SCENARIO_DROP_STATES:
-      fake_transport_->set_drop_states(request->enabled);
+      fault_injector_->set_drop_states(request->enabled);
       response->message = request->enabled ?
         "state loss enabled" : "state loss disabled";
       break;
@@ -496,7 +522,7 @@ void DiffbotSystemHardware::fault_control_callback(
         response->message = "delay_ms must be in [1, 5000] when enabled";
         return;
       }
-      fake_transport_->set_command_delay(
+      fault_injector_->set_command_delay(
         std::chrono::milliseconds{request->enabled ? request->delay_ms : 0U});
       response->message = request->enabled ?
         "command delay enabled" : "command delay disabled";
@@ -506,7 +532,7 @@ void DiffbotSystemHardware::fault_control_callback(
         response->message = "reboot requires enabled=true";
         return;
       }
-      fake_transport_->reboot();
+      fault_injector_->reboot();
       response->message = "MCU reboot requested";
       break;
     default:

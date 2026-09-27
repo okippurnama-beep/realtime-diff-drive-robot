@@ -345,3 +345,36 @@ passed all 12 trials:
 The measurement boundary is the host fault-service call to the first zero on
 `/cmd_vel_safe`. These values do not measure physical wheel deceleration,
 stopping distance, serial/micro-ROS latency, or a functional-safety guarantee.
+
+## M8.6 Implementation Result (2026-09-27)
+
+M8.6 makes `McuTransport` a second pluginlib boundary below the existing
+ros2_control `SystemInterface`. `DiffbotSystemHardware` now loads the class
+named by the `transport_plugin` URDF parameter and has no compile-time
+dependency on `FakeMcuTransport`. The fake implementation is a separately
+exported shared plugin; an unknown transport name fails initialization without
+falling back to simulation. Its optional fault controls are exposed through a
+small test-only capability interface rather than coupling production
+transports to the fake MCU class.
+
+Three new tests load the fake transport directly through its base-class loader,
+reject a nonexistent transport, and reject a missing explicit selection. The
+existing ResourceManager lifecycle
+test now names the fake transport explicitly and still completes the full
+configure/activate/read/write path. Therefore a future
+`diffbot_hardware/MicroRosTransport` can replace the fake by changing one
+parameter, while controllers, hardware conversion/validation, M7, and Nav2
+remain unchanged.
+
+The detailed future adapter rules, realtime mailboxes, raw topic/QoS mapping,
+STM32 task split, reconnect behavior, and physical conformance checklist are
+frozen in `M8_MICROROS_ADAPTER_CONTRACT.md`. M8.6 does not claim that the
+micro-ROS adapter or STM32 firmware is implemented.
+
+The plugin-selected runtime was also smoke-tested with both controllers active;
+an injected MCU reboot produced a first safe zero in `8.342 ms` and correctly
+latched `MCU_HEARTBEAT_LOST`. This is a single integration check, not a
+replacement for the accepted M8.5 repeated benchmark. The final five-package
+M6/M7/M8 regression completed with `252 tests, 0 errors, 0 failures, 22
+skipped`; the skipped checks are Jazzy's default exclusion of the installed
+cppcheck version with known performance issues.

@@ -50,6 +50,8 @@ The first simulation milestone is complete:
 - Deterministic fake MCU transport with controllable loss, delay, and reboot
 - Jazzy ros2_control `SystemInterface` plugin with bounded zero-speed activation
   handshake and non-blocking wheel command/feedback conversion
+- Plugin-selectable MCU transport boundary with explicit fake transport and a
+  frozen micro-ROS/STM32 adapter contract
 
 ## Development Environment
 
@@ -577,7 +579,7 @@ injection boundary to the first zero observed on `/cmd_vel_safe`. They do not
 measure wheel deceleration, stopping distance, STM32/micro-ROS latency, or
 functional-safety certification performance.
 
-## Verify the M8.1-M8.5 Virtual MCU Boundary
+## Verify the M8.1-M8.6 Virtual MCU Boundary
 
 M8 currently provides a versioned fixed-size MCU contract, a deterministic
 in-process fake MCU, and the exported
@@ -647,6 +649,15 @@ This profile is an interface and host failure-path test; the measurements are
 not physical wheel stopping, serial/micro-ROS transport, or functional-safety
 certification results.
 
+M8.6 exports `diffbot_hardware/FakeMcuTransport` as a separate plugin selected
+by the Xacro `transport_plugin` hardware parameter. The tests independently
+load that class, reject an unknown class, and run the complete ros2_control
+ResourceManager lifecycle through the selected transport. The future
+micro-ROS/STM32 implementation contract is documented in
+`docs/M8_MICROROS_ADAPTER_CONTRACT.md`; no physical adapter is claimed yet.
+The final five-package M6/M7/M8 regression reports `252 tests, 0 errors, 0
+failures, 22 skipped`; the skips are Jazzy's known slow-cppcheck exclusions.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -672,6 +683,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Implement and lifecycle-test the ros2_control `SystemInterface`
 - [x] Add the separate fake-hardware launch path and M7 MCU-heartbeat integration
 - [x] Add repeated virtual-MCU transport fault injection and an offline acceptance gate
+- [x] Make the MCU transport plugin-selectable and freeze the micro-ROS adapter contract
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
 - Add FreeRTOS tasks, watchdogs, and safety mechanisms

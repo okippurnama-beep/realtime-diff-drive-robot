@@ -63,6 +63,25 @@ public:
   virtual void deactivate() noexcept = 0;
 };
 
+// Optional test-only capability. Production transports are not required to
+// implement fault injection, and the realtime transport contract stays clean.
+class FaultInjectableMcuTransport
+{
+public:
+  FaultInjectableMcuTransport() = default;
+  virtual ~FaultInjectableMcuTransport() = default;
+
+  FaultInjectableMcuTransport(const FaultInjectableMcuTransport &) = delete;
+  FaultInjectableMcuTransport & operator=(const FaultInjectableMcuTransport &) = delete;
+  FaultInjectableMcuTransport(FaultInjectableMcuTransport &&) = delete;
+  FaultInjectableMcuTransport & operator=(FaultInjectableMcuTransport &&) = delete;
+
+  virtual void set_drop_commands(bool enabled) noexcept = 0;
+  virtual void set_drop_states(bool enabled) noexcept = 0;
+  virtual void set_command_delay(std::chrono::milliseconds delay) noexcept = 0;
+  virtual void reboot() noexcept = 0;
+};
+
 }  // namespace diffbot_hardware
 
 #endif  // DIFFBOT_HARDWARE__MCU_TRANSPORT_HPP_

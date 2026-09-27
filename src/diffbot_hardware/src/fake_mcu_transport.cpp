@@ -16,6 +16,8 @@
 
 #include <utility>
 
+#include "pluginlib/class_list_macros.hpp"
+
 namespace diffbot_hardware
 {
 
@@ -147,3 +149,6 @@ void FakeMcuTransport::clear_pending() noexcept
 }
 
 }  // namespace diffbot_hardware
+
+PLUGINLIB_EXPORT_CLASS(
+  diffbot_hardware::FakeMcuTransport, diffbot_hardware::McuTransport)

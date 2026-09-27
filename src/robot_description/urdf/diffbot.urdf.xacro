@@ -257,6 +257,7 @@
     <ros2_control name="DiffbotMcuSystem" type="system">
       <hardware>
         <plugin>diffbot_hardware/DiffbotSystemHardware</plugin>
+        <param name="transport_plugin">diffbot_hardware/FakeMcuTransport</param>
         <param name="left_wheel_name">left_wheel_joint</param>
         <param name="right_wheel_name">right_wheel_joint</param>
         <param name="encoder_counts_per_revolution">2048</param>

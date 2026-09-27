@@ -232,6 +232,31 @@ TEST(DiffbotSystemHardware, LoadsThroughPluginlib)
   ASSERT_NE(instance, nullptr);
 }
 
+TEST(DiffbotSystemHardware, LoadsFakeTransportThroughPluginlib)
+{
+  pluginlib::ClassLoader<McuTransport> loader(
+    "diffbot_hardware", "diffbot_hardware::McuTransport");
+  const auto instance = loader.createSharedInstance(
+    "diffbot_hardware/FakeMcuTransport");
+  ASSERT_NE(instance, nullptr);
+}
+
+TEST(DiffbotSystemHardware, RejectsUnknownTransportPlugin)
+{
+  DiffbotSystemHardware hardware;
+  auto info = hardware_info();
+  info.hardware_parameters["transport_plugin"] =
+    "diffbot_hardware/TransportThatDoesNotExist";
+  EXPECT_EQ(hardware.init(component_params(info)), CallbackReturn::ERROR);
+}
+
+TEST(DiffbotSystemHardware, RequiresExplicitTransportPlugin)
+{
+  DiffbotSystemHardware hardware;
+  EXPECT_EQ(
+    hardware.init(component_params(hardware_info())), CallbackReturn::ERROR);
+}
+
 TEST(DiffbotSystemHardware, RunsThroughResourceManagerLifecycle)
 {
   const std::string urdf =
@@ -253,6 +278,7 @@ TEST(DiffbotSystemHardware, RunsThroughResourceManagerLifecycle)
   <ros2_control name="DiffbotMcuSystem" type="system">
     <hardware>
       <plugin>diffbot_hardware/DiffbotSystemHardware</plugin>
+      <param name="transport_plugin">diffbot_hardware/FakeMcuTransport</param>
       <param name="encoder_counts_per_revolution">2048</param>
       <param name="command_validity_ms">100</param>
       <param name="state_timeout_ms">200</param>

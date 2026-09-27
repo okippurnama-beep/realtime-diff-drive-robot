@@ -27,7 +27,9 @@
 namespace diffbot_hardware
 {
 
-class FakeMcuTransport final : public McuTransport
+class FakeMcuTransport final
+  : public McuTransport,
+  public FaultInjectableMcuTransport
 {
 public:
   using Clock = std::chrono::steady_clock;
@@ -44,10 +46,10 @@ public:
   TransportResult receive_latest(ReceivedMcuState & state) noexcept override;
   void deactivate() noexcept override;
 
-  void set_drop_commands(bool enabled) noexcept;
-  void set_drop_states(bool enabled) noexcept;
-  void set_command_delay(std::chrono::milliseconds delay) noexcept;
-  void reboot() noexcept;
+  void set_drop_commands(bool enabled) noexcept override;
+  void set_drop_states(bool enabled) noexcept override;
+  void set_command_delay(std::chrono::milliseconds delay) noexcept override;
+  void reboot() noexcept override;
 
 private:
   struct PendingCommand

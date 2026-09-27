@@ -17,7 +17,7 @@ target_include_directories(mcu_contract
     $<INSTALL_INTERFACE:include>
 )
 
-add_library(fake_mcu
+add_library(fake_mcu SHARED
   src/fake_mcu.cpp
   src/fake_mcu_transport.cpp
 )
@@ -28,7 +28,8 @@ target_include_directories(fake_mcu
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(fake_mcu PUBLIC mcu_contract)
+target_link_libraries(fake_mcu mcu_contract)
+ament_target_dependencies(fake_mcu pluginlib)
 
 add_library(diffbot_system_hardware SHARED
   src/diffbot_system_hardware.cpp
@@ -47,10 +48,13 @@ ament_target_dependencies(diffbot_system_hardware
   rclcpp_lifecycle
   realtime_tools
 )
-target_link_libraries(diffbot_system_hardware fake_mcu)
+target_link_libraries(diffbot_system_hardware mcu_contract)
 
 pluginlib_export_plugin_description_file(
   hardware_interface diffbot_hardware_plugins.xml
+)
+pluginlib_export_plugin_description_file(
+  diffbot_hardware diffbot_transport_plugins.xml
 )
 
 install(
