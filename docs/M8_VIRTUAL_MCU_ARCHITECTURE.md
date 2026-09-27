@@ -207,3 +207,34 @@ issues, not failed functional tests.
 
 The timing values in this document remain predeclared design budgets. M8.1 did
 not run a transport-latency or physical-stopping benchmark.
+
+## M8.2 Implementation Result (2026-09-27)
+
+M8.2 is implemented as a pure C++ deterministic fake MCU plus an in-process
+`McuTransport`. The fake MCU owns the session and mode state machine, validates
+every command, integrates ideal encoder counts, latches sequence and command
+timeout faults, stops at the exact command deadline, and changes `mcu_boot_id`
+while invalidating the host session on reboot.
+
+The transport uses a fixed-capacity command queue. Its control-loop methods do
+not sleep or wait for ROS discovery. A manually injected steady clock makes
+command delay, command loss, state loss, watchdog expiry, and reboot tests
+repeatable without wall-clock `sleep()` calls. M8.2 deliberately remains below
+ROS topics and above no physical plant; the Gazebo navigation path is unchanged.
+
+Eleven new GTest cases cover zero/disarm session ownership, wheel feedback,
+exact watchdog stopping, duplicate sequences, delayed delivery, command and
+state loss, and reboot observation. Together with the eight M8.1 protocol tests,
+the hardware package now has 19 functional GTest cases. The final five-package
+regression reported `204 tests, 0 errors, 0 failures, 18 skipped`; the skips are
+the installed Jazzy cppcheck performance exclusion for the M7 and M8 C++ files.
+
+One initial five-package run saw `ament_xmllint` receive an empty document from
+the ROS package schema URL. The unchanged safety package's targeted xmllint and
+complete package suite both passed immediately afterward, and the final CTest
+record contains no failure. This was retained as an external validator-fetch
+event, not misclassified as an M8 code defect.
+
+No transport latency or physical motion result is claimed in M8.2. The next
+module is M8.3, which connects this transport to the installed Jazzy
+`hardware_interface::SystemInterface` lifecycle and wheel interfaces.

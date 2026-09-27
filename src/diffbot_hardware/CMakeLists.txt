@@ -11,14 +11,29 @@ target_include_directories(mcu_contract
     $<INSTALL_INTERFACE:include>
 )
 
+add_library(fake_mcu
+  src/fake_mcu.cpp
+  src/fake_mcu_transport.cpp
+)
+target_compile_features(fake_mcu PUBLIC cxx_std_17)
+target_include_directories(fake_mcu
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(fake_mcu PUBLIC mcu_contract)
+
 install(
   DIRECTORY include/
   DESTINATION include
 )
 
 install(
-  TARGETS mcu_contract
+  TARGETS mcu_contract fake_mcu
   EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 
 ament_export_targets(export_${PROJECT_NAME})
@@ -33,6 +48,12 @@ if(BUILD_TESTING)
   ament_add_gtest(test_mcu_protocol test/test_mcu_protocol.cpp)
   ament_target_dependencies(test_mcu_protocol diffbot_interfaces)
   target_link_libraries(test_mcu_protocol mcu_contract)
+
+  ament_add_gtest(test_fake_mcu test/test_fake_mcu.cpp)
+  target_link_libraries(test_fake_mcu fake_mcu)
+
+  ament_add_gtest(test_fake_mcu_transport test/test_fake_mcu_transport.cpp)
+  target_link_libraries(test_fake_mcu_transport fake_mcu)
 endif()
 
 ament_package()

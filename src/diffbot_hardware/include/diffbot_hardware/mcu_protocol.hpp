@@ -99,6 +99,7 @@ enum class FrameValidationError : std::uint8_t
   kProtocolVersion,
   kSessionId,
   kCommandValidity,
+  kCommandSequence,
   kCommandMode,
   kNonzeroSafeCommand,
   kTargetVelocity,

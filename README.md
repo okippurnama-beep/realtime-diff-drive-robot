@@ -592,7 +592,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Add M7.4 E-stop/controlled reset
 - [x] Add controlled sensor/Nav2 fault injection and a repeated safety benchmark
 - [x] Freeze the M8 virtual-MCU protocol, fault model, and `SystemInterface` boundary
-- Implement the deterministic fake MCU core and transport
+- [x] Implement the deterministic fake MCU core and transport
 - Implement the ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
