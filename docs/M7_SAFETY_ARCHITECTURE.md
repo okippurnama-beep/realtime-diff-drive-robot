@@ -6,6 +6,9 @@ M7.1 defines the safety contract and implements the ROS-independent policy
 core. It does not change the running navigation command path. Runtime topic
 wiring starts in M7.2 after the policy unit tests pass.
 
+The detailed runtime contracts for M7.2, M7.3, and M7.4 are recorded in
+[`M7_RUNTIME_SAFETY_DESIGN.md`](M7_RUNTIME_SAFETY_DESIGN.md).
+
 This is an engineering safety layer for a research and portfolio robot. It is
 not a certified functional-safety system and does not replace a physical
 emergency stop, motor-driver protections, or the future STM32 watchdog.
