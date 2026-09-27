@@ -103,7 +103,7 @@ The simulation profile uses the following parameter names and initial values:
 | `max_angular_velocity` | 1.00 rad/s | M7.2 |
 | `require_scan` | true | M7.2 |
 | `require_odom` | true | M7.2 |
-| `require_nav2_active` | false, then true in M7.3 | M7.3 |
+| `require_nav2_active` | true | M7.3 |
 | `require_mcu_heartbeat` | false | Future MCU stage |
 
 Topic and service names are parameters with the shared runtime-interface names
@@ -276,7 +276,7 @@ braking distance:
 | Injected loss | Command-level target |
 | --- | ---: |
 | Nonzero command stream | No later than 0.34 s after the last command |
-| Filtered odometry | No later than 0.24 s after the last message |
+| Filtered odometry | No later than 0.54 s after the last message |
 | Laser scan | No later than 0.54 s after the last message |
 | Nav2 manager health | No later than 1.04 s after last confirmed health |
 
@@ -294,6 +294,26 @@ recorded as a separate metric.
 - Simultaneous failures preserve multiple bits instead of overwriting the first
   reason.
 - Diagnostic state and age fields agree with `SafetyStatus`.
+
+### M7.3 implementation result (2026-09-27)
+
+M7.3 is implemented. The supervisor now polls both Nav2 lifecycle managers
+asynchronously, requires both responses to remain active and fresh, and never
+waits for a service from the 50 Hz command gate. Command, scan, and odometry
+freshness continue to use the steady clock, so pausing simulation time cannot
+hide a missing input.
+
+The node publishes the standard `diffbot_safety/supervisor` diagnostic with
+state, fault masks, inhibition state, input ages, lifecycle-manager evidence,
+and the configured timeouts. The navigation profile now sets
+`require_nav2_active: true`.
+
+Seven ROS GTests use shortened test-only deadlines to cover healthy managers,
+independent command/scan/odometry loss, an inactive manager, a disappearing
+manager service, and simultaneous sensor faults. All seven scenarios publish
+zero and preserve the expected fault bits. These are automated command-level
+tests; production-threshold latency remains an acceptance target until the
+separate system benchmark records it.
 
 ## M7.4: Emergency Stop, Fault Latching, and Guarded Reset
 

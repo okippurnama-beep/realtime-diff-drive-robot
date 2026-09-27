@@ -8,11 +8,17 @@ safety_supervisor:
     odom_topic: /odometry/filtered
     output_command_topic: /cmd_vel_safe
     status_topic: /safety/status
+    diagnostics_topic: /diagnostics
+
+    localization_manager_service: /lifecycle_manager_localization/is_active
+    navigation_manager_service: /lifecycle_manager_navigation/is_active
 
     command_timeout_sec: 0.30
     scan_timeout_sec: 0.50
     odom_timeout_sec: 0.50
     mcu_heartbeat_timeout_sec: 0.20
+    nav2_poll_period_sec: 0.25
+    nav2_health_timeout_sec: 1.00
 
     max_forward_velocity: 0.25
     max_reverse_velocity: 0.10
@@ -21,7 +27,6 @@ safety_supervisor:
 
     require_scan: true
     require_odom: true
-    # M7.3 enables this after adding asynchronous lifecycle-manager checks.
-    require_nav2_active: false
+    require_nav2_active: true
     # Enabled only when a virtual or physical MCU heartbeat exists.
     require_mcu_heartbeat: false

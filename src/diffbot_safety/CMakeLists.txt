@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.8)
 project(diffbot_safety)
 
 find_package(ament_cmake REQUIRED)
+find_package(diagnostic_msgs REQUIRED)
 find_package(diffbot_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
 add_library(safety_policy src/safety_policy.cpp)
 target_compile_features(safety_policy PUBLIC cxx_std_17)
@@ -24,11 +26,13 @@ target_include_directories(safety_supervisor_node_lib
     $<INSTALL_INTERFACE:include>
 )
 ament_target_dependencies(safety_supervisor_node_lib
+  diagnostic_msgs
   diffbot_interfaces
   geometry_msgs
   nav_msgs
   rclcpp
   sensor_msgs
+  std_srvs
 )
 target_link_libraries(safety_supervisor_node_lib safety_policy)
 
@@ -70,11 +74,13 @@ install(
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_export_include_directories(include)
 ament_export_dependencies(
+  diagnostic_msgs
   diffbot_interfaces
   geometry_msgs
   nav_msgs
   rclcpp
   sensor_msgs
+  std_srvs
 )
 
 if(BUILD_TESTING)
@@ -92,14 +98,35 @@ if(BUILD_TESTING)
     TIMEOUT 30
   )
   ament_target_dependencies(test_safety_supervisor_node
+    diagnostic_msgs
     diffbot_interfaces
     geometry_msgs
     nav_msgs
     rclcpp
     sensor_msgs
+    std_srvs
   )
   target_link_libraries(
     test_safety_supervisor_node
+    safety_supervisor_node_lib
+  )
+
+  ament_add_gtest(
+    test_safety_watchdogs
+    test/test_safety_watchdogs.cpp
+    TIMEOUT 60
+  )
+  ament_target_dependencies(test_safety_watchdogs
+    diagnostic_msgs
+    diffbot_interfaces
+    geometry_msgs
+    nav_msgs
+    rclcpp
+    sensor_msgs
+    std_srvs
+  )
+  target_link_libraries(
+    test_safety_watchdogs
     safety_supervisor_node_lib
   )
 

@@ -389,7 +389,7 @@ The earlier failed formal runs and targeted regression artifacts remain in
 costmap-layering, and AMCL tuning decisions are reviewable rather than
 presented as unexplained values.
 
-## Verify the M7.2 Safety Command Gate
+## Verify the M7.2-M7.3 Runtime Safety Gate
 
 The navigation launch now owns one explicit command path:
 
@@ -439,8 +439,39 @@ active or latched safety faults. The four-package regression suite reported
 default handling of a known slow cppcheck version.
 
 M7.2 deliberately does not yet expose operator E-stop/reset services or claim
-watchdog response latency. Lifecycle health monitoring belongs to M7.3, and
-the E-stop plus controlled-reset state machine belongs to M7.4.
+watchdog response latency.
+
+M7.3 adds steady-clock watchdogs for nonzero commands, laser scans, filtered
+odometry, and both Nav2 lifecycle managers. The lifecycle checks use
+asynchronous `/is_active` service requests so the 50 Hz command gate never
+waits on a service. Both managers must report active within the configured
+`1.0 s` health window before the supervisor can remain healthy.
+
+Inspect the standard diagnostic record with:
+
+```bash
+ros2 topic echo /diagnostics diagnostic_msgs/msg/DiagnosticArray \
+  --filter "any(s.name == 'diffbot_safety/supervisor' for s in m.status)" \
+  --once
+```
+
+A healthy stack reports `name: diffbot_safety/supervisor`, `message: READY`,
+diagnostic level `OK`, both manager-active fields as `true`, and fresh scan and
+odometry ages. The record also exposes fault masks, output inhibition, pending
+lifecycle requests, service messages, input ages, and configured timeouts.
+
+Seven synthetic ROS GTests cover healthy managers, independent command/scan/
+odometry loss, an inactive manager, a disappearing manager service, and
+simultaneous sensor loss. The recorded system acceptance kept all four command
+links at `PASS`, reached `straight_east=(2.8, 0.0)` with `SUCCEEDED` and
+`error_code: 0`, and remained `READY` with no active or latched faults. The
+four-package regression suite reported `116 tests, 0 errors, 0 failures, 8
+skipped`; the skipped items are Jazzy's default handling of a known slow
+cppcheck version.
+
+M7.4 will add the operator E-stop and controlled-reset state machine. The
+production-threshold fault latency table remains an acceptance target until a
+separate measured fault-injection run records it.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -459,7 +490,8 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Add a repeatable multi-goal runner, durable CSV logging, and validation
 - [x] Run three repeated trials and publish the raw CSV plus summary reports
 - [x] Add the M7.1 safety contract and M7.2 no-bypass runtime command gate
-- Add M7.3 lifecycle/data watchdogs and M7.4 E-stop/controlled reset
+- [x] Add M7.3 lifecycle/data watchdogs and standard diagnostics
+- Add M7.4 E-stop/controlled reset
 - Add controlled sensor and communication fault injection
 - Implement a fake MCU transport and a ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware

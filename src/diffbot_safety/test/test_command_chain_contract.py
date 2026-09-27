@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Static contract tests for the M7.2 velocity safety chain."""
+"""Static contract tests for the M7.2-M7.3 runtime safety chain."""
 
 from pathlib import Path
 import unittest
@@ -126,6 +126,20 @@ class CommandChainContractTest(unittest.TestCase):
             -1.0,
         )
         self.assertEqual(self.controller['cmd_vel_timeout'], 0.5)
+
+    def test_m7_3_requires_fresh_nav2_lifecycle_health(self):
+        self.assertTrue(self.safety['require_nav2_active'])
+        self.assertEqual(self.safety['nav2_poll_period_sec'], 0.25)
+        self.assertEqual(self.safety['nav2_health_timeout_sec'], 1.00)
+        self.assertEqual(
+            self.safety['localization_manager_service'],
+            '/lifecycle_manager_localization/is_active',
+        )
+        self.assertEqual(
+            self.safety['navigation_manager_service'],
+            '/lifecycle_manager_navigation/is_active',
+        )
+        self.assertEqual(self.safety['diagnostics_topic'], '/diagnostics')
 
 
 if __name__ == '__main__':
