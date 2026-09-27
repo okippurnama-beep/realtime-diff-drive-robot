@@ -1,0 +1,27 @@
+safety_supervisor:
+  ros__parameters:
+    control_frequency_hz: 50.0
+    status_frequency_hz: 10.0
+
+    input_command_topic: /cmd_vel_collision_checked
+    scan_topic: /scan
+    odom_topic: /odometry/filtered
+    output_command_topic: /cmd_vel_safe
+    status_topic: /safety/status
+
+    command_timeout_sec: 0.30
+    scan_timeout_sec: 0.50
+    odom_timeout_sec: 0.50
+    mcu_heartbeat_timeout_sec: 0.20
+
+    max_forward_velocity: 0.25
+    max_reverse_velocity: 0.10
+    max_angular_velocity: 1.00
+    zero_velocity_epsilon: 0.0001
+
+    require_scan: true
+    require_odom: true
+    # M7.3 enables this after adding asynchronous lifecycle-manager checks.
+    require_nav2_active: false
+    # Enabled only when a virtual or physical MCU heartbeat exists.
+    require_mcu_heartbeat: false

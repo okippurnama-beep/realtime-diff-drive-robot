@@ -100,7 +100,7 @@ These values are initial acceptance targets, not measured results:
 | --- | ---: |
 | Command timeout while nonzero | 0.30 s |
 | Laser scan timeout | 0.50 s |
-| Filtered odometry timeout | 0.20 s |
+| Filtered odometry timeout | 0.50 s |
 | Future MCU heartbeat timeout | 0.20 s |
 | Maximum forward velocity | 0.25 m/s |
 | Maximum reverse velocity magnitude | 0.10 m/s |
@@ -110,6 +110,14 @@ These values are initial acceptance targets, not measured results:
 A stale zero command is safe and does not create `COMMAND_STALE`. A stale
 nonzero command is a fault. The ROS adapter will calculate ages from a steady,
 monotonic clock so pausing simulation time cannot hide stale inputs.
+
+The odometry target was increased from the design draft's `0.20 s` to
+`0.50 s` during M7.2 runtime validation. The EKF remained stable at about
+50 Hz, but a host-side ROS graph discovery load produced a one-off scheduling
+gap above `0.20 s` and a false latched fault. The revised target still
+represents roughly 25 missed filtered-odometry samples; M7.3 will measure the
+actual fault-detection latency instead of treating this configured threshold
+as a benchmark result.
 
 ## M7.1 Package Boundaries
 

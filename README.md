@@ -38,6 +38,9 @@ The first simulation milestone is complete:
 - Durable CSV logging plus offline Markdown/JSON validation reports
 - Three-repetition navigation baseline with 15/15 measured goals and 15/15
   return-to-start actions completed successfully
+- Typed `SafetyStatus` interface and independently tested C++ safety policy
+- 50 Hz ROS 2 safety command gate inserted after Nav2 collision monitoring
+- No-bypass velocity chain with an executable runtime graph validator
 
 ## Development Environment
 
@@ -54,7 +57,8 @@ The first simulation milestone is complete:
 ```bash
 source /opt/ros/jazzy/setup.bash
 cd ~/robot_ws
-colcon build --symlink-install --packages-select robot_description diffbot_navigation
+colcon build --symlink-install --packages-select \
+  diffbot_interfaces robot_description diffbot_safety diffbot_navigation
 source install/setup.bash
 ```
 
@@ -89,6 +93,9 @@ ros2 topic pub --rate 10 --times 20 \
 ```
 
 The robot moves briefly and then stops automatically when the command timeout expires.
+This is an isolated low-level controller check for `sim.launch.py`; do not use
+it while the navigation stack is active because navigation commands must pass
+through the safety chain documented below.
 
 ## Inspect Odometry
 
@@ -382,6 +389,59 @@ The earlier failed formal runs and targeted regression artifacts remain in
 costmap-layering, and AMCL tuning decisions are reviewable rather than
 presented as unexplained values.
 
+## Verify the M7.2 Safety Command Gate
+
+The navigation launch now owns one explicit command path:
+
+```text
+/cmd_vel_nav
+  -> /cmd_vel_smoothed
+  -> /cmd_vel_collision_checked
+  -> /cmd_vel_safe
+  -> /diff_drive_base_controller/cmd_vel
+```
+
+`collision_monitor` owns `/cmd_vel_collision_checked`, `safety_supervisor`
+owns `/cmd_vel_safe`, and the Twist-to-TwistStamped bridge is the only
+publisher to the base controller command topic. The supervisor evaluates the
+pure C++ safety policy at 50 Hz and publishes an explicit zero command while
+startup is inhibited or a fault is latched.
+
+Start the complete stack:
+
+```bash
+ros2 launch diffbot_navigation benchmark.launch.py
+```
+
+In a second sourced terminal, run the read-only graph gate:
+
+```bash
+ros2 run diffbot_safety verify_runtime_command_chain.py
+```
+
+Expected result: all four point-to-point links print `PASS`, followed by
+`Runtime command-chain validation: PASS`. Inspect the typed safety state with:
+
+```bash
+ros2 topic echo /safety/status --once
+```
+
+For a healthy idle stack, expect `state: 1` (`READY`), `active_faults: 0`, and
+`latched_faults: 0`. The simulation odometry timeout is `0.50 s`: the EKF
+publishes at about 50 Hz, while the wider threshold avoids false latching from
+short non-real-time Linux scheduling gaps. This is a configured acceptance
+threshold, not a measured response-latency claim.
+
+The recorded M7.2 acceptance run passed the live graph gate and then reached
+`straight_east=(2.8, 0.0)` with `SUCCEEDED`, Nav2 `error_code: 0`, and no
+active or latched safety faults. The four-package regression suite reported
+`104 tests, 0 errors, 0 failures, 7 skipped`; the skipped items are Jazzy's
+default handling of a known slow cppcheck version.
+
+M7.2 deliberately does not yet expose operator E-stop/reset services or claim
+watchdog response latency. Lifecycle health monitoring belongs to M7.3, and
+the E-stop plus controlled-reset state machine belongs to M7.4.
+
 ## Known Jazzy Compatibility Workaround
 
 The current simulation uses the tracked symbolic link:
@@ -398,7 +458,9 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Build a larger structured navigation world and deterministic map
 - [x] Add a repeatable multi-goal runner, durable CSV logging, and validation
 - [x] Run three repeated trials and publish the raw CSV plus summary reports
-- Add a safety supervisor and controlled sensor/communication fault injection
+- [x] Add the M7.1 safety contract and M7.2 no-bypass runtime command gate
+- Add M7.3 lifecycle/data watchdogs and M7.4 E-stop/controlled reset
+- Add controlled sensor and communication fault injection
 - Implement a fake MCU transport and a ros2_control `SystemInterface`
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control

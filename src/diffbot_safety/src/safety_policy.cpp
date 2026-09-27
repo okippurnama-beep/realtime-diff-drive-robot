@@ -45,13 +45,18 @@ SafetyPolicy::SafetyPolicy(SafetyConfig config)
     config_.mcu_heartbeat_timeout,
     "mcu_heartbeat_timeout");
 
-  if (config_.max_forward_velocity <= 0.0 ||
+  if (!std::isfinite(config_.max_forward_velocity) ||
+    !std::isfinite(config_.max_reverse_velocity) ||
+    !std::isfinite(config_.max_angular_velocity) ||
+    config_.max_forward_velocity <= 0.0 ||
     config_.max_reverse_velocity <= 0.0 ||
     config_.max_angular_velocity <= 0.0)
   {
     throw std::invalid_argument("velocity limits must be positive");
   }
-  if (config_.zero_velocity_epsilon < 0.0) {
+  if (!std::isfinite(config_.zero_velocity_epsilon) ||
+    config_.zero_velocity_epsilon < 0.0)
+  {
     throw std::invalid_argument("zero_velocity_epsilon cannot be negative");
   }
 }
@@ -184,13 +189,21 @@ FaultMask SafetyPolicy::detect_active_faults(
 bool SafetyPolicy::command_is_zero(const MotionCommand & command) const
 {
   return std::abs(command.linear_x) <= config_.zero_velocity_epsilon &&
-         std::abs(command.angular_z) <= config_.zero_velocity_epsilon;
+         std::abs(command.angular_z) <= config_.zero_velocity_epsilon &&
+         std::abs(command.linear_y) <= config_.zero_velocity_epsilon &&
+         std::abs(command.linear_z) <= config_.zero_velocity_epsilon &&
+         std::abs(command.angular_x) <= config_.zero_velocity_epsilon &&
+         std::abs(command.angular_y) <= config_.zero_velocity_epsilon;
 }
 
 bool SafetyPolicy::command_is_finite(const MotionCommand & command) const
 {
   return std::isfinite(command.linear_x) &&
-         std::isfinite(command.angular_z);
+         std::isfinite(command.angular_z) &&
+         std::isfinite(command.linear_y) &&
+         std::isfinite(command.linear_z) &&
+         std::isfinite(command.angular_x) &&
+         std::isfinite(command.angular_y);
 }
 
 bool SafetyPolicy::command_exceeds_limits(
@@ -198,7 +211,11 @@ bool SafetyPolicy::command_exceeds_limits(
 {
   return command.linear_x > config_.max_forward_velocity ||
          command.linear_x < -config_.max_reverse_velocity ||
-         std::abs(command.angular_z) > config_.max_angular_velocity;
+         std::abs(command.angular_z) > config_.max_angular_velocity ||
+         std::abs(command.linear_y) > config_.zero_velocity_epsilon ||
+         std::abs(command.linear_z) > config_.zero_velocity_epsilon ||
+         std::abs(command.angular_x) > config_.zero_velocity_epsilon ||
+         std::abs(command.angular_y) > config_.zero_velocity_epsilon;
 }
 
 SafetyDecision SafetyPolicy::make_decision(

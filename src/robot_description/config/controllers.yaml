@@ -31,12 +31,12 @@
     cmd_vel_timeout: 0.5
     use_stamped_vel: true
 
-    linear.x.max_velocity: 0.5
-    linear.x.min_velocity: -0.5
+    linear.x.max_velocity: 0.25
+    linear.x.min_velocity: -0.10
     linear.x.max_acceleration: 0.5
     linear.x.min_acceleration: -0.5
 
-    angular.z.max_velocity: 1.5
-    angular.z.min_velocity: -1.5
+    angular.z.max_velocity: 1.0
+    angular.z.min_velocity: -1.0
     angular.z.max_acceleration: 1.5
     angular.z.min_acceleration: -1.5

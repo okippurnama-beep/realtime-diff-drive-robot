@@ -7,12 +7,12 @@ from rclpy.node import Node
 
 
 class TwistToTwistStampedNode(Node):
-    """Convert Nav2 Twist commands to TwistStamped for diff_drive_controller."""
+    """Convert approved Twist commands for diff_drive_controller."""
 
     def __init__(self):
         super().__init__('twist_to_twist_stamped_node')
 
-        self.declare_parameter('input_topic', '/cmd_vel_smoothed')
+        self.declare_parameter('input_topic', '/cmd_vel_safe')
         self.declare_parameter(
             'output_topic',
             '/diff_drive_base_controller/cmd_vel',

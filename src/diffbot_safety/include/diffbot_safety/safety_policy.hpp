@@ -60,13 +60,17 @@ struct MotionCommand
 {
   double linear_x{0.0};
   double angular_z{0.0};
+  double linear_y{0.0};
+  double linear_z{0.0};
+  double angular_x{0.0};
+  double angular_y{0.0};
 };
 
 struct SafetyConfig
 {
   Duration command_timeout{std::chrono::milliseconds(300)};
   Duration scan_timeout{std::chrono::milliseconds(500)};
-  Duration odom_timeout{std::chrono::milliseconds(200)};
+  Duration odom_timeout{std::chrono::milliseconds(500)};
   Duration mcu_heartbeat_timeout{std::chrono::milliseconds(200)};
 
   double max_forward_velocity{0.25};

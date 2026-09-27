@@ -25,11 +25,13 @@ from launch_ros.actions import Node
 def generate_launch_description():
     navigation_dir = get_package_share_directory('diffbot_navigation')
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
+    safety_dir = get_package_share_directory('diffbot_safety')
 
     map_yaml = LaunchConfiguration('map')
     params_file = LaunchConfiguration('params_file')
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')
+    safety_params_file = LaunchConfiguration('safety_params_file')
 
     nav2_bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -50,7 +52,21 @@ def generate_launch_description():
         package='robot_description',
         executable='twist_to_twist_stamped_node.py',
         name='twist_to_twist_stamped_node',
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[
+            {'use_sim_time': use_sim_time},
+            {'input_topic': '/cmd_vel_safe'},
+        ],
+        output='screen',
+    )
+
+    safety_supervisor = Node(
+        package='diffbot_safety',
+        executable='safety_supervisor_node',
+        name='safety_supervisor',
+        parameters=[
+            safety_params_file,
+            {'use_sim_time': use_sim_time},
+        ],
         output='screen',
     )
 
@@ -77,7 +93,15 @@ def generate_launch_description():
                 default_value='True',
                 description='Automatically activate Nav2 lifecycle nodes.',
             ),
+            DeclareLaunchArgument(
+                'safety_params_file',
+                default_value=os.path.join(
+                    safety_dir, 'config', 'safety_params.yaml'
+                ),
+                description='Safety supervisor parameter file.',
+            ),
             nav2_bringup,
+            safety_supervisor,
             velocity_bridge,
         ]
     )

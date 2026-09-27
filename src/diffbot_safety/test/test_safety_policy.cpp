@@ -160,7 +160,9 @@ TEST(SafetyPolicyTest, StaleNonzeroCommandFaultsButStaleZeroIsSafe)
 
 TEST(SafetyPolicyTest, ResetRequiresRecoveredHealthAndZeroCommand)
 {
-  SafetyPolicy policy;
+  SafetyConfig config;
+  config.odom_timeout = 200ms;
+  SafetyPolicy policy(config);
   policy.evaluate(healthy_snapshot());
 
   auto snapshot = healthy_snapshot();
@@ -203,12 +205,29 @@ TEST(SafetyPolicyTest, RejectsInvalidAndOutOfRangeCommands)
   EXPECT_TRUE(has_fault(
     limit_decision.latched_faults,
     Fault::kCommandLimitViolation));
+
+  auto unsupported = healthy_snapshot();
+  unsupported.command_seen = true;
+  unsupported.command.linear_y = 0.01;
+
+  SafetyPolicy differential_drive_policy;
+  const auto unsupported_decision =
+    differential_drive_policy.evaluate(unsupported);
+  EXPECT_EQ(unsupported_decision.state, SafetyState::kFaultLatched);
+  EXPECT_TRUE(has_fault(
+    unsupported_decision.latched_faults,
+    Fault::kCommandLimitViolation));
 }
 
 TEST(SafetyPolicyTest, RejectsInvalidConfiguration)
 {
   SafetyConfig config;
   config.command_timeout = Duration::zero();
+  EXPECT_THROW(SafetyPolicy policy(config), std::invalid_argument);
+
+  config = SafetyConfig{};
+  config.max_forward_velocity =
+    std::numeric_limits<double>::quiet_NaN();
   EXPECT_THROW(SafetyPolicy policy(config), std::invalid_argument);
 }
 

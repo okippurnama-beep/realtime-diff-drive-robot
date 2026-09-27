@@ -94,7 +94,7 @@ The simulation profile uses the following parameter names and initial values:
 | `status_frequency_hz` | 10.0 | M7.2 |
 | `command_timeout_sec` | 0.30 | M7.3 |
 | `scan_timeout_sec` | 0.50 | M7.3 |
-| `odom_timeout_sec` | 0.20 | M7.3 |
+| `odom_timeout_sec` | 0.50 | M7.3 |
 | `nav2_poll_period_sec` | 0.25 | M7.3 |
 | `nav2_health_timeout_sec` | 1.00 | M7.3 |
 | `reset_health_hold_sec` | 0.50 | M7.4 |
@@ -143,6 +143,7 @@ ownership. It does not yet claim fault-response latency results.
 src/diffbot_safety/
   config/safety_params.yaml
   launch/safety_supervisor.launch.py
+  scripts/verify_runtime_command_chain.py
   src/safety_supervisor_node.cpp
   test/test_safety_supervisor_node.cpp
   test/test_command_chain_contract.py
@@ -191,6 +192,21 @@ watchdog is added in M7.3. Scan and odometry freshness remain required.
   supervisor.
 - Existing M6 package tests remain green.
 
+### M7.2 implementation result (2026-09-27)
+
+M7.2 is implemented and runtime-validated. The supervisor reached `READY`,
+the executable graph gate verified all four point-to-point links, and the
+`straight_east=(2.8, 0.0)` Nav2 goal returned `SUCCEEDED` with `error_code: 0`.
+The post-goal status remained `READY` with no active or latched faults. The
+four affected packages reported `104 tests, 0 errors, 0 failures, 7 skipped`;
+the skips are the Jazzy default for the known slow cppcheck version.
+
+Runtime inspection also exposed a reproducible false `ODOM_STALE` latch under
+heavy graph-discovery load with the draft `0.20 s` threshold. The EKF itself
+measured about 50 Hz before and after the event. M7.2 therefore records and
+uses the revised `0.50 s` threshold described below, and the same graph load
+was repeated without a fault latch.
+
 ## M7.3: Steady-Clock Health Watchdogs and Diagnostics
 
 ### Module purpose
@@ -206,12 +222,18 @@ event instead of reporting only that the robot stopped.
 | Nonzero command | 0.30 s | `COMMAND_STALE` after the last nonzero command becomes stale. |
 | Zero command | No motion fault | Output remains zero; an idle system is not failed merely because Nav2 stopped publishing. |
 | Laser scan | 0.50 s | Missing or stale data produces `SCAN_STALE`. |
-| Filtered odometry | 0.20 s | Missing or stale data produces `ODOM_STALE`. |
+| Filtered odometry | 0.50 s | Missing or stale data produces `ODOM_STALE`. |
 | Combined Nav2 health | 1.00 s | Missing, false, or stale manager response produces `NAV2_INACTIVE`. |
 
 Timeout values are configuration and initial acceptance targets, not measured
 claims. The test report must store configured thresholds beside measured
 latencies.
+
+M7.2 runtime validation revised the odometry threshold from `0.20 s` to
+`0.50 s`. A graph-discovery workload caused a transient host scheduling gap
+above `0.20 s` even though `/odometry/filtered` measured about 50 Hz before
+and after the event. Keeping the false trip as evidence and revising the
+configuration is preferable to silently resetting a latched safety fault.
 
 ### Nav2 lifecycle watchdog
 
