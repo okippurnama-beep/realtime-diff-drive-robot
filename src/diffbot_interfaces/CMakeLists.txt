@@ -9,6 +9,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/McuCommand.msg"
   "msg/McuState.msg"
   "msg/SafetyStatus.msg"
+  "srv/McuFaultControl.srv"
   DEPENDENCIES builtin_interfaces
 )
 

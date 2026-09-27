@@ -292,29 +292,42 @@ void SafetySupervisorNode::mcu_state_callback(
 {
   using McuState = diffbot_interfaces::msg::McuState;
   if (message->protocol_version != McuState::PROTOCOL_VERSION_CURRENT ||
-    message->mcu_boot_id == 0U ||
-    message->accepted_host_session_id == 0U ||
-    message->mode != McuState::MODE_ARMED ||
-    message->active_faults != McuState::FAULT_NONE)
+    message->mcu_boot_id == 0U)
   {
     return;
   }
 
-  std::lock_guard<std::mutex> lock(input_mutex_);
-  const bool same_session = mcu_heartbeat_seen_ &&
-    message->mcu_boot_id == mcu_boot_id_ &&
-    message->accepted_host_session_id == mcu_session_id_;
-  if (same_session &&
-    !sequence_is_newer(message->state_sequence, mcu_state_sequence_))
   {
-    return;
-  }
+    std::lock_guard<std::mutex> lock(input_mutex_);
+    const bool boot_changed = mcu_heartbeat_seen_ &&
+      message->mcu_boot_id != mcu_boot_id_;
+    const bool unhealthy =
+      message->accepted_host_session_id == 0U ||
+      message->mode != McuState::MODE_ARMED ||
+      message->active_faults != McuState::FAULT_NONE;
+    const bool session_changed = mcu_heartbeat_seen_ &&
+      message->accepted_host_session_id != mcu_session_id_;
+    if (boot_changed || unhealthy || session_changed) {
+      mcu_heartbeat_seen_ = false;
+    } else {
+      const bool same_session = mcu_heartbeat_seen_ &&
+        message->mcu_boot_id == mcu_boot_id_ &&
+        message->accepted_host_session_id == mcu_session_id_;
+      if (same_session &&
+        !sequence_is_newer(message->state_sequence, mcu_state_sequence_))
+      {
+        return;
+      }
 
-  mcu_heartbeat_seen_ = true;
-  last_mcu_heartbeat_time_ = SteadyClock::now();
-  mcu_boot_id_ = message->mcu_boot_id;
-  mcu_session_id_ = message->accepted_host_session_id;
-  mcu_state_sequence_ = message->state_sequence;
+      mcu_heartbeat_seen_ = true;
+      last_mcu_heartbeat_time_ = SteadyClock::now();
+      mcu_boot_id_ = message->mcu_boot_id;
+      mcu_session_id_ = message->accepted_host_session_id;
+      mcu_state_sequence_ = message->state_sequence;
+      return;
+    }
+  }
+  control_cycle();
 }
 
 void SafetySupervisorNode::estop_callback(

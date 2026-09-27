@@ -59,6 +59,14 @@ install(
 )
 
 install(
+  PROGRAMS
+    scripts/mcu_fault_trial_runner.py
+    scripts/run_mcu_fault_benchmark.py
+    scripts/summarize_mcu_benchmark.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
   TARGETS mcu_contract fake_mcu diffbot_system_hardware
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
@@ -78,6 +86,7 @@ ament_export_dependencies(
 )
 
 if(BUILD_TESTING)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
@@ -100,6 +109,13 @@ if(BUILD_TESTING)
     rclcpp_lifecycle
   )
   target_link_libraries(test_diffbot_system_hardware diffbot_system_hardware)
+
+  add_test(
+    NAME mcu_benchmark_summary_unit
+    COMMAND
+      ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/test_mcu_benchmark_summary.py
+  )
 endif()
 
 ament_package()

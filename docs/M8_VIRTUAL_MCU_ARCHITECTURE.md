@@ -286,12 +286,15 @@ exactly one hardware owner: the original profile contains only
 contains only `DiffbotMcuSystem`. This prevents a Gazebo joint path from
 bypassing the virtual MCU boundary.
 
-The hardware plugin publishes `/mcu/state` with a realtime publisher only
-after a frame passes protocol, boot ID, session, state-sequence, mode, fault,
-receive-time, and freshness validation. The M7 supervisor independently
-requires protocol v1, nonzero boot/session IDs, `ARMED`, zero MCU faults, and a
-newer state sequence before refreshing its MCU heartbeat. Invalid, faulted,
-and duplicate frames therefore cannot keep the command gate healthy.
+The hardware plugin publishes `/mcu/state` with a realtime publisher after a
+frame passes protocol and receive-time validation. Healthy frames must also
+pass boot ID, session, state-sequence, `ARMED`, and zero-fault checks before
+they update ros2_control joint feedback. A protocol-valid frame that reports a
+new boot, wrong session, non-`ARMED` mode, or MCU fault is exposed only as
+negative safety evidence and still makes `read()` return `ERROR`; it never
+updates joint feedback. The M7 supervisor immediately invalidates its MCU
+heartbeat on that negative evidence. Malformed and duplicate frames cannot
+refresh the heartbeat and age out under the 200 ms watchdog.
 
 The standalone runtime was exercised with both controllers active. The ROS
 graph had one `/mcu/state` publisher (the hardware component), one subscriber
@@ -307,3 +310,38 @@ numbers cannot refresh the heartbeat. The final targeted results were
 `81 tests, 0 errors, 0 failures, 12 skipped` for `diffbot_hardware` and
 `87 tests, 0 errors, 0 failures, 10 skipped` for `diffbot_safety`; skips remain
 the installed Jazzy slow-cppcheck exclusions.
+
+## M8.5 Implementation Result (2026-09-27)
+
+M8.5 adds a typed `/mcu/fault_control` service on the fake transport and a
+fresh-stack benchmark runner for command loss, state loss, 150 ms command
+delay, and MCU reboot. Each trial first proves that both controllers are
+active, M7 is `READY`, and a nonzero command is visible on `/cmd_vel_safe`.
+It then records monotonic injection, first fault-status, and first-zero output
+timestamps in an append-only CSV. An independent offline summarizer rejects
+missing scenarios, duplicate trial indices, changed design parameters,
+non-finite values, incomplete repetitions, or any result beyond the
+predeclared 260 ms host-side limit.
+
+The first complete run exposed that protocol-valid MCU fault frames were being
+discarded at the hardware boundary. The physical/virtual MCU had already
+stopped at its 100 ms watchdog, but M7 could see only a later 200 ms heartbeat
+timeout. The corrected boundary now forwards an unhealthy frame as negative
+safety evidence while still refusing to copy it into ros2_control feedback.
+This reduced the repeated command-loss and delay paths from about 300 ms to
+about 115 ms without weakening either watchdog or the acceptance limit.
+
+The accepted run stored in
+`benchmark_results/mcu_transport_benchmark_20260927T131809Z.{csv,json,md}`
+passed all 12 trials:
+
+| Transport fault | Trials | Mean first-zero (ms) | P95 (ms) | Maximum (ms) |
+| --- | ---: | ---: | ---: | ---: |
+| Command loss | 3/3 | 114.864 | 117.747 | 117.939 |
+| State loss | 3/3 | 206.523 | 217.905 | 219.912 |
+| 150 ms command delay | 3/3 | 115.292 | 119.250 | 119.259 |
+| MCU reboot | 3/3 | 4.930 | 8.495 | 8.962 |
+
+The measurement boundary is the host fault-service call to the first zero on
+`/cmd_vel_safe`. These values do not measure physical wheel deceleration,
+stopping distance, serial/micro-ROS latency, or a functional-safety guarantee.

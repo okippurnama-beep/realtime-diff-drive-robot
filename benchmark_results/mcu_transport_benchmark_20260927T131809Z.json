@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "source_csv": "/home/xiayuru/robot_ws/benchmark_results/mcu_transport_benchmark_20260927T131809Z.csv",
+  "valid": true,
+  "accepted": true,
+  "errors": [],
+  "overall": {
+    "trials": 12,
+    "successes": 12,
+    "acceptance_limit_ms": 260.0
+  },
+  "scenarios": {
+    "drop_commands": {
+      "trials": 3,
+      "successes": 3,
+      "mean_ms": 114.86418033333332,
+      "p95_ms": 117.7470013,
+      "max_ms": 117.939335
+    },
+    "drop_states": {
+      "trials": 3,
+      "successes": 3,
+      "mean_ms": 206.52280266666665,
+      "p95_ms": 217.9046536,
+      "max_ms": 219.911543
+    },
+    "command_delay": {
+      "trials": 3,
+      "successes": 3,
+      "mean_ms": 115.29232466666667,
+      "p95_ms": 119.2498199,
+      "max_ms": 119.258767
+    },
+    "reboot": {
+      "trials": 3,
+      "successes": 3,
+      "mean_ms": 4.9304,
+      "p95_ms": 8.495108199999999,
+      "max_ms": 8.961951
+    }
+  }
+}

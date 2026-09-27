@@ -16,6 +16,7 @@
 #define DIFFBOT_HARDWARE__FAKE_MCU_TRANSPORT_HPP_
 
 #include <array>
+#include <atomic>
 #include <chrono>
 #include <cstddef>
 #include <functional>
@@ -70,9 +71,10 @@ private:
   std::size_t pending_size_{0U};
   bool configured_{false};
   bool active_{false};
-  bool drop_commands_{false};
-  bool drop_states_{false};
-  std::chrono::milliseconds command_delay_{0};
+  std::atomic<bool> drop_commands_{false};
+  std::atomic<bool> drop_states_{false};
+  std::atomic<std::int64_t> command_delay_ms_{0};
+  std::atomic<bool> reboot_requested_{false};
   TimePoint next_state_time_{};
 };
 

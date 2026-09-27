@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cmath>
+#include <functional>
 #include <limits>
 #include <stdexcept>
 #include <thread>
@@ -99,6 +100,7 @@ DiffbotSystemHardware::DiffbotSystemHardware(
   std::unique_ptr<McuTransport> transport, NowFunction now)
 : transport_(std::move(transport)), now_(std::move(now))
 {
+  fake_transport_ = dynamic_cast<FakeMcuTransport *>(transport_.get());
 }
 
 DiffbotSystemHardware::~DiffbotSystemHardware()
@@ -133,6 +135,16 @@ DiffbotSystemHardware::CallbackReturn DiffbotSystemHardware::on_init(
     mcu_state_publisher_ = std::make_unique<realtime_tools::RealtimePublisher<
           diffbot_interfaces::msg::McuState>>(
       node, topic, rclcpp::QoS(10).reliable());
+    if (fake_transport_) {
+      fault_control_service_ = node->create_service<
+        diffbot_interfaces::srv::McuFaultControl>(
+        "/mcu/fault_control",
+        std::bind(
+          &DiffbotSystemHardware::fault_control_callback,
+          this,
+          std::placeholders::_1,
+          std::placeholders::_2));
+    }
   }
 
   left_position_interface_ = left_wheel_name_ + "/" + hardware_interface::HW_IF_POSITION;
@@ -387,10 +399,18 @@ bool DiffbotSystemHardware::accept_state(
   if (validate_state(frame) != FrameValidationError::kNone) {
     return false;
   }
+  if (received.received_at > now_()) {
+    return false;
+  }
+  const bool boot_changed = mcu_boot_id_ != 0U && frame.mcu_boot_id != mcu_boot_id_;
+  if (boot_changed) {
+    if (require_armed) {
+      publish_mcu_state(frame);
+    }
+    return false;
+  }
   if (mcu_boot_id_ == 0U) {
     mcu_boot_id_ = frame.mcu_boot_id;
-  } else if (frame.mcu_boot_id != mcu_boot_id_) {
-    return false;
   }
   if (have_state_sequence_ && !sequence_is_newer(frame.state_sequence, last_state_sequence_)) {
     return false;
@@ -398,13 +418,11 @@ bool DiffbotSystemHardware::accept_state(
   if (have_valid_state_ && received.received_at < last_valid_state_time_) {
     return false;
   }
-  if (received.received_at > now_()) {
-    return false;
-  }
   if (require_armed &&
     (frame.accepted_host_session_id != host_session_id_ || frame.mode != McuMode::kArmed ||
     frame.active_faults != 0U))
   {
+    publish_mcu_state(frame);
     return false;
   }
 
@@ -418,12 +436,12 @@ bool DiffbotSystemHardware::accept_state(
   if (frame.accepted_host_session_id == host_session_id_ &&
     frame.mode == McuMode::kArmed && frame.active_faults == 0U)
   {
-    publish_valid_state(frame);
+    publish_mcu_state(frame);
   }
   return true;
 }
 
-void DiffbotSystemHardware::publish_valid_state(const McuStateFrame & frame) noexcept
+void DiffbotSystemHardware::publish_mcu_state(const McuStateFrame & frame) noexcept
 {
   if (!mcu_state_publisher_) {
     return;
@@ -444,6 +462,58 @@ void DiffbotSystemHardware::publish_valid_state(const McuStateFrame & frame) noe
   message.last_command_age_ms = frame.last_command_age_ms;
   message.control_loop_overrun_count = frame.control_loop_overrun_count;
   static_cast<void>(mcu_state_publisher_->try_publish(message));
+}
+
+void DiffbotSystemHardware::fault_control_callback(
+  const diffbot_interfaces::srv::McuFaultControl::Request::SharedPtr request,
+  diffbot_interfaces::srv::McuFaultControl::Response::SharedPtr response)
+{
+  using FaultControl = diffbot_interfaces::srv::McuFaultControl;
+  if (!fake_transport_) {
+    response->message = "fault injection is unavailable for this transport";
+    return;
+  }
+
+  switch (request->scenario) {
+    case FaultControl::Request::SCENARIO_CLEAR:
+      fake_transport_->set_drop_commands(false);
+      fake_transport_->set_drop_states(false);
+      fake_transport_->set_command_delay(std::chrono::milliseconds{0});
+      response->message = "all transport faults cleared";
+      break;
+    case FaultControl::Request::SCENARIO_DROP_COMMANDS:
+      fake_transport_->set_drop_commands(request->enabled);
+      response->message = request->enabled ?
+        "command loss enabled" : "command loss disabled";
+      break;
+    case FaultControl::Request::SCENARIO_DROP_STATES:
+      fake_transport_->set_drop_states(request->enabled);
+      response->message = request->enabled ?
+        "state loss enabled" : "state loss disabled";
+      break;
+    case FaultControl::Request::SCENARIO_COMMAND_DELAY:
+      if (request->enabled && (request->delay_ms == 0U || request->delay_ms > 5000U)) {
+        response->message = "delay_ms must be in [1, 5000] when enabled";
+        return;
+      }
+      fake_transport_->set_command_delay(
+        std::chrono::milliseconds{request->enabled ? request->delay_ms : 0U});
+      response->message = request->enabled ?
+        "command delay enabled" : "command delay disabled";
+      break;
+    case FaultControl::Request::SCENARIO_REBOOT:
+      if (!request->enabled) {
+        response->message = "reboot requires enabled=true";
+        return;
+      }
+      fake_transport_->reboot();
+      response->message = "MCU reboot requested";
+      break;
+    default:
+      response->message = "unknown fault scenario";
+      return;
+  }
+  response->success = true;
 }
 
 bool DiffbotSystemHardware::copy_feedback(const McuStateFrame & frame)

@@ -58,10 +58,12 @@ TransportResult FakeMcuTransport::send_command(const HostCommandFrame & command)
   if (validate_command(command) != FrameValidationError::kNone) {
     return TransportResult::kProtocolError;
   }
-  if (drop_commands_) {
+  if (drop_commands_.load(std::memory_order_relaxed)) {
     return TransportResult::kOk;
   }
-  const PendingCommand pending{command, now_() + command_delay_};
+  const auto delay = std::chrono::milliseconds{
+    command_delay_ms_.load(std::memory_order_relaxed)};
+  const PendingCommand pending{command, now_() + delay};
   return push_pending(pending) ? TransportResult::kOk : TransportResult::kIoError;
 }
 
@@ -71,6 +73,11 @@ TransportResult FakeMcuTransport::receive_latest(ReceivedMcuState & state) noexc
     return TransportResult::kDisconnected;
   }
   const auto now = now_();
+  if (reboot_requested_.exchange(false, std::memory_order_acq_rel)) {
+    clear_pending();
+    mcu_.boot(now);
+    next_state_time_ = now;
+  }
   process_pending(now);
   mcu_.step(now);
   if (now < next_state_time_) {
@@ -78,7 +85,7 @@ TransportResult FakeMcuTransport::receive_latest(ReceivedMcuState & state) noexc
   }
   next_state_time_ = now + kStatePeriod;
   const auto frame = mcu_.make_state(now);
-  if (drop_states_) {
+  if (drop_states_.load(std::memory_order_relaxed)) {
     return TransportResult::kNoData;
   }
   state.frame = frame;
@@ -94,28 +101,23 @@ void FakeMcuTransport::deactivate() noexcept
 
 void FakeMcuTransport::set_drop_commands(const bool enabled) noexcept
 {
-  drop_commands_ = enabled;
+  drop_commands_.store(enabled, std::memory_order_relaxed);
 }
 
 void FakeMcuTransport::set_drop_states(const bool enabled) noexcept
 {
-  drop_states_ = enabled;
+  drop_states_.store(enabled, std::memory_order_relaxed);
 }
 
 void FakeMcuTransport::set_command_delay(const std::chrono::milliseconds delay) noexcept
 {
-  command_delay_ = delay.count() < 0 ? std::chrono::milliseconds{0} : delay;
+  command_delay_ms_.store(
+    delay.count() < 0 ? 0 : delay.count(), std::memory_order_relaxed);
 }
 
 void FakeMcuTransport::reboot() noexcept
 {
-  if (!active_) {
-    return;
-  }
-  const auto now = now_();
-  clear_pending();
-  mcu_.boot(now);
-  next_state_time_ = now;
+  reboot_requested_.store(true, std::memory_order_release);
 }
 
 bool FakeMcuTransport::push_pending(const PendingCommand & command) noexcept

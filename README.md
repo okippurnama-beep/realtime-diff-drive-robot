@@ -577,7 +577,7 @@ injection boundary to the first zero observed on `/cmd_vel_safe`. They do not
 measure wheel deceleration, stopping distance, STM32/micro-ROS latency, or
 functional-safety certification performance.
 
-## Verify the M8.1-M8.4 Virtual MCU Boundary
+## Verify the M8.1-M8.5 Virtual MCU Boundary
 
 M8 currently provides a versioned fixed-size MCU contract, a deterministic
 in-process fake MCU, and the exported
@@ -619,11 +619,33 @@ ros2 topic info /mcu/state --verbose
 ros2 topic echo /safety/status --once
 ```
 
-Only validated, fresh, session-matching `ARMED` feedback is published by the
-hardware plugin. M7 then rejects malformed, faulted, or duplicate state frames
-before refreshing the heartbeat. This profile is an interface and failure-path
-test; it is not a physics simulation, virtual-transport latency result, or
-physical stopping claim.
+Only validated, fresh, session-matching `ARMED` feedback updates ros2_control
+joint state. Protocol-valid negative evidence such as an MCU fault or reboot is
+published to M7 for immediate inhibition, while malformed and duplicate frames
+cannot refresh the heartbeat.
+
+Run the formal M8.5 transport-fault benchmark with three repetitions:
+
+```bash
+source install/setup.bash
+ros2 run diffbot_hardware run_mcu_fault_benchmark.py --repetitions 3
+```
+
+The accepted 2026-09-27 run passed all 12 trials against a predeclared 260 ms
+limit from the fault-service boundary to the first zero on `/cmd_vel_safe`:
+
+| Transport fault | Trials | Mean first-zero | P95 | Maximum |
+| --- | ---: | ---: | ---: | ---: |
+| Command loss | 3/3 | 114.864 ms | 117.747 ms | 117.939 ms |
+| State loss | 3/3 | 206.523 ms | 217.905 ms | 219.912 ms |
+| 150 ms command delay | 3/3 | 115.292 ms | 119.250 ms | 119.259 ms |
+| MCU reboot | 3/3 | 4.930 ms | 8.495 ms | 8.962 ms |
+
+Raw data plus the independently generated JSON and Markdown reports are in
+`benchmark_results/mcu_transport_benchmark_20260927T131809Z.{csv,json,md}`.
+This profile is an interface and host failure-path test; the measurements are
+not physical wheel stopping, serial/micro-ROS transport, or functional-safety
+certification results.
 
 ## Known Jazzy Compatibility Workaround
 
@@ -649,6 +671,7 @@ This is a temporary workaround for controller parameter forwarding behavior in t
 - [x] Implement the deterministic fake MCU core and transport
 - [x] Implement and lifecycle-test the ros2_control `SystemInterface`
 - [x] Add the separate fake-hardware launch path and M7 MCU-heartbeat integration
+- [x] Add repeated virtual-MCU transport fault injection and an offline acceptance gate
 - Implement the STM32 motor-control firmware
 - Implement encoder acquisition and PID control
 - Add FreeRTOS tasks, watchdogs, and safety mechanisms

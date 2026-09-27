@@ -24,6 +24,7 @@
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
 #include "diffbot_interfaces/msg/mcu_state.hpp"
+#include "diffbot_interfaces/srv/mcu_fault_control.hpp"
 #include "realtime_tools/realtime_publisher.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
@@ -32,6 +33,8 @@
 
 namespace diffbot_hardware
 {
+
+class FakeMcuTransport;
 
 class DiffbotSystemHardware final : public hardware_interface::SystemInterface
 {
@@ -69,15 +72,21 @@ private:
   bool wait_for_mode(McuMode expected_mode);
   bool accept_state(const ReceivedMcuState & received, bool require_armed);
   bool copy_feedback(const McuStateFrame & frame);
-  void publish_valid_state(const McuStateFrame & frame) noexcept;
+  void publish_mcu_state(const McuStateFrame & frame) noexcept;
+  void fault_control_callback(
+    const diffbot_interfaces::srv::McuFaultControl::Request::SharedPtr request,
+    diffbot_interfaces::srv::McuFaultControl::Response::SharedPtr response);
   void reset_runtime_state();
   void zero_commands();
   void stop_transport() noexcept;
   HostCommandFrame make_command(CommandMode mode, double left, double right) noexcept;
 
   std::unique_ptr<McuTransport> transport_;
+  FakeMcuTransport * fake_transport_{nullptr};
   std::unique_ptr<realtime_tools::RealtimePublisher<
       diffbot_interfaces::msg::McuState>> mcu_state_publisher_;
+  rclcpp::Service<diffbot_interfaces::srv::McuFaultControl>::SharedPtr
+    fault_control_service_;
   NowFunction now_;
   TransportConfig transport_config_{};
   std::string left_wheel_name_{"left_wheel_joint"};
